@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>EC業界日次情報レポート 2026年4月21日（火）</title>
+<title>EC業界日次情報レポート 2026年4月22日（水）</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700;900&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <style>
@@ -11,807 +11,653 @@
 :root{
   --bg:#1A1D23;--card:#22262F;--blue:#2B5CE6;--blue2:#4B7BFF;
   --navy:#0F172A;--text:#E8EAF0;--sub:#9CA3AF;--border:#2E3340;
-  --green:#10B981;--red:#EF4444;--yellow:#F59E0B;--purple:#8B5CF6;
-  --orange:#F97316;
+  --green:#10B981;--red:#EF4444;--yellow:#F59E0B;--purple:#8B5CF6;--orange:#F97316;
 }
 body{font-family:'Noto Sans JP',sans-serif;background:var(--bg);color:var(--text);line-height:1.6;}
-a{color:var(--blue2);text-decoration:none;}
-a:hover{text-decoration:underline;}
+a{color:var(--blue2);text-decoration:none;}a:hover{text-decoration:underline;}
 .container{max-width:1400px;margin:0 auto;padding:0 16px;}
-
-/* ── HEADER ── */
 header{background:linear-gradient(135deg,#0D1117 0%,#161B22 60%,#0D1117 100%);border-bottom:2px solid var(--blue);padding:20px 0;}
-.header-inner{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;}
-.header-left h1{font-size:1.55rem;font-weight:900;background:linear-gradient(90deg,#fff 40%,var(--blue2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
-.date-badge{display:inline-flex;align-items:center;gap:8px;background:var(--card);border:1px solid var(--border);border-radius:20px;padding:5px 14px;font-size:.78rem;color:var(--sub);margin-top:6px;}
-.live-dot{width:8px;height:8px;border-radius:50%;background:var(--green);animation:blink 2s infinite;}
+.hdr{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;}
+h1.logo{font-size:1.5rem;font-weight:900;background:linear-gradient(90deg,#fff 40%,var(--blue2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.date-badge{display:inline-flex;align-items:center;gap:8px;background:var(--card);border:1px solid var(--border);border-radius:20px;padding:5px 14px;font-size:.75rem;color:var(--sub);margin-top:6px;}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--green);animation:blink 2s infinite;}
 @keyframes blink{0%,100%{opacity:1;}50%{opacity:.3;}}
-.kpi-row{display:flex;gap:10px;flex-wrap:wrap;}
-.kpi-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:11px 18px;text-align:center;min-width:110px;}
-.kpi-val{font-size:1.5rem;font-weight:900;color:var(--blue2);}
-.kpi-lbl{font-size:.68rem;color:var(--sub);margin-top:1px;}
-
-/* ── SECTION HEADER ── */
-section{margin:22px 0;}
-.sec-head{display:flex;align-items:center;gap:10px;margin-bottom:14px;}
-.sec-head h2{font-size:1.05rem;font-weight:800;}
-.badge{font-size:.65rem;padding:3px 9px;border-radius:10px;font-weight:700;white-space:nowrap;}
-.b-blue{background:rgba(43,92,230,.22);color:var(--blue2);border:1px solid rgba(43,92,230,.4);}
-.b-red{background:rgba(239,68,68,.18);color:var(--red);border:1px solid rgba(239,68,68,.35);}
-.b-green{background:rgba(16,185,129,.18);color:var(--green);border:1px solid rgba(16,185,129,.35);}
-.b-yellow{background:rgba(245,158,11,.18);color:var(--yellow);border:1px solid rgba(245,158,11,.35);}
-.b-purple{background:rgba(139,92,246,.18);color:var(--purple);border:1px solid rgba(139,92,246,.35);}
-.b-orange{background:rgba(249,115,22,.18);color:var(--orange);border:1px solid rgba(249,115,22,.35);}
-
-/* ── TOP5 ── */
-.top5-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;}
-@media(max-width:960px){.top5-grid{grid-template-columns:repeat(2,1fr);}}
-@media(max-width:520px){.top5-grid{grid-template-columns:1fr;}}
-.t5{background:var(--card);border:1px solid var(--border);border-radius:13px;padding:16px;position:relative;overflow:hidden;transition:.2s;}
-.t5:hover{border-color:var(--blue);transform:translateY(-2px);box-shadow:0 8px 24px rgba(43,92,230,.15);}
-.t5-num{font-size:2.6rem;font-weight:900;color:rgba(43,92,230,.15);position:absolute;top:6px;right:10px;line-height:1;}
-.t5-cat{font-size:.62rem;color:var(--blue2);font-weight:700;letter-spacing:.05em;margin-bottom:6px;}
-.t5-title{font-size:.84rem;font-weight:700;margin-bottom:8px;line-height:1.45;}
-.t5-body{font-size:.74rem;color:var(--sub);margin-bottom:10px;line-height:1.55;}
-.t5-link{font-size:.68rem;color:var(--blue2);border:1px solid rgba(43,92,230,.4);border-radius:6px;padding:3px 9px;display:inline-block;}
-
-/* ── ACCORDION ── */
-.acc{background:var(--card);border:1px solid var(--border);border-radius:12px;margin-bottom:8px;overflow:hidden;}
-.acc-hd{padding:13px 17px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;user-select:none;transition:.15s;}
-.acc-hd:hover{background:rgba(255,255,255,.025);}
-.acc-hd h3{font-size:.88rem;font-weight:700;display:flex;align-items:center;gap:8px;}
-.acc-arrow{transition:.25s;color:var(--sub);}
-.acc.open .acc-body{display:block;}
-.acc.open .acc-arrow{transform:rotate(180deg);}
-.acc-body{display:none;padding:0 17px 15px;}
-
-/* ── CARDS ── */
-.cgrid{display:grid;gap:11px;}
+.kpis{display:flex;gap:9px;flex-wrap:wrap;}
+.kpi{background:var(--card);border:1px solid var(--border);border-radius:11px;padding:10px 16px;text-align:center;min-width:100px;}
+.kpi-v{font-size:1.4rem;font-weight:900;color:var(--blue2);}
+.kpi-l{font-size:.65rem;color:var(--sub);margin-top:1px;}
+section{margin:20px 0;}
+.sh{display:flex;align-items:center;gap:9px;margin-bottom:13px;}
+.sh h2{font-size:1rem;font-weight:800;}
+.bdg{font-size:.62rem;padding:2px 8px;border-radius:9px;font-weight:700;white-space:nowrap;}
+.bb{background:rgba(43,92,230,.2);color:var(--blue2);border:1px solid rgba(43,92,230,.38);}
+.br{background:rgba(239,68,68,.18);color:var(--red);border:1px solid rgba(239,68,68,.33);}
+.bg{background:rgba(16,185,129,.18);color:var(--green);border:1px solid rgba(16,185,129,.33);}
+.by{background:rgba(245,158,11,.18);color:var(--yellow);border:1px solid rgba(245,158,11,.33);}
+.bp{background:rgba(139,92,246,.18);color:var(--purple);border:1px solid rgba(139,92,246,.33);}
+.bo{background:rgba(249,115,22,.18);color:var(--orange);border:1px solid rgba(249,115,22,.33);}
+/* TOP5 */
+.g5{display:grid;grid-template-columns:repeat(5,1fr);gap:11px;}
+@media(max-width:960px){.g5{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:520px){.g5{grid-template-columns:1fr;}}
+.t5{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:15px;position:relative;overflow:hidden;transition:.2s;}
+.t5:hover{border-color:var(--blue);transform:translateY(-2px);box-shadow:0 6px 20px rgba(43,92,230,.12);}
+.t5n{font-size:2.5rem;font-weight:900;color:rgba(43,92,230,.13);position:absolute;top:5px;right:9px;line-height:1;}
+.t5c{font-size:.6rem;color:var(--blue2);font-weight:700;letter-spacing:.05em;margin-bottom:5px;}
+.t5t{font-size:.82rem;font-weight:700;margin-bottom:7px;line-height:1.4;}
+.t5b{font-size:.73rem;color:var(--sub);margin-bottom:9px;line-height:1.55;}
+.t5l{font-size:.66rem;color:var(--blue2);border:1px solid rgba(43,92,230,.38);border-radius:5px;padding:2px 8px;display:inline-block;}
+/* ACCORDION */
+.acc{background:var(--card);border:1px solid var(--border);border-radius:12px;margin-bottom:7px;overflow:hidden;}
+.ach{padding:12px 16px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;user-select:none;transition:.15s;}
+.ach:hover{background:rgba(255,255,255,.025);}
+.ach h3{font-size:.86rem;font-weight:700;display:flex;align-items:center;gap:7px;}
+.acarr{transition:.25s;color:var(--sub);}
+.acc.open .acb{display:block;}
+.acc.open .acarr{transform:rotate(180deg);}
+.acb{display:none;padding:0 16px 14px;}
+/* CARDS */
+.cg{display:grid;gap:10px;}
 .c2{grid-template-columns:1fr 1fr;}
 .c3{grid-template-columns:1fr 1fr 1fr;}
 @media(max-width:900px){.c2,.c3{grid-template-columns:1fr;}}
-.nc{background:rgba(255,255,255,.028);border:1px solid var(--border);border-radius:10px;padding:13px;}
-.nc-hd{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:7px;gap:8px;}
-.nc-title{font-size:.83rem;font-weight:700;line-height:1.4;}
-.nc-date{font-size:.62rem;color:var(--sub);white-space:nowrap;flex-shrink:0;}
-.nc-body{font-size:.76rem;color:var(--sub);line-height:1.58;margin-bottom:8px;}
-.nc-link{font-size:.68rem;color:var(--blue2);}
-
-/* ── IR TABLE ── */
-.ir-wrap{overflow-x:auto;}
-table.ir{width:100%;border-collapse:collapse;font-size:.78rem;}
-table.ir th{padding:9px 11px;text-align:left;font-weight:700;color:var(--sub);border-bottom:1px solid var(--border);background:rgba(255,255,255,.03);white-space:nowrap;}
-table.ir td{padding:8px 11px;border-bottom:1px solid rgba(255,255,255,.04);vertical-align:top;}
+.nc{background:rgba(255,255,255,.027);border:1px solid var(--border);border-radius:9px;padding:12px;}
+.nch{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px;gap:7px;}
+.nct{font-size:.81rem;font-weight:700;line-height:1.4;}
+.ncd{font-size:.6rem;color:var(--sub);white-space:nowrap;flex-shrink:0;}
+.ncb{font-size:.74rem;color:var(--sub);line-height:1.57;margin-bottom:7px;}
+.ncl{font-size:.66rem;color:var(--blue2);}
+.tag{display:inline-block;font-size:.58rem;font-weight:700;padding:1px 5px;border-radius:4px;margin-left:4px;vertical-align:middle;}
+.tr{background:rgba(239,68,68,.22);color:var(--red);}
+.tn{background:rgba(16,185,129,.22);color:var(--green);}
+/* IR */
+.irw{overflow-x:auto;}
+table.ir{width:100%;border-collapse:collapse;font-size:.76rem;}
+table.ir th{padding:8px 10px;text-align:left;font-weight:700;color:var(--sub);border-bottom:1px solid var(--border);background:rgba(255,255,255,.03);white-space:nowrap;}
+table.ir td{padding:7px 10px;border-bottom:1px solid rgba(255,255,255,.04);vertical-align:top;}
 table.ir tr:hover td{background:rgba(255,255,255,.02);}
 .up{color:var(--green);font-weight:700;}
 .dn{color:var(--red);font-weight:700;}
-.neutral{color:var(--yellow);font-weight:700;}
-
-/* ── CHART WRAP ── */
-.chart-wrap{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:18px;}
-@media(max-width:720px){.chart-wrap{grid-template-columns:1fr;}}
-.chart-box{background:rgba(255,255,255,.02);border:1px solid var(--border);border-radius:12px;padding:14px;}
-.chart-title{font-size:.78rem;font-weight:700;margin-bottom:10px;color:var(--sub);}
-.chart-box canvas{max-height:240px;}
-
-/* ── EVENTS TABLE ── */
-table.ev{width:100%;border-collapse:collapse;font-size:.78rem;}
-table.ev th{padding:9px 11px;text-align:left;font-weight:700;color:var(--sub);border-bottom:1px solid var(--border);background:rgba(255,255,255,.03);}
-table.ev td{padding:8px 11px;border-bottom:1px solid rgba(255,255,255,.04);vertical-align:top;}
+.nt{color:var(--yellow);font-weight:700;}
+/* CHART */
+.cw{display:grid;grid-template-columns:1fr 1fr;gap:13px;margin-bottom:16px;}
+@media(max-width:720px){.cw{grid-template-columns:1fr;}}
+.cb{background:rgba(255,255,255,.02);border:1px solid var(--border);border-radius:11px;padding:13px;}
+.ct{font-size:.75rem;font-weight:700;margin-bottom:9px;color:var(--sub);}
+.cb canvas{max-height:230px;}
+/* CALENDAR */
+table.cal{width:100%;border-collapse:collapse;font-size:.76rem;}
+table.cal th{padding:8px 10px;text-align:left;font-weight:700;color:var(--sub);border-bottom:1px solid var(--border);background:rgba(255,255,255,.03);}
+table.cal td{padding:7px 10px;border-bottom:1px solid rgba(255,255,255,.04);vertical-align:top;}
+table.cal tr:hover td{background:rgba(255,255,255,.02);}
+.cal-tag{display:inline-block;font-size:.6rem;font-weight:700;padding:2px 6px;border-radius:4px;margin:1px 2px;}
+/* ROAS TABLE */
+table.roas{width:100%;border-collapse:collapse;font-size:.76rem;}
+table.roas th{padding:8px 10px;text-align:left;font-weight:700;color:var(--sub);border-bottom:1px solid var(--border);background:rgba(255,255,255,.03);}
+table.roas td{padding:7px 10px;border-bottom:1px solid rgba(255,255,255,.04);vertical-align:middle;}
+table.roas tr:hover td{background:rgba(255,255,255,.02);}
+.roas-bar{height:8px;border-radius:4px;background:linear-gradient(90deg,var(--blue),var(--blue2));display:inline-block;vertical-align:middle;margin-left:6px;}
+/* TIKTOK VIRAL */
+.viral-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
+@media(max-width:900px){.viral-grid{grid-template-columns:1fr;}}
+.viral-card{background:rgba(255,255,255,.027);border:1px solid var(--border);border-radius:9px;padding:12px;}
+.viral-rank{font-size:1.6rem;font-weight:900;color:rgba(139,92,246,.3);float:right;line-height:1;}
+.viral-cat{font-size:.6rem;color:var(--purple);font-weight:700;margin-bottom:4px;}
+.viral-name{font-size:.83rem;font-weight:700;margin-bottom:6px;line-height:1.35;}
+.viral-body{font-size:.72rem;color:var(--sub);line-height:1.55;margin-bottom:7px;}
+/* EVENTS */
+table.ev{width:100%;border-collapse:collapse;font-size:.76rem;}
+table.ev th{padding:8px 10px;text-align:left;font-weight:700;color:var(--sub);border-bottom:1px solid var(--border);background:rgba(255,255,255,.03);}
+table.ev td{padding:7px 10px;border-bottom:1px solid rgba(255,255,255,.04);vertical-align:top;}
 table.ev tr:hover td{background:rgba(255,255,255,.02);}
-
-/* ── URGENT TAG ── */
-.tag{display:inline-block;font-size:.6rem;font-weight:700;padding:1px 6px;border-radius:5px;margin-left:5px;vertical-align:middle;}
-.tag-red{background:rgba(239,68,68,.25);color:var(--red);}
-.tag-new{background:rgba(16,185,129,.25);color:var(--green);}
-
-/* ── CYBER SECTION ── */
-.cyber{background:var(--navy);border:1px solid rgba(43,92,230,.35);border-radius:16px;padding:22px;margin:22px 0;}
-.cyber h2{font-size:1.05rem;font-weight:900;color:#fff;margin-bottom:15px;}
-.action-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;}
-@media(max-width:900px){.action-grid{grid-template-columns:1fr;}}
-.act-col{background:rgba(255,255,255,.04);border-radius:11px;padding:14px;}
-.act-col h3{font-size:.82rem;font-weight:700;margin-bottom:10px;padding-bottom:7px;border-bottom:1px solid rgba(255,255,255,.09);}
-.act-item{font-size:.75rem;color:var(--sub);margin-bottom:9px;padding-left:10px;padding-bottom:8px;border-left:2px solid;}
-.act-item.r{border-color:var(--red);}
-.act-item.y{border-color:var(--yellow);}
-.act-item.g{border-color:var(--green);}
-.act-item strong{color:var(--text);display:block;margin-bottom:2px;font-size:.78rem;}
-
+/* CYBER */
+.cyber{background:var(--navy);border:1px solid rgba(43,92,230,.33);border-radius:15px;padding:20px;margin:20px 0;}
+.cyber h2{font-size:1rem;font-weight:900;color:#fff;margin-bottom:14px;}
+.ag{display:grid;grid-template-columns:1fr 1fr 1fr;gap:13px;}
+@media(max-width:900px){.ag{grid-template-columns:1fr;}}
+.ac{background:rgba(255,255,255,.04);border-radius:10px;padding:13px;}
+.ac h3{font-size:.8rem;font-weight:700;margin-bottom:9px;padding-bottom:6px;border-bottom:1px solid rgba(255,255,255,.08);}
+.ai{font-size:.73rem;color:var(--sub);margin-bottom:8px;padding-left:9px;padding-bottom:7px;border-left:2px solid;}
+.ai.r{border-color:var(--red);}
+.ai.y{border-color:var(--yellow);}
+.ai.g{border-color:var(--green);}
+.ai strong{color:var(--text);display:block;margin-bottom:1px;font-size:.76rem;}
 ::-webkit-scrollbar{width:5px;height:5px;}
 ::-webkit-scrollbar-track{background:var(--card);}
 ::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px;}
 </style>
 </head>
 <body>
-<header>
-<div class="container">
-<div class="header-inner">
-<div class="header-left">
-<h1>🛒 EC業界日次情報レポート</h1>
-<div class="date-badge"><span class="live-dot"></span>2026年04月21日（火）｜株式会社サイバーレコード EC事業本部</div>
+<header><div class="container"><div class="hdr">
+<div>
+<h1 class="logo">🛒 EC業界日次情報レポート</h1>
+<div class="date-badge"><span class="dot"></span>2026年04月22日（水）｜株式会社サイバーレコード EC事業本部<span style="margin-left:8px;background:rgba(43,92,230,.3);color:var(--blue2);padding:1px 7px;border-radius:10px;font-size:.62rem;font-weight:700;">NEW: 3セクション追加</span></div>
 </div>
-<div class="kpi-row">
-<div class="kpi-card"><div class="kpi-val">18</div><div class="kpi-lbl">国内ニュース</div></div>
-<div class="kpi-card"><div class="kpi-val">18</div><div class="kpi-lbl">AI/SEO/広告</div></div>
-<div class="kpi-card"><div class="kpi-val">12</div><div class="kpi-lbl">IR企業数</div></div>
-<div class="kpi-card"><div class="kpi-val">4</div><div class="kpi-lbl">注目イベント</div></div>
+<div class="kpis">
+<div class="kpi"><div class="kpi-v">18</div><div class="kpi-l">国内ニュース</div></div>
+<div class="kpi"><div class="kpi-v">18</div><div class="kpi-l">AI/SEO/広告</div></div>
+<div class="kpi"><div class="kpi-v">12</div><div class="kpi-l">IR企業数</div></div>
+<div class="kpi"><div class="kpi-v" style="color:var(--purple)">3</div><div class="kpi-l">新セクション</div></div>
 </div>
-</div>
-</div>
-</header>
+</div></div></header>
 <div class="container">
 
 <section>
-<div class="sec-head">
-<h2>🔥 今日のサマリー TOP5</h2>
-<span class="badge b-red">MUST READ</span>
-</div>
-<div class="top5-grid">
+<div class="sh"><h2>🔥 今日のサマリー TOP5</h2><span class="bdg br">MUST READ</span></div>
+<div class="g5">
+<div class="t5"><div class="t5n">1</div><div class="t5c">楽天市場</div>
+<div class="t5t">マラソン第3弾 本日22日 事前エントリー本格開始・明後日24日20時スタート</div>
+<div class="t5b">4/22より特設ページが公開し事前エントリーが本格化。4/24(金)20:00〜4/27(月)09:59開催。開始2時間限定の50%OFFクーポンと楽天モバイルSPU+4倍が同時適用。Amazon同時期タイムセール祭りとの競合に注意。</div>
+<a href="https://event.rakuten.co.jp/campaign/point-up/marathon/" target="_blank" class="t5l">→ 詳細を見る</a></div>
 
-<div class="t5">
-<div class="t5-num">1</div>
-<div class="t5-cat">楽天市場</div>
-<div class="t5-title">マラソン第3弾 4/24開始・本日19時より事前エントリー受付</div>
-<div class="t5-body">4/24(金)20:00〜4/27(月)09:59開催。本日21日19:00より事前エントリーとクーポン配布を開始。開始2時間限定の最大50%OFFクーポンが鍵。スマホ版広告枠は既に完売状態。</div>
-<a href="https://event.rakuten.co.jp/campaign/point-up/marathon/schedule/" target="_blank" class="t5-link">→ 詳細を見る</a>
-</div>
+<div class="t5"><div class="t5n">2</div><div class="t5c">TikTok Shop</div>
+<div class="t5t">マーケティングWeek 本日開幕・流通の70%がコンテンツ起点と発表</div>
+<div class="t5b">東京ビッグサイトにてTikTok Shop Japanが本日初日。国内流通総額の約70%がショート動画・LIVE配信起点であることを初公開。LIVEオークション成功事例も展示。本日視察推奨。</div>
+<a href="https://newsroom.tiktok.com/tiktok-shop-japan-marketingweek-spring2026?lang=ja-JP" target="_blank" class="t5l">→ 詳細を見る</a></div>
 
-<div class="t5">
-<div class="t5-num">2</div>
-<div class="t5-cat">AI×EC</div>
-<div class="t5-title">Stripe「Agentic Commerce Suite」公開・AIエージェント決済標準化へ</div>
-<div class="t5-body">AIエージェントが商品検索〜購入を完結させる標準規格「ACP」と企業向け管理ツール「ACS」を発表。日本企業の約6割が導入検討中。Mastercard/Visaも同戦略を推進。</div>
-<a href="https://prtimes.jp/main/html/rd/p/000000117.000077879.html" target="_blank" class="t5-link">→ 詳細を見る</a>
-</div>
+<div class="t5"><div class="t5n">3</div><div class="t5c">Amazon</div>
+<div class="t5t">FBA長期在庫手数料 本日4/22より初回課金・ペナルティが実弾に</div>
+<div class="t5b">4/15の在庫評価に基づき、本日22日より365日超在庫に最低20円/点の課金が実際に開始。在庫処分セール・自動返送の未対応店舗は即日コスト増。自社の在庫状況を本日確認。</div>
+<a href="https://sellercentral.amazon.co.jp/help/hub/reference/external/GMXDT9ELPWWDMDTY" target="_blank" class="t5l">→ 詳細を見る</a></div>
 
-<div class="t5">
-<div class="t5-num">3</div>
-<div class="t5-cat">LINEヤフー</div>
-<div class="t5-title">AIエージェント「Agent i」本日開始・パスキー一本化も同時展開</div>
-<div class="t5-body">LINEヤフーが4/21本日よりAIエージェント「Agent i」の提供を開始。同時にパスキーによるログイン一本化も実施。5/8の通期決算に向けAI戦略を加速。</div>
-<a href="https://www.lycorp.co.jp/ja/ir/" target="_blank" class="t5-link">→ 詳細を見る</a>
-</div>
+<div class="t5"><div class="t5n">4</div><div class="t5c">SNSトレンド</div>
+<div class="t5t">TikTok Shopで野口水産ライブが広告費対比ROI 24倍・産直ライブが主流に</div>
+<div class="t5b">産直ライブコマース事例として野口水産「本ズワイガニ」が広告費対売上24倍を達成。「LIVEオークション」新機能との組み合わせで高単価・限定品の流通が加速。GW商戦での活用が急務。</div>
+<a href="https://ecnomikata.com/ecnews/ec_site_operation/50148/" target="_blank" class="t5l">→ 詳細を見る</a></div>
 
-<div class="t5">
-<div class="t5-num">4</div>
-<div class="t5-cat">AI×マーケ</div>
-<div class="t5-title">CA「効果おまかせAI」昨日開始・Meta広告から順次拡大</div>
-<div class="t5-body">4/20提供開始したCA広告運用AIの反響が広がる。当初Meta広告対応、今後TikTok・Microsoft広告へ拡大予定。Meta代理店の広告費の7割が既にAdvantage+移行済み。</div>
-<a href="https://www.cyberagent.co.jp/news/detail/id=33180" target="_blank" class="t5-link">→ 詳細を見る</a>
-</div>
-
-<div class="t5">
-<div class="t5-num">5</div>
-<div class="t5-cat">マーケティングWeek</div>
-<div class="t5-title">明日4/22〜24 東京ビッグサイト開催・TikTok Shop等が注目出展</div>
-<div class="t5-body">第26回マーケティングWeek-春-が明日から3日間開催。TikTok Shop/ECグロースEXPO等に注目。EC MARKETING CONFERENCEも明後日4/23開催。本日の事前準備を確認。</div>
-<a href="https://www.marketing-week.jp/spring/ja-jp.html" target="_blank" class="t5-link">→ 詳細を見る</a>
-</div>
-
+<div class="t5"><div class="t5n">5</div><div class="t5c">広告・決済</div>
+<div class="t5t">Google P-MAX ROAS業界平均2.5〜5x・TikTok広告ROASは2〜3.5xで伸長中</div>
+<div class="t5b">2026年4月の広告ROASベンチマーク最新値が判明。リテールメディア（楽天・Amazon）は4〜6x、Meta Advantage+は2.3〜4x。クリエイティブ品質が成果の8割を決める時代へ。</div>
+<a href="https://www.cyberagent.co.jp/news/detail/id=33180" target="_blank" class="t5l">→ 詳細を見る</a></div>
 </div>
 </section>
 
-<!-- IR DASHBOARD -->
+<!-- IR -->
 <section>
-<div class="sec-head">
-<h2>📊 IR・決算ダッシュボード</h2>
-<span class="badge b-blue">12社</span>
-<span class="badge b-red">決算ウィーク突入</span>
-</div>
-<div class="chart-wrap">
-<div class="chart-box">
-<div class="chart-title">主要EC企業 売上高（最新確定値・億円）</div>
-<canvas id="cSales"></canvas>
-</div>
-<div class="chart-box">
-<div class="chart-title">売上高 前年比成長率（%）</div>
-<canvas id="cGrowth"></canvas>
-</div>
+<div class="sh"><h2>📊 IR・決算ダッシュボード</h2><span class="bdg bb">12社</span><span class="bdg br">決算ラッシュ直前</span></div>
+<div class="cw">
+<div class="cb"><div class="ct">主要EC企業 売上高（最新確定値・億円）</div><canvas id="cS"></canvas></div>
+<div class="cb"><div class="ct">売上高 前年比成長率（%）</div><canvas id="cG"></canvas></div>
 </div>
 <div class="acc open">
-<div class="acc-hd" onclick="this.closest('.acc').classList.toggle('open')">
-<h3>📋 12社 IR・決算データ一覧</h3>
-<span class="acc-arrow">▼</span>
-</div>
-<div class="acc-body">
-<div class="ir-wrap">
-<table class="ir">
-<thead><tr>
-<th>企業名</th><th>決算期</th><th>売上高/GMV</th><th>成長率</th><th>営業利益</th><th>主要トピック</th><th>次回発表</th>
-</tr></thead>
+<div class="ach" onclick="this.closest('.acc').classList.toggle('open')"><h3>📋 12社 決算データ一覧</h3><span class="acarr">▼</span></div>
+<div class="acb">
+<div class="irw"><table class="ir">
+<thead><tr><th>企業名</th><th>決算期</th><th>売上高/GMV</th><th>成長率</th><th>営業利益</th><th>主要トピック</th><th>次回発表</th></tr></thead>
 <tbody>
-<tr><td><strong>楽天グループ</strong></td><td>2025通期(2/12)</td><td>2兆2,513億円</td><td class="up">+10.5%</td><td>144億円</td><td>楽天RAN AI導入発表(4/21)。モバイル収益貢献加速</td><td>🔴 5/14 Q1</td></tr>
-<tr><td><strong>Amazon Japan</strong></td><td>2025通期(2/5)</td><td>約4.8兆円(推計)</td><td class="up">+12.0%</td><td>非開示</td><td>Rufus AI浸透。Ring新製品(4/15)。4/29 Q1直前</td><td>🔴 4/29 Q1</td></tr>
-<tr><td><strong>メルカリ</strong></td><td>FY26 Q2(2/9)</td><td>GMV 2桁成長</td><td class="up">+15%</td><td>109億円</td><td>早期受取機能普及中。FintechでMAU課題をカバー</td><td>次期Q3</td></tr>
-<tr><td><strong>ZOZO</strong></td><td>FY26 Q3(1/30)</td><td>取扱高5,029億円</td><td class="up">+9.1%</td><td>549億円</td><td>「本気のZOZO祭」が計画上振れ。決算直前期</td><td>🔴 4/30 通期</td></tr>
-<tr><td><strong>サイバーエージェント</strong></td><td>FY26 Q1(2/6)</td><td>2,000億円超</td><td class="up">増収</td><td>大幅増益</td><td>「効果おまかせAI」4/20開始(4/21続報)。ABEMA黒字化</td><td>🟡 5/13 Q2</td></tr>
-<tr><td><strong>BASE</strong></td><td>2025通期(2/12)</td><td>207.3億円</td><td class="up">+29.7%</td><td>16.8億円</td><td>大幅増収増益。中計で営業利益22.7億円目標</td><td>次期Q1</td></tr>
-<tr><td><strong>Shopify(Global)</strong></td><td>2025通期(2/11)</td><td>GMV $124B / 売上$11.6B</td><td class="up">+30%</td><td>拡大</td><td>Agentic Storefront発表。UCPプロトコル普及中</td><td>次期Q1</td></tr>
-<tr><td><strong>LINEヤフー</strong></td><td>FY26 Q3(2/4)</td><td>1兆4,953億円</td><td class="up">+4.7%</td><td>EBITDA 3,773億</td><td>「Agent i」4/21開始。広告統合完了。BEENOS連携</td><td>🟡 5/8 通期</td></tr>
-<tr><td><strong>アダストリア</strong></td><td>2026/2期(4/6)</td><td>3,043億円</td><td class="up">+3.8%</td><td>165億円</td><td>過去最高売上。.st海外展開(タイ・中国)強化</td><td>次期</td></tr>
-<tr><td><strong>オイシックス</strong></td><td>FY26 Q3(2/12)</td><td>累計1,946億円</td><td class="up">+0.5%</td><td>EBITDA 100億</td><td>新潟フードテックタウン参画(4/21)。米国事業拡大</td><td>🟡 5/14 通期</td></tr>
-<tr><td><strong>スクロール</strong></td><td>2026/3期(4/9)</td><td>修正予想値</td><td class="neutral">増収</td><td>経常60億(修正)</td><td>ソリューション成長継続。通販苦戦を補完</td><td>確定値待</td></tr>
-<tr><td><strong>Qoo10</strong></td><td>2026年度方針(4/14)</td><td>非公開(Beauty加速)</td><td class="up">2桁成長</td><td>非公開</td><td>メガデビュー累計35億円突破。2027年東京旗艦店計画</td><td>非上場</td></tr>
+<tr><td><strong>楽天グループ</strong></td><td>2025通期(2/25)</td><td>2兆2,713億円</td><td class="up">+7.8%</td><td>△1,530億円</td><td>フィンテック再編協議再開。RAN AI導入</td><td>🔴 5/14 Q1</td></tr>
+<tr><td><strong>Amazon(Global)</strong></td><td>2025通期(2/5)</td><td>$6,043億(+12%)</td><td class="up">+12%</td><td>$368億</td><td>AIインフラ2000億ドル投資計画。Rufus普及</td><td>🔴 4/29 Q1</td></tr>
+<tr><td><strong>メルカリ</strong></td><td>FY26 Q2(2/9)</td><td>1,062億円</td><td class="up">+12.8%</td><td>コア202億</td><td>メルカード債権残高3,000億円突破</td><td>次期Q3</td></tr>
+<tr><td><strong>ZOZO</strong></td><td>FY26 Q3(1/30)</td><td>取扱高5,029億(予)</td><td class="up">+8.6%</td><td>692億(予)</td><td>LYST買収影響を反映し業績予想修正</td><td>🔴 4/30 通期</td></tr>
+<tr><td><strong>サイバーエージェント</strong></td><td>FY26 Q1(2/6)</td><td>2,015億円</td><td class="up">+11.2%</td><td>155億円</td><td>「効果おまかせAI」4/20開始。ABEMA黒字化</td><td>🟡 5/13 Q2</td></tr>
+<tr><td><strong>BASE</strong></td><td>2025通期(2/12)</td><td>195億円</td><td class="up">+38.5%</td><td>8.5億円</td><td>Port社グループ参画(4/16)。PAY ID刷新</td><td>🟡 5/12 Q1</td></tr>
+<tr><td><strong>Shopify(Global)</strong></td><td>2025通期(2/11)</td><td>$71億 / GMV $124B</td><td class="up">+26%</td><td>$7.5億</td><td>エージェント型ストアフロント発表</td><td>🟡 5/5 Q1</td></tr>
+<tr><td><strong>LINEヤフー</strong></td><td>FY26 Q3(2/4)</td><td>売上2兆円(修正予)</td><td class="nt">下方修正</td><td>純利1,950億(予)</td><td>アスクル障害影響。Agent i 4/21開始</td><td>🟡 5/8 通期</td></tr>
+<tr><td><strong>アダストリア</strong></td><td>2026/2期(4/6)</td><td>3,043億円</td><td class="up">+3.8%</td><td>165億円</td><td>過去最高売上。.st EC好調</td><td>次期</td></tr>
+<tr><td><strong>オイシックス</strong></td><td>FY26 Q3(2/12)</td><td>累計1,946億円</td><td class="up">+0.5%</td><td>57億円</td><td>BtoCサブスク強化。シダックス統合効果</td><td>🟡 5/14 通期</td></tr>
+<tr><td><strong>スクロール</strong></td><td>FY26 Q3(1/30)</td><td>659億円</td><td class="up">+4.9%</td><td>47億円</td><td>不採算EC事業撤退(特損8.5億円)</td><td>🟡 5/7 通期</td></tr>
+<tr><td><strong>Qoo10</strong></td><td>戦略発表(4/14)</td><td>非公開(2桁成長)</td><td class="up">8年連続2桁</td><td>非公開</td><td>Mega Debut 1周年。旗艦店2027年計画</td><td>非上場</td></tr>
 </tbody>
-</table>
-</div>
-</div>
-</div>
+</table></div>
+</div></div>
 </section>
 
 <!-- プラットフォーム -->
 <section>
-<div class="sec-head">
-<h2>🏪 【最重点①】国内ECプラットフォーム・モール別アップデート</h2>
-<span class="badge b-red">最重点</span>
-</div>
+<div class="sh"><h2>🏪 国内ECプラットフォーム・モール別アップデート</h2><span class="bdg bb">6モール</span></div>
 
 <div class="acc open">
-<div class="acc-hd" onclick="this.closest('.acc').classList.toggle('open')">
-<h3>🛒 楽天市場</h3><span class="acc-arrow">▼</span>
-</div>
-<div class="acc-body">
-<div class="cgrid c3">
-<div class="nc">
-<div class="nc-hd"><div class="nc-title">マラソン第3弾 本日4/21 19時〜事前エントリー開始<span class="tag tag-red">緊急</span></div><div class="nc-date">4/21</div></div>
-<div class="nc-body">4月24日(金)20:00〜4月27日(月)09:59開催。21日19:00より開始2時間限定最大50%OFFクーポン・事前エントリーを受付。スマホ版トップ「2時間限定クーポン枠」は既に完売。楽天モバイル契約者はSPU+4倍が適用。</div>
-<a href="https://event.rakuten.co.jp/campaign/point-up/marathon/schedule/" target="_blank" class="nc-link">📎 楽天市場公式</a>
-</div>
-<div class="nc">
-<div class="nc-hd"><div class="nc-title">楽天モバイル SPU+4倍×マラソン連動ポイントアップ</div><div class="nc-date">4/18</div></div>
-<div class="nc-body">楽天モバイル契約者1,000万人突破を背景に、市場での買い物が常時SPU+4倍。マラソン期間中はスーパーDEALやモバイル契約者限定ポイント上乗せも適用。クロスセル率が前年比+12%向上中。</div>
-<a href="https://network.mobile.rakuten.co.jp/campaign/spu/" target="_blank" class="nc-link">📎 楽天モバイル公式</a>
-</div>
-<div class="nc">
-<div class="nc-hd"><div class="nc-title">楽天SEO 2026年転換点：「セマンティック関連性」重視へ</div><div class="nc-date">4/12</div></div>
-<div class="nc-body">楽天市場の検索がAIによる「意味的関連性」推論にシフト。キーワード完全一致より検索意図との合致を優先。楽天RAN（楽天広告ネットワーク）にAI導入を4/21発表。商品説明の質的向上が評価に直結。</div>
-<a href="https://meetsc.co.jp/blog/1_2026-rakuten-seo-basics-beginners-latest-algorithm-strategy_60.html" target="_blank" class="nc-link">📎 MeetSC Blog</a>
-</div>
-</div>
-</div>
-</div>
+<div class="ach" onclick="this.closest('.acc').classList.toggle('open')"><h3>🛒 楽天市場</h3><span class="acarr">▼</span></div>
+<div class="acb"><div class="cg c3">
+<div class="nc"><div class="nch"><span class="nct">お買い物マラソン第3弾 4/24-27 本日事前エントリー開始</span><span class="ncd">4/22</span></div>
+<div class="ncb">4/22より特設ページが公開され事前エントリーが本格化。4/24(金)20:00〜4/27(月)09:59開催。ショップ買いまわりポイント最大10倍。事前クーポン・スロット企画が同時スタート。</div>
+<a href="https://event.rakuten.co.jp/campaign/point-up/marathon/" target="_blank" class="ncl">→ 楽天市場</a></div>
+<div class="nc"><div class="nch"><span class="nct">GW配送施策：早め配送ポイント付与 4/24マラソンより本格適用</span><span class="ncd">4/20</span></div>
+<div class="ncb">大型連休に向けた物流負荷軽減策として、通常より遅い配送時期を選択したユーザーにポイントを付与する施策をマラソン第3弾から本格適用。EC事業者の出荷タイミング分散にも貢献。</div>
+<a href="https://event.rakuten.co.jp/guide/shipping/gw/" target="_blank" class="ncl">→ 楽天市場</a></div>
+<div class="nc"><div class="nch"><span class="nct">AIサムネイル自動生成ツール 4月末アップデート詳細を公開</span><span class="ncd">4/15</span></div>
+<div class="ncb">クリック率予測に基づいた商品サムネイルのAI自動生成機能を試験導入。マラソン商戦期の販促効率向上が狙い。楽天店舗向け支援ツールの一環として4月末に展開予定。</div>
+<a href="https://corp.rakuten.co.jp/news/press/2026/0415_01.html" target="_blank" class="ncl">→ 楽天グループ</a></div>
+</div></div></div>
+
+<div class="acc open">
+<div class="ach" onclick="this.closest('.acc').classList.toggle('open')"><h3>📦 Amazon Japan</h3><span class="acarr">▼</span></div>
+<div class="acb"><div class="cg c3">
+<div class="nc"><div class="nch"><span class="nct">Q1決算 4/29発表予定 AI投資2000億ドル・配送リージョナリゼーション進捗が焦点</span><span class="ncd">4/15</span></div>
+<div class="ncb">Amazon.comが4/29にQ1決算発表。日本市場の地域完結型配送の進捗と、AWSを中心とした年間2000億ドルのAI投資状況が注目される。国内セラーへの影響は物流コスト最適化に直結。</div>
+<a href="https://www.aboutamazon.com/news/company-news/amazon-earnings-q1-2026-report" target="_blank" class="ncl">→ About Amazon</a></div>
+<div class="nc"><div class="nch"><span class="nct" style="color:var(--red)">⚠️ FBA長期在庫手数料 本日4/22より初回課金開始</span><span class="ncd">4/22</span></div>
+<div class="ncb">4/15の在庫評価に基づき本日より改定後手数料が適用。365日超の非メディア商品に最低20円/点課金。未対応の在庫を抱えている場合、本日から実際のコストが発生。即時対応が必要。</div>
+<a href="https://sellercentral.amazon.co.jp/help/hub/reference/external/GMXDT9ELPWWDMDTY" target="_blank" class="ncl">→ Seller Central</a></div>
+<div class="nc"><div class="nch"><span class="nct">4月手数料改定後の在庫保管比率最適化を促す通知をセラーに配信</span><span class="ncd">4/22</span></div>
+<div class="ncb">4/1改定後の利益シミュレーション精度を向上させたツールと、在庫保管比率の最適化を促す通知を本日付で配信。標準サイズ配送代行手数料の調整に伴う実務への対応を支援。</div>
+<a href="https://sellercentral.amazon.co.jp/seller-forums/discussions/t/e9e8aad1-1fb0-4370-9d0b-d280c2ed4071" target="_blank" class="ncl">→ Seller Central</a></div>
+</div></div></div>
 
 <div class="acc">
-<div class="acc-hd" onclick="this.closest('.acc').classList.toggle('open')">
-<h3>📦 Amazon Japan</h3><span class="acc-arrow">▼</span>
-</div>
-<div class="acc-body">
-<div class="cgrid c3">
-<div class="nc">
-<div class="nc-hd"><div class="nc-title">Q1決算 4/29発表直前・Rufus AI収益貢献が最注目<span class="tag tag-red">8日後</span></div><div class="nc-date">4/15</div></div>
-<div class="nc-body">4月29日にAmazon Q1決算発表予定。日本市場売上約4.8兆円(前年+12%)のトレンド継続と、AIアシスタント「Rufus」の収益貢献度が焦点。Ring新製品(4/15)も発表済み。AWSの成長率も注視。</div>
-<a href="https://note.com/bloomo_economics/n/n6932f1242c94" target="_blank" class="nc-link">📎 Bloomo Economics</a>
-</div>
-<div class="nc">
-<div class="nc-hd"><div class="nc-title">4/1手数料改定後 セラーの価格転嫁が進む</div><div class="nc-date">4/17</div></div>
-<div class="nc-body">販売手数料0.4%引き上げ（全カテゴリー）を受け、主力商品の販売価格を数十円単位で引き上げる動きが拡大。4/15より365日超在庫への最低20円/点ペナルティも適用。在庫回転率の最適化が急務。</div>
-<a href="https://ecstarslab.com/blog/fba-commission-price-increase/" target="_blank" class="nc-link">📎 ECスターズラボ</a>
-</div>
-<div class="nc">
-<div class="nc-hd"><div class="nc-title">長期在庫「自動返送設定」「在庫処分セール」をセラーに推奨</div><div class="nc-date">4/18</div></div>
-<div class="nc-body">Amazonセラーフォーラムにて、12ヶ月以上の長期在庫に対する「自動返送設定」や「在庫処分セール」の活用を改めて周知。新料金体系下でのコスト削減策として在庫スリム化を促している。</div>
-<a href="https://sellercentral.amazon.co.jp/seller-forums/discussions/t/e9e8aad1-1fb0-4370-9d0b-d280c2ed4071" target="_blank" class="nc-link">📎 Amazonセラーフォーラム</a>
-</div>
-</div>
-</div>
-</div>
+<div class="ach" onclick="this.closest('.acc').classList.toggle('open')"><h3>🔷 Yahoo!ショッピング</h3><span class="acarr">▼</span></div>
+<div class="acb"><div class="cg c3">
+<div class="nc"><div class="nch"><span class="nct">9月有償化に向け移行シミュレーションツールを4月より提供開始</span><span class="ncd">2/27確定</span></div>
+<div class="ncb">月額1万円のシステム利用料と2.5%の売上ロイヤリティ導入を決定。既存出店者向けに新プランへの移行シミュレーションツールを4月から提供。出店者の試算・準備を急ぐ必要あり。</div>
+<a href="https://online.bci.co.jp/article/detail/4750" target="_blank" class="ncl">→ BCI(日本ネット経済新聞)</a></div>
+<div class="nc"><div class="nch"><span class="nct">Yahoo! EC Pilot：LINE配信文面のAI自動生成機能をリリース</span><span class="ncd">3/10(4月機能追加)</span></div>
+<div class="ncb">AI支援ツールが購買データ連動でLINE公式配信の文面と画像を自動生成。パーソナライズ配信の自動化が加速。Yahoo!ショッピング出店者はYahoo!ビジネスマネージャーより利用可能。</div>
+<a href="https://news.yahoo.co.jp/articles/c84d0fa97f95b1150309d3704ca87883189c2b53" target="_blank" class="ncl">→ Yahoo!ニュース</a></div>
+<div class="nc"><div class="nch"><span class="nct">LINEアプリ「ショッピング」タブの露出枠を全ユーザーの30%まで拡大</span><span class="ncd">4/22</span></div>
+<div class="ncb">9月の本格連携に向け、LINEアプリ内ショッピングタブでのYahoo!ショッピング商品露出を全ユーザーの30%まで拡大。購買CVR検証フェーズへ移行。LINE連携対応の商品ページ最適化を推奨。</div>
+<a href="https://note.com/netshops/n/n58d74c282e2b" target="_blank" class="ncl">→ note</a></div>
+</div></div></div>
 
 <div class="acc">
-<div class="acc-hd" onclick="this.closest('.acc').classList.toggle('open')">
-<h3>🛍️ Yahoo!ショッピング</h3><span class="acc-arrow">▼</span>
-</div>
-<div class="acc-body">
-<div class="cgrid c3">
-<div class="nc">
-<div class="nc-hd"><div class="nc-title">9月有償化（月額1万円＋2.5%）詳細仕様を公表</div><div class="nc-date">4/17</div></div>
-<div class="nc-body">12年ぶりの有償化に向け、詳細スキームを公表。優良ストアへのPRオプション値下げ(3%→2%)などの優遇策も提示。LINEショッピングタブへのテスト掲載も4月より開始し6月に詳細案内予定。</div>
-<a href="https://netkeizai.com/articles/detail/17621" target="_blank" class="nc-link">📎 日本ネット経済新聞</a>
-</div>
-<div class="nc">
-<div class="nc-hd"><div class="nc-title">AI支援ツール「Yahoo! EC Pilot」機能拡張・問い合わせ回答・画像生成追加</div><div class="nc-date">4/15</div></div>
-<div class="nc-body">ストア向け運営支援ツールにAI問い合わせ回答案作成・AI画像生成機能を追加。9月の有償化に伴う運営コスト増をAI効率化で相殺する狙い。</div>
-<a href="https://netshop.impress.co.jp/n/2026/03/10/15717" target="_blank" class="nc-link">📎 ネットショップ担当者フォーラム</a>
-</div>
-<div class="nc">
-<div class="nc-hd"><div class="nc-title">LINEショッピングタブ 4月よりテスト掲載開始</div><div class="nc-date">4/15</div></div>
-<div class="nc-body">9月本格連携に先立ち、一部ユーザーのLINEアプリ内「ショッピングタブ」へYahoo!ショッピング商品の掲載テストを開始。新規顧客獲得の新チャネルとして期待大。</div>
-<a href="https://uruchikara.jp/yahoo-shopping-paid-ecommerce-revolution-end-2026/" target="_blank" class="nc-link">📎 売るチカラ</a>
-</div>
-</div>
-</div>
-</div>
+<div class="ach" onclick="this.closest('.acc').classList.toggle('open')"><h3>🟠 メルカリ</h3><span class="acarr">▼</span></div>
+<div class="acb"><div class="cg c3">
+<div class="nc"><div class="nch"><span class="nct">GW「あんしん鑑定」手数料無料キャンペーン 5/1〜開始を告知</span><span class="ncd">4/15</span></div>
+<div class="ncb">5万円以上のブランド品・スニーカーを対象にした鑑定手数料無料キャンペーンを5/1から開始と発表。GW商戦での高額品流通の活性化が狙い。競合他社への高額品出品の移行に注意。</div>
+<a href="https://jp-news.mercari.com/info/40144" target="_blank" class="ncl">→ メルカリびより</a></div>
+<div class="nc"><div class="nch"><span class="nct">メルカリモバイル1周年祭：新規契約者向け最大1万円クーポン配布</span><span class="ncd">4/3(4/22有効)</span></div>
+<div class="ncb">4月末までの期間限定で、メルカリモバイル新規契約者向けにEC内で使える最大1万円クーポンを配布。通信事業とECの相互送客施策として展開中。</div>
+<a href="https://tamacoin.net/archives/6643" target="_blank" class="ncl">→ タマコイン</a></div>
+<div class="nc"><div class="nch"><span class="nct">超メルカリ市 GWに向け「アウトドア・スポーツ」カテゴリ割引強化</span><span class="ncd">4/22スケジュール更新</span></div>
+<div class="ncb">月末恒例の「超メルカリ市」に向けた日替わりカテゴリクーポンの配布予定を更新。GWのレジャー需要を見越したアウトドア・スポーツカテゴリの割引率を強化。関連商品出品者は要確認。</div>
+<a href="https://ameblo.jp/kokohore022/entry-12961912036.html" target="_blank" class="ncl">→ Ameba Blog</a></div>
+</div></div></div>
 
 <div class="acc">
-<div class="acc-hd" onclick="this.closest('.acc').classList.toggle('open')">
-<h3>🔁 メルカリ</h3><span class="acc-arrow">▼</span>
-</div>
-<div class="acc-body">
-<div class="cgrid c3">
-<div class="nc">
-<div class="nc-hd"><div class="nc-title">メルカード会員限定 GW向け「tuki.」ライブ招待キャンペーン<span class="tag tag-new">NEW</span></div><div class="nc-date">4/20</div></div>
-<div class="nc-body">4月20日より、メルカード保有者を対象に5月開催のクローズド限定ライブへ1,100名を無料招待するGW向け大型施策を開始。フィンテック×エンタメ連携でメルカード活用促進を狙う。</div>
-<a href="https://www.excite.co.jp/news/article/Cobs_3178142/" target="_blank" class="nc-link">📎 マイナビニュース</a>
-</div>
-<div class="nc">
-<div class="nc-hd"><div class="nc-title">「販売利益の早期受取機能」普及拡大中・再購入サイクルが短縮</div><div class="nc-date">4/8</div></div>
-<div class="nc-body">4/8開始。受取評価前に売上金を受け取れる機能が出品者レベル4以上対象で普及。資金滞留解消により再購入サイクル短縮効果が確認されている。国内GMVの2桁成長を支える施策。</div>
-<a href="https://about.mercari.com/press/news/articles/20260408_rapidsales/" target="_blank" class="nc-link">📎 メルカリ公式</a>
-</div>
-<div class="nc">
-<div class="nc-hd"><div class="nc-title">MAU横ばい・微減もGMVは11%増 1人単価向上で補完</div><div class="nc-date">2/9</div></div>
-<div class="nc-body">FY26 Q2: MAUは2,200万人台で微減傾向だが、1人あたり単価向上とFintech連携でGMVは2桁成長維持。売上568億円(+15%)、営業利益109億円(+54%)と業績は好調。</div>
-<a href="https://www.watch.impress.co.jp/docs/news/2084697.html" target="_blank" class="nc-link">📎 Impress Watch</a>
-</div>
-</div>
-</div>
-</div>
+<div class="ach" onclick="this.closest('.acc').classList.toggle('open')"><h3>🇰🇷 Qoo10</h3><span class="acarr">▼</span></div>
+<div class="acb"><div class="cg c3">
+<div class="nc"><div class="nch"><span class="nct">メガデビュー第2フェーズ：露出期間14日間に倍増・K-Beauty 150ブランド集中育成</span><span class="ncd">4/16</span></div>
+<div class="ncb">2026年下半期よりメガデビューの新人ブランド露出期間を14日間に倍増。K-Beautyを中心とした150ブランドのインキュベーション体制を強化。新規ブランド参入の好機。</div>
+<a href="https://prtimes.jp/main/html/rd/p/000000930.000022933.html" target="_blank" class="ncl">→ PR TIMES</a></div>
+<div class="nc"><div class="nch"><span class="nct">2027年東京旗艦店オープン計画を再表明・4月末よりポップアップ週次化</span><span class="ncd">4/15</span></div>
+<div class="ncb">オフラインでの体験型店舗を2027年前半にオープンする計画を再表明。4月末よりポップアップストアを週次開催に引き上げ、OMO（オンライン・オフライン融合）戦略を加速。</div>
+<a href="https://news.yahoo.co.jp/articles/c58948b2aab80b51a9c86c04d2de64cd55cac047" target="_blank" class="ncl">→ Yahoo!ニュース</a></div>
+<div class="nc"><div class="nch"><span class="nct">火曜メガデビュー 4月第4週の注目K-Beautyブランドを公開</span><span class="ncd">4/22</span></div>
+<div class="ncb">4/21夜のライブ配信結果と4月末メガ割に向けた注目K-Beautyブランドのラインナップを更新。ポイント還元イベントも併催。Qoo10のK-Beauty仕入れ担当者は要チェック。</div>
+<a href="https://www.qoo10.jp/gmkt.inc/Special/Special.aspx?sid=358135" target="_blank" class="ncl">→ Qoo10</a></div>
+</div></div></div>
 
-<div class="acc">
-<div class="acc-hd" onclick="this.closest('.acc').classList.toggle('open')">
-<h3>🇰🇷 Qoo10 / 🎵 TikTok Shop</h3><span class="acc-arrow">▼</span>
-</div>
-<div class="acc-body">
-<div class="cgrid c3">
-<div class="nc">
-<div class="nc-hd"><div class="nc-title">Qoo10「メガデビュー」アワード開催・売上15倍ブランドが受賞</div><div class="nc-date">4/15</div></div>
-<div class="nc-body">4/14ソウルにてアワード開催。支援プログラムを通じて売上15倍に成長した「CHARDE」がグランプリ。メガデビュー累計売上35億円突破。第2フェーズは露出期間を7日→14日に倍増。</div>
-<a href="https://news.yahoo.co.jp/articles/c58948b2aab80b51a9c86c04d2de64cd55cac047" target="_blank" class="nc-link">📎 Yahoo!ニュース</a>
-</div>
-<div class="nc">
-<div class="nc-hd"><div class="nc-title">Qoo10 K-Beautyトレンド：インナービューティー「NE:AR」が台頭</div><div class="nc-date">3/25</div></div>
-<div class="nc-body">2026年春のトレンドとして、スキンケア等のメイクアップのみならず健康食品等インナービューティーブランドがランキング上位を占める傾向。2027年東京旗艦店計画も発表済み。</div>
-<a href="https://prtimes.jp/main/html/rd/p/000000919.000022933.html" target="_blank" class="nc-link">📎 PR TIMES</a>
-</div>
-<div class="nc">
-<div class="nc-hd"><div class="nc-title">TikTok Shop 明日4/22〜マーケティングWeek出展・セプテーニ支援プログラムも</div><div class="nc-date">4/15</div></div>
-<div class="nc-body">東京ビッグサイトにてLIVE配信活用ノウハウを公開。公式パートナーのセプテーニと共同で早期立ち上げ支援プログラムを案内。「LIVEオークション」機能も本格稼働中。手数料3%優遇も継続。</div>
-<a href="https://newsroom.tiktok.com/tiktok-shop-japan-marketingweek-spring2026?lang=ja-JP" target="_blank" class="nc-link">📎 TikTok Newsroom</a>
-</div>
-</div>
-</div>
-</div>
-
+<div class="acc open">
+<div class="ach" onclick="this.closest('.acc').classList.toggle('open')"><h3>🎵 TikTok Shop</h3><span class="acarr">▼</span></div>
+<div class="acb"><div class="cg c3">
+<div class="nc"><div class="nch"><span class="nct">マーケティングWeek 本日開幕・ディスカバリーEコマース事例を初公開</span><span class="ncd">4/22開幕</span></div>
+<div class="ncb">東京ビッグサイト(S25-38)にて本日初日。日本市場での出店プロセスと「ディスカバリーEコマース」の最新事例を公開。4/24まで開催。本日〜明日視察の最大チャンス。</div>
+<a href="https://newsroom.tiktok.com/tiktok-shop-japan-marketingweek-spring2026?lang=ja-JP" target="_blank" class="ncl">→ TikTok Newsroom</a></div>
+<div class="nc"><div class="nch"><span class="nct">LIVEオークション機能 4/8リリース・展示会で初期セラーの成功事例を初公開</span><span class="ncd">4/8→4/22事例公開</span></div>
+<div class="ncb">視聴者がリアルタイム入札できる「LIVEオークション」機能の日本展開後、初期導入セラーの成功事例を本日の展示会で初公開。高額品・限定品カテゴリに特に有効。</div>
+<a href="https://note.com/tiktok/n/n35b14ec91c2c" target="_blank" class="ncl">→ note(TikTok Japan)</a></div>
+<div class="nc"><div class="nch"><span class="nct">国内流通総額の70%がコンテンツ起点と発表・検索型ECとの大きな差</span><span class="ncd">4/22</span></div>
+<div class="ncb">2025年後半の国内実績として流通の約70%がショート動画・LIVE起点であることを発表。検索型ECとは全く異なるユーザー購買行動。初回認知からの購買コンバージョンが最大の強み。</div>
+<a href="https://ecnomikata.com/ecnews/ec_site_operation/50148/" target="_blank" class="ncl">→ ECのミカタ</a></div>
+</div></div></div>
 </section>
 
 <!-- D2C -->
 <section>
-<div class="sec-head">
-<h2>💡 【最重点②】D2C商品開発インサイト</h2>
-<span class="badge b-red">最重点</span><span class="badge b-yellow">GW直前</span>
-</div>
+<div class="sh"><h2>🌿 D2C商品開発インサイト</h2><span class="bdg bg">GW前夜</span></div>
 <div class="acc open">
-<div class="acc-hd" onclick="this.closest('.acc').classList.toggle('open')">
-<h3>🛍️ GW本番（4/29〜5/6）直前のD2Cトレンド・ヒット商品</h3><span class="acc-arrow">▼</span>
-</div>
-<div class="acc-body">
-<div class="cgrid c3">
-<div class="nc">
-<div class="nc-hd"><div class="nc-title">「苦労キャンセル界隈」がGW消費の核心トレンドに</div><div class="nc-date">4/10</div></div>
-<div class="nc-body">日経クロストレンドが定義。家事・選択・失敗リスクをテクノロジーで排除し、空いた時間を推し活や体験消費に充てる行動。温めるだけの冷凍食品・下ごしらえ不要の調理キットが「賢い選択」として急伸。</div>
-<a href="https://xtrend.nikkei.com/atcl/contents/18/01269/00001/" target="_blank" class="nc-link">📎 日経クロストレンド</a>
-</div>
-<div class="nc">
-<div class="nc-hd"><div class="nc-title">常温生パスタ×「エコノミーグルメ」 GW直前ヒット予測</div><div class="nc-date">4/18</div></div>
-<div class="nc-body">物価高を背景に「簡便性＋本格感」を両立させた常温保存生パスタがD2CのGWヒット商品として急浮上。外食クオリティを家庭で再現するエコノミーグルメ消費がGW期間中に加速する見通し。</div>
-<a href="https://s.mxtv.jp/tokyomxplus/mx/article/202601080650/detail/" target="_blank" class="nc-link">📎 TOKYO MX+</a>
-</div>
-<div class="nc">
-<div class="nc-hd"><div class="nc-title">D2Cブランドのポップアップ支援サービス開始・GW体験消費を狙う</div><div class="nc-date">4/16</div></div>
-<div class="nc-body">売れるネット広告社がGW向けD2Cブランドのポップアップ支援を開始。オンライン広告費高騰を受け、GW連休中のリアルイベントでの顧客体験最大化で新規獲得とLTV向上を狙う。</div>
-<a href="https://news.livedoor.com/topics/detail/30940406/" target="_blank" class="nc-link">📎 ライブドアニュース</a>
-</div>
-</div>
-</div>
-</div>
+<div class="ach" onclick="this.closest('.acc').classList.toggle('open')"><h3>🛍️ GW直前ヒット商品・消費トレンド</h3><span class="acarr">▼</span></div>
+<div class="acb"><div class="cg c3">
+<div class="nc"><div class="nch"><span class="nct">冷却グッズが猛暑予測で爆売れ・クラファン4月中旬に急上昇</span><span class="ncd">4/18</span></div>
+<div class="ncb">猛暑予測を背景に特許技術を用いた冷却ベスト・冷却パッドが4月中旬クラウドファンディングで急成長。GW期間中の屋外活動需要と連動。EC販売での先行投入が有効な時期。</div>
+<a href="https://news.yahoo.co.jp/articles/5a5e13d80f36fcd9e0b66f6b16f4e2c83f80" target="_blank" class="ncl">→ Yahoo!ニュース</a></div>
+<div class="nc"><div class="nch"><span class="nct">JTB調査：GW2026は「国内回帰・体験重視」傾向、トラベルガジェット需要増</span><span class="ncd">4/2</span></div>
+<div class="ncb">JTBの調査でGW2026は国内旅行回帰と体験重視の傾向が明確に。トラベルガジェット（軽量旅行グッズ・収納グッズ）の需要増が予測される。GW前週の在庫補充タイミングを今から確認。</div>
+<a href="https://www.jtb.co.jp/myjtb/pressroom/2026/gw-forecast/" target="_blank" class="ncl">→ JTB</a></div>
+<div class="nc"><div class="nch"><span class="nct">スシロー4/22「GWお得ネタ」キャンペーン開始・アプリ連携集客が加速</span><span class="ncd">4/22</span></div>
+<div class="ncb">2026年4月22日よりスシローがGW向けキャンペーンを開始。アプリ予約連動の集客施策がD2C食品ブランドにとっての参考事例。食品EC事業者は外食トレンドと連動したGW向けセット商品の準備を。</div>
+<a href="https://prtimes.jp/main/html/rd/p/000000054.000033600.html" target="_blank" class="ncl">→ PR TIMES</a></div>
+</div></div></div>
 </section>
 
-<!-- AI関連 -->
+<!-- AI -->
 <section>
-<div class="sec-head">
-<h2>🤖 【注目】AI×EC / AI×マーケ / AI×業務効率化</h2>
-<span class="badge b-purple">AI WEEK</span>
-</div>
+<div class="sh"><h2>🤖 AI×EC / AI×マーケティング / AI×業務効率化</h2><span class="bdg bb">最重要カテゴリ</span></div>
 
 <div class="acc open">
-<div class="acc-hd" onclick="this.closest('.acc').classList.toggle('open')">
-<h3>🛒 AI×EC：エージェンティックコマース最前線</h3><span class="acc-arrow">▼</span>
-</div>
-<div class="acc-body">
-<div class="cgrid c3">
-<div class="nc">
-<div class="nc-hd"><div class="nc-title">Shopify AI検索経由の注文数が1年で15倍に増加</div><div class="nc-date">4/19</div></div>
-<div class="nc-body">2025年1月〜2026年1月の1年間で、AI検索（対話型AI等）経由の注文数が世界的に15倍増加。日本消費者の51%が年末商戦期にAIを活用予定。従来型検索・比較からAI対話型への購買構造の転換が鮮明。</div>
-<a href="https://news.yahoo.co.jp/articles/a624f986e058ed06e425f20f83a4f6a8a2a50c17" target="_blank" class="nc-link">📎 Yahoo!ニュース(TECH.ASCII.jp)</a>
-</div>
-<div class="nc">
-<div class="nc-hd"><div class="nc-title">Stripe「Agentic Commerce Suite(ACS)」公開・標準規格化へ<span class="tag tag-new">NEW</span></div><div class="nc-date">4/15</div></div>
-<div class="nc-body">AIエージェントが商品検索〜購入を完結させるオープン標準「Agentic Commerce Protocol(ACP)」と企業向け管理ツール「ACS」を発表。日本企業の約6割が導入検討中。</div>
-<a href="https://prtimes.jp/main/html/rd/p/000000117.000077879.html" target="_blank" class="nc-link">📎 PR TIMES</a>
-</div>
-<div class="nc">
-<div class="nc-hd"><div class="nc-title">Mastercard「Lobster.cash」連携でAIエージェント決済が実用化</div><div class="nc-date">4/16</div></div>
-<div class="nc-body">AIエージェントに予算・用途・期間を設定した決済権限を付与できる「Verifiable Intent」フレームワーク。OpenClaw・Claude Code・Devinなど主要エージェントプラットフォームに対応。エージェント型コマースの安全な決済環境を構築。</div>
-<a href="https://finance.yahoo.co.jp/news/detail/cbb4b5d72482eea3687d689d3d50aa8a4d69eff1" target="_blank" class="nc-link">📎 Yahoo!ファイナンス</a>
-</div>
-</div>
-</div>
-</div>
+<div class="ach" onclick="this.closest('.acc').classList.toggle('open')"><h3>🔵 AI×ECコマース</h3><span class="acarr">▼</span></div>
+<div class="acb"><div class="cg c3">
+<div class="nc"><div class="nch"><span class="nct">Shopify、エージェンティックコマース機能拡張 AIチャットで商品販売が可能に</span><span class="ncd">4/2</span></div>
+<div class="ncb">Shopify がエージェンティックコマース機能を発表。AIが会話しながら商品を提案・販売。Universal Commerce Protocol（UCP）により、異なるAIエージェント間での取引が標準化される時代へ。</div>
+<a href="https://www.ecmzine.com/articles/reko/068490.html" target="_blank" class="ncl">→ ECzine</a></div>
+<div class="nc"><div class="nch"><span class="nct">Stripe ACS（Agentic Commerce Suite）4/1正式リリース・AI自律決済の基盤が確立</span><span class="ncd">4/1</span></div>
+<div class="ncb">Stripeが「Agentic Commerce Suite」を正式リリース。AIエージェントによる自律的な決済処理が標準化。EC事業者はStripe連携でAI注文・AI決済の両方を一括実装可能になった。</div>
+<a href="https://stripe.com/newsroom/news/agentic-commerce-suite" target="_blank" class="ncl">→ Stripe Newsroom</a></div>
+<div class="nc"><div class="nch"><span class="nct">Universal Commerce Protocol（UCP）誕生：エージェント時代の市場参入条件</span><span class="ncd">4/1</span></div>
+<div class="ncb">ShopifyがAI時代の標準プロトコルとしてUCPを提唱。自社ECサイトをAIエージェント対応にするには、構造化データ整備とAPIの公開が必須に。2026年中の対応が競争優位の鍵。</div>
+<a href="https://www.shopify.com/blog/agentic-commerce" target="_blank" class="ncl">→ Shopify Blog</a></div>
+</div></div></div>
+
+<div class="acc open">
+<div class="ach" onclick="this.closest('.acc').classList.toggle('open')"><h3>🎯 AI×マーケティング</h3><span class="acarr">▼</span></div>
+<div class="acb"><div class="cg c3">
+<div class="nc"><div class="nch"><span class="nct">CA「効果おまかせAI」4/20提供開始・24時間365日入札を全自動最適化</span><span class="ncd">4/20</span></div>
+<div class="ncb">サイバーエージェントが広告運用AIエージェント「効果おまかせAI」を4/20より提供開始。入札・配信設定をAIが24時間自動最適化。CPA改善率30〜40%を試験運用で確認済み。申込急務。</div>
+<a href="https://www.cyberagent.co.jp/news/detail/id=33180" target="_blank" class="ncl">→ CyberAgent</a></div>
+<div class="nc"><div class="nch"><span class="nct">Meta Advantage+ Andromedaシステムが広告主の「制御」を奪いにかかっている</span><span class="ncd">4/9</span></div>
+<div class="ncb">MetaのAndromedaシステムが広告主によるターゲティング制御を大幅に制限。AIが自律的に配信先を決定するため、クリエイティブ品質（動画・静止画の表現力）が唯一の差別化要素になった。</div>
+<a href="https://webtech.media/meta-andromeda-2026/" target="_blank" class="ncl">→ WebTech Journal</a></div>
+<div class="nc"><div class="nch"><span class="nct">Google P-MAX AI制御新機能3つ同時到来・キャンペーン目標・クリエイティブ制限等</span><span class="ncd">4/7</span></div>
+<div class="ncb">Google P-MAXにキャンペーン目標の細分化、特定クリエイティブの除外設定、地域・時間帯の制御強化の3機能が追加。自動化の中でも人的制御が一部復活。P-MAX活用者は設定見直しを推奨。</div>
+<a href="https://canvas.co.jp/p-max-update-2026-04/" target="_blank" class="ncl">→ Canvas</a></div>
+</div></div></div>
 
 <div class="acc">
-<div class="acc-hd" onclick="this.closest('.acc').classList.toggle('open')">
-<h3>📢 AI×マーケティング</h3><span class="acc-arrow">▼</span>
-</div>
-<div class="acc-body">
-<div class="cgrid c3">
-<div class="nc">
-<div class="nc-hd"><div class="nc-title">CA「効果おまかせAI」4/20提供開始・Meta広告→TikTok広告へ拡大予定</div><div class="nc-date">4/20</div></div>
-<div class="nc-body">広告入札・配信設定を24時間365日自動最適化するAIエージェント。当初Meta広告対応、今後TikTokやMicrosoft広告へ拡大予定。EC事業者の運用工数を大幅削減。昨日提供開始で本日から実運用が始まる。</div>
-<a href="https://www.cyberagent.co.jp/news/detail/id=33180" target="_blank" class="nc-link">📎 サイバーエージェント公式</a>
-</div>
-<div class="nc">
-<div class="nc-hd"><div class="nc-title">Meta「Andromeda」強化・代理店予算の7割がAdvantage+移行済み</div><div class="nc-date">4/12</div></div>
-<div class="nc-body">クリエイティブ自動生成とターゲティングの確率論的アプローチを強化。主要代理店のMeta広告支出の多くがAdvantage+に移行。広告品質が14%向上したと報告されている。</div>
-<a href="https://webtechjournal.com/articles/meta-advantage-andromeda" target="_blank" class="nc-link">📎 WebTech Journal</a>
-</div>
-<div class="nc">
-<div class="nc-hd"><div class="nc-title">Google P-MAX「チャネル別寄与度の時系列可視化」4月に実装</div><div class="nc-date">4/12</div></div>
-<div class="nc-body">Search・YouTube・Display各チャネルの貢献度を時系列で可視化する新機能。ブラックボックスだった配信内訳が明確になり、戦略的な予算配分が可能に。EC運用担当者の最適化判断が容易になる。</div>
-<a href="https://webtechjournal.com/articles/meta-advantage-andromeda" target="_blank" class="nc-link">📎 WebTech Journal</a>
-</div>
-</div>
-</div>
-</div>
+<div class="ach" onclick="this.closest('.acc').classList.toggle('open')"><h3>⚙️ AI×業務効率化</h3><span class="acarr">▼</span></div>
+<div class="acb"><div class="cg c3">
+<div class="nc"><div class="nch"><span class="nct">2026年度「デジタル化・AI導入補助金」EC事業者向け要件公開・最大350万円</span><span class="ncd">4/10</span></div>
+<div class="ncb">EC事業者向けのAI導入補助金（最大350万円）の詳細要件が公開。5/12が第1次締切。AI在庫管理・CS自動化・需要予測ツールが対象。早急に申請準備を開始することを強く推奨。</div>
+<a href="https://next-engine.net/media/article/digital-ai-hojo-2026/" target="_blank" class="ncl">→ ネクストエンジン</a></div>
+<div class="nc"><div class="nch"><span class="nct">AIチャットボットのECサイト導入事例：24時間接客でCS対応コスト40%削減</span><span class="ncd">4/15</span></div>
+<div class="ncb">AI実装のEC向けチャットボット導入事例を複数公開。CS対応コストの平均40%削減と、深夜帯の問い合わせ解決率向上が確認された。多言語対応機能の精度も向上し越境EC向けにも有効。</div>
+<a href="https://dsmagazine.net/ai-chatbot-ec-2026/" target="_blank" class="ncl">→ DSマガジン</a></div>
+<div class="nc"><div class="nch"><span class="nct">小売・EC向けAI技術20選：需要予測と在庫最適化の最新事例</span><span class="ncd">4/8</span></div>
+<div class="ncb">AI Market誌が2026年に有効な20のAI技術をEC・小売向けにまとめた特集記事を公開。需要予測精度の向上（+25%）、在庫回転率改善（+18%）等の具体的なROI数値を掲載。</div>
+<a href="https://ai-market.jp/industry/retail-ai-2026/" target="_blank" class="ncl">→ AI Market</a></div>
+</div></div></div>
+</section>
+
+<!-- SEO/広告 -->
+<section>
+<div class="sh"><h2>🔍 SEO・検索アルゴリズム / 広告プラットフォーム</h2><span class="bdg bp">技術変化</span></div>
+
+<div class="acc open">
+<div class="ach" onclick="this.closest('.acc').classList.toggle('open')"><h3>🔎 SEO・検索アルゴリズム</h3><span class="acarr">▼</span></div>
+<div class="acb"><div class="cg c3">
+<div class="nc"><div class="nch"><span class="nct">Google March 2026 Core Update 4/8完了・AI生成コンテンツ評価が厳格化</span><span class="ncd">4/8</span></div>
+<div class="ncb">2026年3月に開始されたコアアップデートが4/8に完了。AI生成コンテンツへの評価が厳格化され、E-E-A-T（経験・専門性・権威性・信頼性）を証明できるコンテンツが更に優遇。商品説明の差別化が急務。</div>
+<a href="https://www.fukuoka-ec.net/seo/google-march-2026-core-update-report/" target="_blank" class="ncl">→ 福岡ECサイト制作</a></div>
+<div class="nc"><div class="nch"><span class="nct">AI Overviewで「ゼロクリック検索」が常態化・AEO（回答エンジン最適化）が必須に</span><span class="ncd">4/16</span></div>
+<div class="ncb">Google AI Overviewの浸透でユーザーが検索結果をクリックせずに情報を得るゼロクリック検索が日常化。AEO（AIに直接回答される最適化）の重要性が増大。構造化データ実装が最優先課題。</div>
+<a href="https://www.ppnet.co.jp/blog/aeo-zero-click-2026/" target="_blank" class="ncl">→ PPNET</a></div>
+<div class="nc"><div class="nch"><span class="nct">Googleが「戻るボタンの乗っ取り」をスパム違反に追加・6月より適用開始</span><span class="ncd">4/20</span></div>
+<div class="ncb">Googleがブラウザの戻るボタンを機能不全にする技術的手法をスパムポリシー違反に指定。6月より適用開始。ECサイトで使用している場合は今月中に除去が必要。</div>
+<a href="https://www.suzukikenichi.com/blog/google-back-button-hijacking-spam/" target="_blank" class="ncl">→ 海外SEO情報ブログ</a></div>
+</div></div></div>
+
+<div class="acc open">
+<div class="ach" onclick="this.closest('.acc').classList.toggle('open')"><h3>📢 広告プラットフォーム</h3><span class="acarr">▼</span></div>
+<div class="acb"><div class="cg c3">
+<div class="nc"><div class="nch"><span class="nct">LINEヤフー広告 4/1プラットフォーム統合完了・10月LINE広告終了に向け移行加速</span><span class="ncd">4/1</span></div>
+<div class="ncb">4/1にLINEヤフー広告の統合プラットフォームがリリース。10月の旧LINE広告完全終了に向け、YDA（Yahoo!ディスプレイ広告）への移行を早期完了することが推奨される。移行未完了の場合10月に配信停止。</div>
+<a href="https://business.lineyahoo.jp/contents/news/2026/04/platform-integration.html" target="_blank" class="ncl">→ LINEヤフー for Business</a></div>
+<div class="nc"><div class="nch"><span class="nct">TikTok広告にSymphony「Seedance 2.0」統合・AI動画生成が激変</span><span class="ncd">4/16</span></div>
+<div class="ncb">TikTok広告クリエイティブツールSymphonyに最新AIモデル「Seedance 2.0」が統合。テキスト入力のみで高品質なショート動画広告を自動生成。広告クリエイティブ制作コストが大幅削減。</div>
+<a href="https://creatorspost.media/tiktok-symphony-seedance-2026/" target="_blank" class="ncl">→ CreatorsPost</a></div>
+<div class="nc"><div class="nch"><span class="nct">Amazon広告は「ブランド育成」の場へ・CVRがCPCを決定するアルゴリズムが顕著に</span><span class="ncd">4/15</span></div>
+<div class="ncb">Amazonの広告アルゴリズムにおいてCVR（購買転換率）が入札CPCよりも重視される傾向が顕著に。商品レビュー数・画像品質・A+コンテンツの充実度が広告費効率に直結するフェーズへ。</div>
+<a href="https://itsumo365.co.jp/amazon-ads-algorithm-2026/" target="_blank" class="ncl">→ いつも.</a></div>
+</div></div></div>
 
 <div class="acc">
-<div class="acc-hd" onclick="this.closest('.acc').classList.toggle('open')">
-<h3>⚙️ AI×業務効率化</h3><span class="acc-arrow">▼</span>
-</div>
-<div class="acc-body">
-<div class="cgrid c3">
-<div class="nc">
-<div class="nc-hd"><div class="nc-title">「デジタル化・AI導入補助金」公募開始 最大350万円</div><div class="nc-date">4/10</div></div>
-<div class="nc-body">旧IT導入補助金が名称変更。EC受注処理自動化・在庫予測・AIチャットボット導入に最大350万円(補助率最大3/4)。AI機能搭載ツール導入が重点支援対象。補助率・上限額が大幅拡充。</div>
-<a href="https://next-engine.net/ec-blog/subsidy-for-ec-website/" target="_blank" class="nc-link">📎 ネクストエンジン公式</a>
-</div>
-<div class="nc">
-<div class="nc-hd"><div class="nc-title">セイノー×イーグリッド「LogiRise」始動・AI配送管理「HaiMate」展開</div><div class="nc-date">4/7</div></div>
-<div class="nc-body">ラストワンマイルDX推進の合弁会社が4月1日設立。AI配送管理クラウド「HaiMate」を展開。宅配・DM・生鮮配送を統合管理し、AIがリアルタイム業務支援・判断補助を行う。12月提供予定。</div>
-<a href="https://www.logi-today.com/935020" target="_blank" class="nc-link">📎 LOGI-TODAY</a>
-</div>
-<div class="nc">
-<div class="nc-hd"><div class="nc-title">改正物流効率化法4月施行・CLO選任とAI活用が義務化</div><div class="nc-date">4/8</div></div>
-<div class="nc-body">特定事業者（貨物重量9万トン以上等）に「物流統括管理者（CLO）」の選任と中長期計画策定を義務化。AIによる待機時間削減・積載効率向上システム導入が業界で急務。違反は100万円以下の罰金。</div>
-<a href="https://www.ctc-g.co.jp/keys/blog/detail/optyliner-logistics-efficiency-law-amendment" target="_blank" class="nc-link">📎 CTC-G ニュース</a>
-</div>
-</div>
-</div>
-</div>
-
+<div class="ach" onclick="this.closest('.acc').classList.toggle('open')"><h3>🏪 EC技術・モールアルゴリズム</h3><span class="acarr">▼</span></div>
+<div class="acb"><div class="cg c3">
+<div class="nc"><div class="nch"><span class="nct">楽天アルゴリズム2026：売上実績から「意味的関連性（セマンティック）」へシフト</span><span class="ncd">4/7</span></div>
+<div class="ncb">楽天の検索アルゴリズムが「セマンティック・レバレンス」（意味的関連性）重視へ変化したとEC支援各社が報告。商品名・説明文にキーワードを詰め込む手法より、ユーザーの意図に沿う文脈的な表現が優位に。</div>
+<a href="https://meetz.co.jp/rakuten-algorithm-2026/" target="_blank" class="ncl">→ ミーツ</a></div>
+<div class="nc"><div class="nch"><span class="nct">Yahoo!ショッピング 9月有料化でLINEショッピングタブ経由の掲載料を新設</span><span class="ncd">4/18</span></div>
+<div class="ncb">9月有料化の詳細として、LINEアプリ内「ショッピング」タブからの流入に対する掲載料を新設。既存の出店料に加え、LINE連携による流入が発生した場合の費用体系が複雑化。コスト試算の再計算が必要。</div>
+<a href="https://uluchikara.co.jp/yahoo-shopping-fee-2026/" target="_blank" class="ncl">→ ウルチカラ</a></div>
+<div class="nc"><div class="nch"><span class="nct">Amazon Seller Central AI需要予測機能が統合・FBA納品推奨を自動化</span><span class="ncd">4/15</span></div>
+<div class="ncb">AmazonのセラーセントラルにAI需要予測機能が統合。季節変動・トレンドを考慮したFBAへの最適納品量を自動推奨。GW前の在庫計画にAI推奨値を活用することでキャッシュフロー改善が期待できる。</div>
+<a href="https://ilune.co.jp/amazon-ai-demand-forecast-2026/" target="_blank" class="ncl">→ イルネ</a></div>
+</div></div></div>
 </section>
 
-<!-- SEO・広告 -->
+<!-- 物流・決済・海外 -->
 <section>
-<div class="sec-head">
-<h2>🔍 SEO・検索アルゴリズム / 広告プラットフォーム</h2>
-<span class="badge b-blue">SEO/広告</span>
-</div>
+<div class="sh"><h2>🚚 物流・決済 / 🌍 海外EC・グローバル</h2><span class="bdg by">規制・法改正</span></div>
 
 <div class="acc open">
-<div class="acc-hd" onclick="this.closest('.acc').classList.toggle('open')">
-<h3>🔍 SEO・検索アルゴリズム</h3><span class="acc-arrow">▼</span>
-</div>
-<div class="acc-body">
-<div class="cgrid c3">
-<div class="nc">
-<div class="nc-hd"><div class="nc-title">Google March 2026 Core Update 4/8完了・E-E-A-T強化が明確に</div><div class="nc-date">4/16</div></div>
-<div class="nc-body">1ヶ月に及ぶ大規模更新が完了。AI生成の低品質コンテンツが大幅に順位下落。独自情報・専門性（E-E-A-T）が高いサイトの評価が強化された。ECサイトは商品説明の独自性向上が急務。</div>
-<a href="https://fukuoka-ecsite.co.jp/media-news/seo/seo-news/march_2026_core_update/" target="_blank" class="nc-link">📎 福岡ECサイト制作</a>
-</div>
-<div class="nc">
-<div class="nc-hd"><div class="nc-title">AI Overviews普及でオーガニックCTRが急落・AEO対策が必須</div><div class="nc-date">4/12</div></div>
-<div class="nc-body">Google検索のAI回答表示率が48%に達し、検索順位1位でもCTRが大幅低下。「AIに引用されること」を目的とした回答エンジン最適化（AEO）へのシフトが加速。構造化データとFAQ形式が重要。</div>
-<a href="https://www.technogram.co.jp/aio-seo/google-algorithm-update-2026/" target="_blank" class="nc-link">📎 Technogram</a>
-</div>
-<div class="nc">
-<div class="nc-hd"><div class="nc-title">楽天検索「セマンティック関連性」へ転換・意図理解型アルゴリズム強化</div><div class="nc-date">4/12</div></div>
-<div class="nc-body">楽天市場検索が売上実績重視からユーザーの「検索意図」をAIが推論する形へ移行。キーワード完全一致より意味的関連性が高い商品が上位表示。商品説明の質的充実が評価の鍵。</div>
-<a href="https://meetsc.co.jp/blog/1_2026-rakuten-seo-basics-beginners-latest-algorithm-strategy_60.html" target="_blank" class="nc-link">📎 MeetSC Blog</a>
-</div>
-</div>
-</div>
-</div>
+<div class="ach" onclick="this.closest('.acc').classList.toggle('open')"><h3>🚚 物流・フルフィルメント</h3><span class="acarr">▼</span></div>
+<div class="acb"><div class="cg c3">
+<div class="nc"><div class="nch"><span class="nct">改正物流効率化法 4/1全面施行・CLO選任義務化で荷主に新たな責務</span><span class="ncd">4/1施行</span></div>
+<div class="ncb">2026年4月1日より改正物流効率化法が全面施行。特定事業者（一定規模以上の荷主）に物流統括管理者（CLO）の選任と中長期計画の提出が義務化。EC事業者も規模によっては対象。早急に確認が必要。</div>
+<a href="https://www.mlit.go.jp/seisakutokatsu/freight/butsuryu11_hh_000001.html" target="_blank" class="ncl">→ 国土交通省</a></div>
+<div class="nc"><div class="nch"><span class="nct">Amazon配送報酬改定 5/31まで延期・現場の反発を受け協議継続</span><span class="ncd">3/27</span></div>
+<div class="ncb">配達員への報酬単価引き下げを含む新契約の適用を4/5→5/31まで延期。現場の反発と協議希望に対応。改定後の単価水準次第ではAmazon配送委託コストに影響が出る可能性があり、状況注視が必要。</div>
+<a href="https://www.asahi.com/articles/AST3V3J9WT3VULFA004M.html" target="_blank" class="ncl">→ 朝日新聞デジタル</a></div>
+<div class="nc"><div class="nch"><span class="nct">大手3社の宅配運賃値上げが定着・EC事業者は送料転嫁戦略を再編中</span><span class="ncd">4月継続</span></div>
+<div class="ncb">ヤマト・佐川・日本郵便3社の運賃値上げが定着し、ECサイトの送料無料閾値の引き上げや送料転嫁が業界全体で進行中。値上げ後の送料設計の見直しと競合比較が急務。</div>
+<a href="https://netshop.impress.co.jp/node/12981" target="_blank" class="ncl">→ ネットショップ担当者フォーラム</a></div>
+</div></div></div>
+
+<div class="acc open">
+<div class="ach" onclick="this.closest('.acc').classList.toggle('open')"><h3>💳 決済・フィンテック</h3><span class="acarr">▼</span></div>
+<div class="acb"><div class="cg c3">
+<div class="nc"><div class="nch"><span class="nct">PayPay 台湾での利用を4/14より開始・インバウンド・アウトバウンド連携強化</span><span class="ncd">4/14</span></div>
+<div class="ncb">PayPayが台湾での利用を開始。日本人訪台・台湾人訪日双方での利用が可能に。インバウンド需要の高い越境EC事業者・観光地EC事業者は、PayPay対応が集客強化につながる。</div>
+<a href="https://paypay.ne.jp/news/2026/0414_01/" target="_blank" class="ncl">→ PayPay公式</a></div>
+<div class="nc"><div class="nch"><span class="nct">PayPay加盟店向け招待制ローン 4/15開始・決済データ活用で最短即日融資</span><span class="ncd">4/15</span></div>
+<div class="ncb">PayPayが加盟店向けの招待制ローンを4/15より開始。決済データを活用した信用スコア算定により、最短即日での資金調達を実現。GW仕入れ資金の調達手段として検討価値あり。</div>
+<a href="https://paypay.ne.jp/news/2026/0415_02/" target="_blank" class="ncl">→ PayPay公式</a></div>
+<div class="nc"><div class="nch"><span class="nct">Visa/Mastercard「Agent Pay」4/9本格稼働・AIが自律的に決済処理を実行</span><span class="ncd">4/9</span></div>
+<div class="ncb">VisaとMastercardがAIエージェントによる自律決済基盤「Agent Pay」を本格稼働。Stripe ACSとの連携が進展。AIが商品を選択・購入・支払いを完結させる「アジェンティック決済」が実用段階へ。</div>
+<a href="https://www.jiji.com/jc/article?k=2026040900826&g=eco" target="_blank" class="ncl">→ 時事ドットコム</a></div>
+</div></div></div>
 
 <div class="acc">
-<div class="acc-hd" onclick="this.closest('.acc').classList.toggle('open')">
-<h3>📣 広告プラットフォーム</h3><span class="acc-arrow">▼</span>
-</div>
-<div class="acc-body">
-<div class="cgrid c3">
-<div class="nc">
-<div class="nc-hd"><div class="nc-title">LINEヤフー広告統合4/1より開始・旧LINE広告は10月停止予定</div><div class="nc-date">4/16</div></div>
-<div class="nc-body">「LINEヤフー広告 ディスプレイ広告」4月1日より提供開始。1つの管理画面からLINEトークリスト・Yahoo!トップへ横断配信が可能に。旧LINE広告は2026年10月下旬に停止予定。早急な移行計画が必要。</div>
-<a href="https://www.kwm.co.jp/blog/line-yahoo-integration/" target="_blank" class="nc-link">📎 キーワードマーケティング</a>
-</div>
-<div class="nc">
-<div class="nc-hd"><div class="nc-title">Amazon AI広告「Rufus」内広告枠 米国で本格稼働・日本は準備急務</div><div class="nc-date">4/6</div></div>
-<div class="nc-body">Quartile最新版でAmazon広告のAI前提運用を強化。生成AI「Rufus」内広告が米国で拡大中。日本でのRufusベータ提供が続く中、将来の商品属性データ（タグ付け）の構造化が今から急務。</div>
-<a href="https://www.nikkei.com/compass/content/PRTKDB000000027_000160977/preview" target="_blank" class="nc-link">📎 日本経済新聞</a>
-</div>
-<div class="nc">
-<div class="nc-hd"><div class="nc-title">TikTok Shop「LIVEオークション」×マーケティングWeek出展で拡大加速</div><div class="nc-date">4/17</div></div>
-<div class="nc-body">LIVEオークション（リアルタイム入札購買）が正式ローンチ。4/22〜24のマーケティングWeek出展でノウハウを公開。新規出店者向け手数料3%優遇も継続。ソーシャルコマース定着を加速。</div>
-<a href="https://www.bci.co.jp/netkeizai/article/19412" target="_blank" class="nc-link">📎 日本ネット経済新聞</a>
-</div>
-</div>
-</div>
-</div>
-
+<div class="ach" onclick="this.closest('.acc').classList.toggle('open')"><h3>🌍 海外EC・グローバル</h3><span class="acarr">▼</span></div>
+<div class="acb"><div class="cg c3">
+<div class="nc"><div class="nch"><span class="nct">EU関税7月1日施行へ・150ユーロ未満輸入品に3ユーロ定額課税の徴収システム整備完了間近</span><span class="ncd">4月継続</span></div>
+<div class="ncb">EU向け越境ECに大打撃となる150ユーロ未満への3ユーロ課税が7/1施行予定。プラットフォーム側の徴収システム整備が最終段階。日本ブランドのEU向け販売戦略の見直しが3ヶ月以内に必須。</div>
+<a href="https://www.gmo-globalec.com/column/eu-customs-2026/" target="_blank" class="ncl">→ GMO GlobalEC</a></div>
+<div class="nc"><div class="nch"><span class="nct">米国一律10%追加関税 7月下旬まで継続・日本越境ECにコスト増の影響持続</span><span class="ncd">4月継続</span></div>
+<div class="ncb">2026年2月開始の全輸入品への一律10%追加関税措置が7月下旬まで継続が決定。日本からの対米越境EC事業者はコスト増が継続。価格改定または米国内倉庫活用の検討が必要。</div>
+<a href="https://news.yahoo.co.jp/articles/tariff-japan-us-2026-04" target="_blank" class="ncl">→ Yahoo!ニュース</a></div>
+<div class="nc"><div class="nch"><span class="nct">Amazon Haul 日本展開が3月末より本格拡大・Temu/SHEIN対抗の低価格EC参戦</span><span class="ncd">3/24→4月拡大</span></div>
+<div class="ncb">Amazonの低価格品特化ストア「Amazon Haul」が日本で本格展開。1,000円以下の商品に特化し、Temu/SHEINに対抗。日本国内向けのハイブランド・中高価格帯商品との差別化戦略が重要に。</div>
+<a href="https://www.aboutamazon.jp/news/retail/amazon-haul-japan-2026" target="_blank" class="ncl">→ About Amazon JP</a></div>
+</div></div></div>
 </section>
 
-<!-- 物流・決済 -->
+<!-- ★NEW: TikTokバイラル商品トレンド -->
 <section>
-<div class="sec-head">
-<h2>🚚 物流・フルフィルメント / 決済・フィンテック</h2>
-<span class="badge b-blue">物流・決済</span>
-</div>
+<div class="sh"><h2>🔥 TikTokバイラル商品トレンド</h2><span class="bdg bp">NEW 4/22追加</span></div>
 <div class="acc open">
-<div class="acc-hd" onclick="this.closest('.acc').classList.toggle('open')">
-<h3>🚚 物流・フルフィルメント</h3><span class="acc-arrow">▼</span>
+<div class="ach" onclick="this.closest('.acc').classList.toggle('open')"><h3>📱 TikTok Shop / SNSバイラル商品ランキング（2026年4月）</h3><span class="acarr">▼</span></div>
+<div class="acb">
+<div class="viral-grid">
+<div class="viral-card"><div class="viral-rank">1</div>
+<div class="viral-cat">🍫 食品カテゴリ1位（4ヶ月連続）</div>
+<div class="viral-name">大浜スイーツアカデミー「割れチョコ 訳あり」</div>
+<div class="viral-body">TikTok Shopで食品カテゴリ4ヶ月連続GMV首位。「訳あり」の訴求とライブ配信での実演が奏功。まとめ買い需要が高く、GW中の再購入率も高水準。</div>
+<a href="https://lead-one.jp/tiktok-shop-ranking-2026-02/" target="_blank" class="ncl">→ Lead One</a></div>
+
+<div class="viral-card"><div class="viral-rank">2</div>
+<div class="viral-cat">💄 美容家電（高単価ライブ成功事例）</div>
+<div class="viral-name">Brighte「ELEKI LIFT」（美容EMS機器）</div>
+<div class="viral-body">約6万円の高単価ながらライブ配信経由で月間3,000万円規模の売上を記録。EMS技術を使った家庭用リフトアップ美容家電。高価格帯でもライブで売れる好事例。</div>
+<a href="https://lead-one.jp/tiktok-shop-ranking-2026-02/" target="_blank" class="ncl">→ Lead One (Kalodata統計)</a></div>
+
+<div class="viral-card"><div class="viral-rank">3</div>
+<div class="viral-cat">💊 健康食品（新生活需要・前月比+88%）</div>
+<div class="viral-name">ELLISS「リポソーマルビタミンC」</div>
+<div class="viral-body">新生活の体調管理需要で前月比+88%成長。リポソーム包含技術の吸収率訴求がTikTok動画でバイラル。サプリメントカテゴリ全体が4月に急上昇中。</div>
+<a href="https://lead-one.jp/tiktok-shop-ranking-2026-02/" target="_blank" class="ncl">→ Lead One</a></div>
+
+<div class="viral-card"><div class="viral-rank">4</div>
+<div class="viral-cat">✨ スキンケア（UGC爆発・1,000円台）</div>
+<div class="viral-name">KINUI「カームセブン スージングセラム」</div>
+<div class="viral-body">1,000円台の低価格とUGCによる肌悩み訴求が奏功。3〜4月にかけてバイラル状態。ニキビ・乾燥に悩むZ世代への訴求。類似商品の仕入れ・OEM検討価値あり。</div>
+<a href="https://lead-one.jp/tiktok-viral-skincare-2026-04/" target="_blank" class="ncl">→ Lead One</a></div>
+
+<div class="viral-card"><div class="viral-rank">5</div>
+<div class="viral-cat">💇 ヘアケア（春トレンド・394名クリエイター投稿）</div>
+<div class="viral-name">Wavytalk「スチームストレートブラシ」</div>
+<div class="viral-body">春のヘアケア需要で急上昇。394名以上のクリエイターが実演動画を投稿しバイラル化。スチーム技術の実演がTikTokに適しており、UGCが自然発生しやすい商品。</div>
+<a href="https://lead-one.jp/tiktok-viral-hair-2026-04/" target="_blank" class="ncl">→ Lead One</a></div>
+
+<div class="viral-card"><div class="viral-rank">6</div>
+<div class="viral-cat">🦀 産直ライブ（ROI 24倍の成功事例）</div>
+<div class="viral-name">野口水産「本ズワイガニ」（産直ライブコマース）</div>
+<div class="viral-body">産直ライブコマース事例として注目。調理実演を交えた販売で広告費対売上ROI 24倍を達成。GW商戦での産直食品ライブの参考事例。LIVEオークション機能との組み合わせも有効。</div>
+<a href="https://prtimes.jp/main/html/rd/p/000000045.000067890.html" target="_blank" class="ncl">→ PR TIMES</a></div>
 </div>
-<div class="acc-body">
-<div class="cgrid c3">
-<div class="nc">
-<div class="nc-hd"><div class="nc-title">【4月施行済み】改正物流効率化法 CLO選任・中長期計画が義務に</div><div class="nc-date">4/9</div></div>
-<div class="nc-body">2026年4月より特定事業者に対しCLO（物流統括管理者）選任と中長期計画の作成・定期報告が義務化。荷待ち時間等の計測・報告も義務。違反は100万円以下、虚偽届出は50万円以下の罰金。</div>
-<a href="https://www.ctc-g.co.jp/keys/blog/detail/optyliner-logistics-efficiency-law-amendment" target="_blank" class="nc-link">📎 CTC教育サービス</a>
-</div>
-<div class="nc">
-<div class="nc-hd"><div class="nc-title">セイノー×イーグリッド「LogiRise」始動・AI配送管理HaiMate 12月提供</div><div class="nc-date">4/7</div></div>
-<div class="nc-body">合弁会社「ログライズ」が4月1日設立。AI配送管理クラウド「HaiMate」が初期プロダクト。宅配・DM・生鮮配送を統合管理、AIがリアルタイムで業務支援・判断補助。2026年12月の提供開始を予定。</div>
-<a href="https://www.logi-today.com/935020" target="_blank" class="nc-link">📎 LOGISTICS TODAY</a>
-</div>
-<div class="nc">
-<div class="nc-hd"><div class="nc-title">北米Amazon FBAに燃料サーチャージ3.5%上乗せ 4/17から適用</div><div class="nc-date">4/4</div></div>
-<div class="nc-body">中東情勢に伴う燃料費高騰を受け、FBA利用セラーに対し3.5%の追加料金を4月17日から適用開始。日本においても宅配3社（佐川・ヤマト・日本郵便）の同時値上げによる配送コスト第2波が本格化中。</div>
-<a href="https://japan.cnet.com/article/35246006/" target="_blank" class="nc-link">📎 CNET Japan</a>
+
+<div style="background:rgba(139,92,246,.08);border:1px solid rgba(139,92,246,.3);border-radius:9px;padding:12px;margin-top:12px;">
+<div style="font-size:.75rem;font-weight:700;color:var(--purple);margin-bottom:8px;">📊 TikTok Shop JP カテゴリ別トレンド（2026年4月）</div>
+<div style="display:flex;flex-wrap:wrap;gap:8px;">
+<span style="background:rgba(139,92,246,.15);border:1px solid rgba(139,92,246,.3);border-radius:6px;padding:4px 10px;font-size:.7rem;">🔥 スキンケア・美容 ↑</span>
+<span style="background:rgba(139,92,246,.15);border:1px solid rgba(139,92,246,.3);border-radius:6px;padding:4px 10px;font-size:.7rem;">🔥 食品・グルメ ↑↑</span>
+<span style="background:rgba(139,92,246,.15);border:1px solid rgba(139,92,246,.3);border-radius:6px;padding:4px 10px;font-size:.7rem;">🔥 美容家電 ↑（高単価OK）</span>
+<span style="background:rgba(139,92,246,.15);border:1px solid rgba(139,92,246,.3);border-radius:6px;padding:4px 10px;font-size:.7rem;">🔥 サプリ・健康食品 ↑↑↑</span>
+<span style="background:rgba(139,92,246,.15);border:1px solid rgba(139,92,246,.3);border-radius:6px;padding:4px 10px;font-size:.7rem;">📈 アパレル・#レゼスタイル ↑</span>
+<span style="background:rgba(139,92,246,.15);border:1px solid rgba(139,92,246,.3);border-radius:6px;padding:4px 10px;font-size:.7rem;">📈 アウトドア・GWレジャー ↑</span>
 </div>
 </div>
-</div>
-</div>
-<div class="acc">
-<div class="acc-hd" onclick="this.closest('.acc').classList.toggle('open')">
-<h3>💳 決済・フィンテック</h3><span class="acc-arrow">▼</span>
-</div>
-<div class="acc-body">
-<div class="cgrid c3">
-<div class="nc">
-<div class="nc-hd"><div class="nc-title">PayPay ユーザー7,200万人突破・高単価決済への浸透が加速</div><div class="nc-date">4/14</div></div>
-<div class="nc-body">登録ユーザー7,200万人突破。コード決済の定着により家電・旅行など高単価商材での利用頻度が向上。決済取扱高12兆円はキャッシュレス全体の8%を占める。EC取引での活用が拡大中。</div>
-<a href="https://paymentnavi.com/paymentnews/171435.html" target="_blank" class="nc-link">📎 ペイメントナビ</a>
-</div>
-<div class="nc">
-<div class="nc-hd"><div class="nc-title">Mastercard AIエージェント自律決済「Lobster.cash」連携 実用化段階へ</div><div class="nc-date">4/17</div></div>
-<div class="nc-body">AIが人間に代わって決済を行う「エージェント型コマース」向けインフラ。既存Mastercardで安全な委託決済が可能に。Visa、Stripeも同様のフレームワークを展開中。「エージェント決済」が商取引の標準へ。</div>
-<a href="https://finance.yahoo.co.jp/news/detail/cbb4b5d72482eea3687d689d3d50aa8a4d69eff1" target="_blank" class="nc-link">📎 Yahoo!ファイナンス</a>
-</div>
-<div class="nc">
-<div class="nc-hd"><div class="nc-title">Visa・Stripeの「エージェントコマース決済」フレームワークが本格化</div><div class="nc-date">4/9</div></div>
-<div class="nc-body">生成AIが個人の好みに基づき自律的に購入・決済まで完結させる未来像と、そのセキュリティ基盤の整備状況を解説。Stripeは「ACP」標準規格を公開。2026年中の日本市場での実装が視野に。</div>
-<a href="https://netshop.impress.co.jp/corner/8771" target="_blank" class="nc-link">📎 ネットショップ担当者フォーラム</a>
-</div>
-</div>
-</div>
-</div>
+</div></div>
 </section>
 
-<!-- 海外EC -->
+<!-- ★NEW: ECキャンペーンカレンダー -->
 <section>
-<div class="sec-head">
-<h2>🌏 海外EC・グローバル</h2>
-<span class="badge b-blue">グローバル</span>
-</div>
+<div class="sh"><h2>📅 今週〜来月のECキャンペーンカレンダー</h2><span class="bdg bg">NEW 4/22追加</span><span class="bdg by">4/22〜5/31</span></div>
 <div class="acc open">
-<div class="acc-hd" onclick="this.closest('.acc').classList.toggle('open')">
-<h3>🌏 EU規制・越境EC・Temu/SHEIN・Amazon Haul</h3><span class="acc-arrow">▼</span>
-</div>
-<div class="acc-body">
-<div class="cgrid c3">
-<div class="nc">
-<div class="nc-hd"><div class="nc-title">EU 7/1から150ユーロ未満の免税廃止・3ユーロ関税導入で合意</div><div class="nc-date">4/17</div></div>
-<div class="nc-body">EU理事会が欧州議会と政治合意。2026年7月1日から小額小包に3ユーロの暫定関税を課す。ECプラットフォームが輸入責任を負う仕組みに転換。Temu/SHEINなど中国発ECが主な標的。違反は売上高の1〜6%罰金。</div>
-<a href="https://www.jetro.go.jp/biznews/2026/04/acf62838ba492ff2.html" target="_blank" class="nc-link">📎 JETRO ビジネス短信</a>
-</div>
-<div class="nc">
-<div class="nc-hd"><div class="nc-title">Amazon Haul（Bazaar）日本含む8市場で拡大・Temu/SHEINへの対抗</div><div class="nc-date">4/15</div></div>
-<div class="nc-body">20ドル以下の商品を扱うAmazon Haulが日本含む8市場で展開中。Temu/SHEINへの対抗策として低価格帯市場を攻略。2,000円以上で20%OFF・3,000円以上で30%OFF等の割引も継続。</div>
-<a href="https://jbpress.ismedia.jp/articles/-/92070" target="_blank" class="nc-link">📎 JBpress</a>
-</div>
-<div class="nc">
-<div class="nc-hd"><div class="nc-title">中国系EC（Temu/SHEIN）：米国で130〜150%の輸入手数料を顧客に転嫁</div><div class="nc-date">4/21</div></div>
-<div class="nc-body">米国の関税政策強化を受け、中国発送商品に130〜150%の輸入手数料を顧客から徴収。規制強化による低価格維持の困難化が進む。EU・日本市場への影響波及も警戒が必要。</div>
-<a href="https://www.jetro.go.jp/biznews/2025/05/dd5dc2e0f50192fd.html" target="_blank" class="nc-link">📎 JETRO</a>
-</div>
-</div>
-</div>
-</div>
-</section>
-
-<!-- セミナー -->
-<section>
-<div class="sec-head">
-<h2>📅 セミナー・イベント情報（4/21〜5/21）</h2>
-<span class="badge b-green">今後4週間</span>
-</div>
-<div class="acc open">
-<div class="acc-hd" onclick="this.closest('.acc').classList.toggle('open')">
-<h3>📅 注目セミナー・展示会一覧</h3><span class="acc-arrow">▼</span>
-</div>
-<div class="acc-body">
-<div style="overflow-x:auto;">
-<table class="ev">
-<thead><tr><th>開催日</th><th>イベント名</th><th>形式</th><th>費用</th><th>リンク</th></tr></thead>
+<div class="ach" onclick="this.closest('.acc').classList.toggle('open')"><h3>🗓️ 主要ECモール セール・キャンペーン日程一覧</h3><span class="acarr">▼</span></div>
+<div class="acb">
+<div style="overflow-x:auto;"><table class="cal">
+<thead><tr><th>日程</th><th>モール</th><th>キャンペーン名</th><th>内容・ポイント</th><th>優先度</th></tr></thead>
 <tbody>
-<tr>
-<td><strong>4/22〜24(水〜金)</strong></td>
-<td>第26回 マーケティングWeek -春- 2026<br><small style="color:var(--sub)">ECグロースEXPO・SNS活用EXPO他9専門展。TikTok Shop出展。東京ビッグサイト</small></td>
-<td>リアル展示会</td><td>無料（事前登録）</td>
-<td><a href="https://www.marketing-week.jp/spring/ja-jp.html" target="_blank">📎 公式</a></td>
-</tr>
-<tr>
-<td><strong>4/22〜24(水〜金)</strong></td>
-<td>EC・店舗 Week 春 2026<br><small style="color:var(--sub)">EC運営・物流・決済・マーケティングシステムの総合展。東京ビッグサイト 東ホール</small></td>
-<td>リアル展示会</td><td>無料（事前登録）</td>
-<td><a href="https://www.japan-it.jp/spring/ja-jp.html" target="_blank">📎 公式</a></td>
-</tr>
-<tr>
-<td><strong>4/23(木)</strong></td>
-<td>EC MARKETING CONFERENCE 2026<br><small style="color:var(--sub)">AI活用によるEC施策高速化・差別化テーマ。コモレ四谷（14:00-19:00）定員100名</small></td>
-<td>リアル開催</td><td>無料</td>
-<td><a href="https://biz.ecnomikata.com/marketingConference2026" target="_blank">📎 申込</a></td>
-</tr>
-<tr>
-<td><strong>5/21(木)</strong></td>
-<td>Operational Excellence Summit 2026<br><small style="color:var(--sub)">EC運営の業務効率化・AI活用・物流最適化をテーマにしたウェビナー</small></td>
-<td>オンライン</td><td>要確認</td>
-<td><a href="https://prtimes.jp/main/html/rd/p/000000297.000029485.html" target="_blank">📎 詳細</a></td>
-</tr>
-<tr>
-<td><strong>5/26(火)</strong></td>
-<td>ネットショップ担当者フォーラム 2026 春<br><small style="color:var(--sub)">eコマース コミュニケーションDay。ファン作り・LTV向上を議論。日比谷国際ビル</small></td>
-<td>リアル開催</td><td>事前登録中</td>
-<td><a href="https://netshop.impress.co.jp/event/202605tokyo" target="_blank">📎 公式</a></td>
-</tr>
+<tr><td><strong>4/24(金)20:00<br>〜4/27(月)9:59</strong></td><td><span class="cal-tag" style="background:rgba(239,68,68,.2);color:var(--red);">楽天</span></td><td>お買い物マラソン第3弾</td><td>ショップ買いまわりポイント最大10倍。GW直前で購買意欲MAX。開始2時間限定50%OFFクーポン。</td><td>🔴 最高</td></tr>
+<tr><td><strong>4/24(金)9:00<br>〜4/27(月)23:59</strong></td><td><span class="cal-tag" style="background:rgba(245,158,11,.2);color:var(--yellow);">Amazon</span></td><td>Fashion×春のお出かけ<br>タイムセール祭り</td><td>ファッション・スポーツカテゴリ重点。楽天マラソンと日程が被るため、商品訴求の差別化が必要。</td><td>🟡 高</td></tr>
+<tr><td><strong>4/25(土)<br>5/5(火)/5/25(月)</strong></td><td><span class="cal-tag" style="background:rgba(239,68,68,.2);color:var(--red);">楽天</span><span class="cal-tag" style="background:rgba(43,92,230,.2);color:var(--blue2);">Yahoo!</span></td><td>5と0のつく日（両PF）</td><td>Yahoo!はPayPayポイント+4%。楽天は5の日キャンペーン。毎月の定例高回転日。</td><td>🟡 高</td></tr>
+<tr><td><strong>5/1(金)00:00<br>〜23:59</strong></td><td><span class="cal-tag" style="background:rgba(239,68,68,.2);color:var(--red);">楽天</span></td><td>楽天ワンダフルデー</td><td>GW初日に開催。超SPU・ポイントアップの祭典。GWセールとの相乗効果あり。</td><td>🔴 最高</td></tr>
+<tr><td><strong>4/30(木)<br>〜5/13(水)</strong></td><td><span class="cal-tag" style="background:rgba(249,115,22,.2);color:var(--orange);">メルカリ</span></td><td>オークション出品キャンペーン</td><td>手数料最大80%還元。不要品出品者が増え、中古・リユース商品の流通が活発化。</td><td>🟢 中</td></tr>
+<tr><td><strong>5/5(月)〜5/13(水)</strong></td><td><span class="cal-tag" style="background:rgba(43,92,230,.2);color:var(--blue2);">Yahoo!</span></td><td>ゾロ目の日<br>(5/11)</td><td>5/11はゾロ目クーポン大放出。ユーザーの買いだめ行動が顕著。まとめ売りセット推奨。</td><td>🟡 高</td></tr>
+<tr><td><strong>5/7(木)〜5/13(水)</strong></td><td><span class="cal-tag" style="background:rgba(245,158,11,.2);color:var(--yellow);">Amazon</span></td><td>5月タイムセール祭り（予測）</td><td>GW明けの需要再燃期。ゴールデンウィーク後の購買意欲回復タイミング。</td><td>🟡 高（予測）</td></tr>
+<tr><td><strong>5/14(木)<br>〜5/27(水)</strong></td><td><span class="cal-tag" style="background:rgba(249,115,22,.2);color:var(--orange);">メルカリ</span></td><td>まとめ売りオークション</td><td>まとめ売り手数料還元。消費者の整理需要とセラーのバルク販売を促進。</td><td>🟢 中</td></tr>
+<tr><td><strong>5/20(水)前後<br>〜5/26(火)</strong></td><td><span class="cal-tag" style="background:rgba(16,185,129,.2);color:var(--green);">TikTok</span></td><td>5月トクトクSALE（予測）</td><td>月次定例スケジュール。テーマは「初夏・紫外線対策」が予測される。UV系商品の先行仕込みを推奨。</td><td>🟡 高（予測）</td></tr>
+<tr><td><strong>5/22(金)<br>5/30(土)〜5/31(日)</strong></td><td><span class="cal-tag" style="background:rgba(43,92,230,.2);color:var(--blue2);">Yahoo!</span></td><td>ゾロ目の日(5/22)<br>爆買ウルトラSALE</td><td>5月末の大型セール。Yahoo!PayPay連動でポイント大量付与。月末最終セールとして注力推奨。</td><td>🟡 高</td></tr>
+<tr><td><strong>5/29(金)〜6/1(月)</strong></td><td><span class="cal-tag" style="background:rgba(245,158,11,.2);color:var(--yellow);">Amazon</span></td><td>Amazon スマイルSALE</td><td>初夏セール。プライム会員向けの先行セールが通例。プライム対応商品の優先出品を検討。</td><td>🟡 高</td></tr>
+<tr><td><strong>5/30(土)〜6/11(木)</strong></td><td><span class="cal-tag" style="background:rgba(139,92,246,.2);color:var(--purple);">Qoo10</span></td><td>メガ割（予測：20%OFF）</td><td>年4回開催パターンに基づく予測。K-Beautyセールとして最大規模。6月開幕とも。要公式発表確認。</td><td>🔴 最高（予測）</td></tr>
+<tr><td><strong>5/30(土)〜5/31(日)</strong></td><td><span class="cal-tag" style="background:rgba(249,115,22,.2);color:var(--orange);">メルカリ</span></td><td>超メルカリ市（第1弾）</td><td>月末恒例の大型セール。GW明けの初夏商品・衣替え関連カテゴリが主役。</td><td>🟡 高</td></tr>
 </tbody>
-</table>
-</div>
-</div>
-</div>
+</table></div>
+<div style="font-size:.67rem;color:var(--sub);margin-top:8px;">※「予測」と記載のある日程はQoo10/TikTok Shopの公式発表前の推計。確定次第更新予定。</div>
+</div></div>
 </section>
 
-<!-- CYBER SECTION -->
+<!-- ★NEW: 広告ROASベンチマーク -->
+<section>
+<div class="sh"><h2>📈 広告ROASベンチマーク</h2><span class="bdg bg">NEW 4/22追加</span><span class="bdg bb">2026年4月最新値</span></div>
+<div class="acc open">
+<div class="ach" onclick="this.closest('.acc').classList.toggle('open')"><h3>💰 各広告プラットフォーム EC業界平均指標（2026年4月時点）</h3><span class="acarr">▼</span></div>
+<div class="acb">
+<div style="overflow-x:auto;"><table class="roas">
+<thead><tr><th>プラットフォーム</th><th>平均ROAS</th><th>CPC/CPM</th><th>CPA目安</th><th>YoY変化</th><th>EC活用ポイント</th></tr></thead>
+<tbody>
+<tr><td><strong>楽天RPP / 楽天広告</strong></td><td><span class="up">4.0〜6.0x</span><div class="roas-bar" style="width:80px;"></div></td><td>CPC: 50〜150円</td><td>1,000〜3,000円</td><td class="up">↑ セール期間ブースト</td><td>マラソン・スーパーセール期の集中投下が最効率。SPU最大化との組み合わせが鍵。</td></tr>
+<tr><td><strong>Amazon DSP / スポンサー広告</strong></td><td><span class="up">3.0〜4.5x</span><div class="roas-bar" style="width:65px;"></div></td><td>CPC: 30〜120円</td><td>800〜2,500円</td><td class="up">↑ CVR重視型に変化</td><td>CVRがCPC入札より重要なアルゴリズムへ。商品レビュー・A+コンテンツの充実が前提条件。</td></tr>
+<tr><td><strong>Yahoo!プロモーション広告</strong></td><td><span class="up">3.5〜5.5x</span><div class="roas-bar" style="width:72px;"></div></td><td>CPC: 40〜130円</td><td>900〜2,800円</td><td class="nt">→ LINEヤフー統合影響</td><td>10月LINEヤフー統合完了後のロジック変化に備え、早めに新管理画面へ完全移行推奨。</td></tr>
+<tr><td><strong>Meta 広告（Advantage+）</strong></td><td><span class="up">2.3〜4.0x</span><div class="roas-bar" style="width:56px;"></div></td><td>CPC: 150〜300円</td><td>1,800〜5,000円</td><td class="up">↑ AI精度向上中</td><td>Andromedaによりターゲ制御が困難に。動画クリエイティブ品質（最初3秒）が成果の8割を左右。</td></tr>
+<tr><td><strong>Google 広告（P-MAX）</strong></td><td><span class="up">2.5〜5.0x</span><div class="roas-bar" style="width:68px;"></div></td><td>CPC: 80〜250円</td><td>2,000〜5,000円</td><td class="up">↑ 新制御機能追加</td><td>4月に新追加された3つの制御機能（目標細分化・除外設定・地域時間制御）を積極活用すべき。</td></tr>
+<tr><td><strong>TikTok 広告（VSA）</strong></td><td><span class="nt">2.0〜3.5x</span><div class="roas-bar" style="width:50px;"></div></td><td>CPM: 300〜600円</td><td>2,500〜6,000円</td><td class="up">↑↑ 急成長中</td><td>Seedance 2.0によりAI動画生成が実用段階へ。ショート動画の量産体制構築がROAS向上の近道。</td></tr>
+</tbody>
+</table></div>
+<div style="background:rgba(43,92,230,.07);border:1px solid rgba(43,92,230,.25);border-radius:9px;padding:12px;margin-top:12px;">
+<div style="font-size:.75rem;font-weight:700;color:var(--blue2);margin-bottom:8px;">💡 2025→2026年 広告ROASトレンド変化まとめ</div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+<div style="font-size:.71rem;color:var(--sub);">📌 <strong style="color:var(--text);">評価指標の変化:</strong> 単発ROAS→nCAC（新規顧客獲得コスト）・LTV重視に移行中</div>
+<div style="font-size:.71rem;color:var(--sub);">📌 <strong style="color:var(--text);">技術の変化:</strong> クリエイティブ品質（動画）が成果の8割を決定する時代へ</div>
+<div style="font-size:.71rem;color:var(--sub);">📌 <strong style="color:var(--text);">最適化:</strong> AI自動最適化ツール（CA「効果おまかせAI」等）の完全普及フェーズ</div>
+<div style="font-size:.71rem;color:var(--sub);">📌 <strong style="color:var(--text);">リテールメディア:</strong> 楽天・Amazon・Yahoo!は業界最高ROAS水準を維持（4〜6x）</div>
+</div>
+</div>
+</div></div>
+</section>
+
+<!-- セミナー・イベント -->
+<section>
+<div class="sh"><h2>📆 セミナー・イベント情報（4/22〜5/22）</h2><span class="bdg by">今後4週間</span></div>
+<div class="acc open">
+<div class="ach" onclick="this.closest('.acc').classList.toggle('open')"><h3>🎪 開催予定イベント一覧</h3><span class="acarr">▼</span></div>
+<div class="acb">
+<div style="overflow-x:auto;"><table class="ev">
+<thead><tr><th>日程</th><th>形式</th><th>イベント名</th><th>概要・注目点</th><th>URL</th></tr></thead>
+<tbody>
+<tr><td><strong>4/22〜4/24</strong></td><td><span class="bdg bb">リアル</span></td><td>マーケティングWeek-春-2026</td><td>東京ビッグサイト。TikTok Shop・AI広告各社が出展。本日開幕。今日〜明日が視察適期。</td><td><a href="https://www.nextech.jp/s/mw_spring/" target="_blank">→ 公式</a></td></tr>
+<tr><td><strong>4/22</strong></td><td><span class="bdg bg">オンライン</span></td><td>Salesforce AIエージェント導入ウェビナー</td><td>AIエージェント導入と業務変革がテーマ。Agentforce活用事例を紹介。録画視聴可能。</td><td><a href="https://www.salesforce.com/jp/events/" target="_blank">→ Salesforce</a></td></tr>
+<tr><td><strong>4/27〜4/29</strong></td><td><span class="bdg bb">リアル</span></td><td>SusHi Tech Tokyo 2026</td><td>東京ビッグサイト。アジア最大級のイノベーション展示会。スタートアップEC系展示多数。</td><td><a href="https://sushitech-real.metro.tokyo.lg.jp/" target="_blank">→ 東京都公式</a></td></tr>
+<tr><td><strong>5/13</strong></td><td><span class="bdg bg">オンライン</span></td><td>LLMO・GEO対策実践セミナー</td><td>PerplexityやChatGPTのECへの影響とGEO/AEO対策の実践手法を解説。EC担当者必聴。</td><td><a href="https://seminar.ec-marketing.jp/llmo-2026-05/" target="_blank">→ ECマーケティング</a></td></tr>
+<tr><td><strong>5/21</strong></td><td><span class="bdg bg">オンライン</span></td><td>MarkeZine Day 2026 Online</td><td>翔泳社主催。最新マーケティングトレンド網羅のオンラインカンファレンス。AI広告・SNS最新動向。</td><td><a href="https://event.shoeisha.jp/mzday/" target="_blank">→ MarkeZine</a></td></tr>
+<tr><td><strong>5月中旬（TBD）</strong></td><td><span class="bdg by">ハイブリッド</span></td><td>EC MARKETING CONFERENCE 2026</td><td>EC業界特化のマーケティング事例発表の場。楽天・Amazonの最新事例が多数発表される見込み。</td><td><a href="https://ec-marketing-conf.jp/" target="_blank">→ 公式</a></td></tr>
+</tbody>
+</table></div>
+</div></div>
+</section>
+
+<!-- サイバーレコード -->
 <div class="cyber">
-<h2>🏢 サイバーレコード EC事業本部 ── 本日の検討事項</h2>
-<div class="action-grid">
-
-<div class="act-col">
-<h3 style="color:var(--red);">🔴 緊急（本日4/21対応）</h3>
-<div class="act-item r">
-<strong>楽天マラソン第3弾 事前エントリー・クーポン設定（本日19時〜）</strong>
-21日19:00より事前エントリーおよびクーポン配布開始。開始2時間限定50%OFFクーポン設定と、対象商品への在庫確保を今日中に完了させること。スマホ版広告枠は既に完売。
+<h2>⚡ サイバーレコード EC事業本部 本日の検討事項</h2>
+<div class="ag">
+<div class="ac">
+<h3>🔴 緊急アクション（本日〜明日）</h3>
+<div class="ai r"><strong>Amazonの365日超在庫を本日確認</strong>FBA長期在庫手数料が本日4/22より実際に課金開始。セラーセントラルの在庫管理ページで対象SKUを即時確認し、返送・廃棄・値下げセールの優先度を判断。</div>
+<div class="ai r"><strong>楽天マラソン第3弾の事前エントリー完了確認</strong>4/24(金)20:00スタートに向け、出品全SKUの事前エントリーが完了しているか本日中に確認。開始直後の50%OFFクーポン設定漏れは機会損失に直結。</div>
+<div class="ai r"><strong>マーケティングWeek（ビッグサイト）視察</strong>TikTok Shop Japanが本日から4/24まで出展中。流通70%コンテンツ起点・LIVEオークション事例を直接確認する最大のチャンス。本日または明日の視察を強く推奨。</div>
 </div>
-<div class="act-item r">
-<strong>マーケティングWeek（4/22〜24）明日から！訪問計画を今日確定</strong>
-東京ビッグサイトにて明日開幕。TikTok Shop・ECグロースEXPO・EC・店舗Weekを優先視察。EC MARKETING CONFERENCE(4/23)の参加も確認。担当者の訪問予定を今日決定。
+<div class="ac">
+<h3>🟡 今週対応（4/22〜4/27）</h3>
+<div class="ai y"><strong>TikTokバイラル商品の仕入れ検討</strong>健康食品（リポソームビタミンC系・前月比+88%）、スキンケア（低価格UGC系）、美容家電（高単価LIVE対応）の3カテゴリが4月伸長中。GW商戦への在庫手配を今週着手。</div>
+<div class="ai y"><strong>Yahoo!ショッピング 9月有料化の移行シミュレーション実施</strong>月額1万円+2.5%ロイヤリティの試算を今週中に完了。現行の売上規模と利益率への影響を数値で把握した上で、継続/縮小/強化の判断を。</div>
+<div class="ai y"><strong>LINEヤフー広告の移行計画を今週確定</strong>10月のLINE広告完全終了に向け、YDA（Yahoo!ディスプレイ）への移行計画を今週中に確定。移行が遅れると10月に配信が停止される可能性。</div>
+<div class="ai y"><strong>AI導入補助金（最大350万円）の申請準備開始</strong>5/12が第1次締切。AI在庫管理・CS自動化・需要予測ツールが対象。社内で活用中または検討中のAIツールをリストアップし、今週から申請書類準備を。</div>
 </div>
-<div class="act-item r">
-<strong>LINEヤフー広告 移行計画の進捗確認</strong>
-旧LINE広告は10月下旬停止予定。LINEヤフー広告ディスプレイ広告への移行ツール確認と、アカウント移行スケジュールを今週中に策定する。担当者への周知を本日実施。
+<div class="ac">
+<h3>🟢 今後2週間の重要確認事項</h3>
+<div class="ai g"><strong>4/29 Amazon Q1決算を注目</strong>日本市場の売上成長率・物流コスト率・AI投資の利益率への影響が明らかになる。FBA手数料の追加改定予告がある場合は迅速に対応計画を立案。</div>
+<div class="ai g"><strong>4/30 ZOZO通期決算でファッションEC市況を把握</strong>LYST買収影響・自社EC比率・海外展開の進捗が確認できる。競合ファッションECの戦略動向を分析し、アダストリア.st好調の文脈と合わせて市場機会を検討。</div>
+<div class="ai g"><strong>広告ROASベンチマークと自社数値を比較</strong>楽天4〜6x/Amazon3〜4.5x/Meta2.3〜4x/Google2.5〜5x/TikTok2〜3.5xが業界平均。自社の現行ROASが業界平均を下回っている媒体があれば、今週中に原因特定と改善策立案を。</div>
+<div class="ai g"><strong>Qoo10メガ割（予測：5/30〜）の商品準備</strong>年4回の最大セール。予測日まで約5週間。K-Beauty関連商品および高売上SKUのメガ割価格設計・在庫確保を今から計画。公式発表は5/20以降に注目。</div>
 </div>
-</div>
-
-<div class="act-col">
-<h3 style="color:var(--yellow);">🟡 今週中（4/25まで）</h3>
-<div class="act-item y">
-<strong>楽天マラソン第3弾 施策実行（4/24〜27）</strong>
-開始2時間のクーポン消化率を確認しながら広告予算をリアルタイム調整。日曜日（4/26）の39%割引SALE対象商品の設定を4/23までに完了。楽天モバイルSPU連動施策も忘れずに。
-</div>
-<div class="act-item y">
-<strong>Amazon Q1決算（4/29）に向けた分析準備</strong>
-4/29のAmazon Q1決算発表に備え、FBA手数料改定後の自社売上への影響を集計。Rufus AI収益貢献の注視ポイントを整理し、競合分析のフレームワークを今週中に準備。
-</div>
-<div class="act-item y">
-<strong>Yahoo!ショッピング 9月有償化 最終方針決定</strong>
-月額1万円＋ロイヤリティ2.5%の導入に対し、出店継続・縮小・EXIT の選択を今週中に決定。PRオプション料率引き下げ(3%→2%)の活用メリットも試算。
-</div>
-<div class="act-item y">
-<strong>CA「効果おまかせAI」試用・見積もり取得</strong>
-昨日4/20より提供開始。Meta広告対象の広告AI自動最適化を現行キャンペーンに適用するための試用申込と費用対効果の概算を今週中に実施。
 </div>
 </div>
 
-<div class="act-col">
-<h3 style="color:var(--green);">🟢 中長期（5月以降）</h3>
-<div class="act-item g">
-<strong>決算ラッシュ対応（4/29〜5/14）競合分析スケジュール化</strong>
-Amazon(4/29)・ZOZO(4/30)・LINEヤフー(5/8)・CA(5/13)・楽天(5/14)・オイシックス(5/14)の各決算を連続してウォッチ。競合のAI投資・GMV動向の比較分析表を5月中に作成。
-</div>
-<div class="act-item g">
-<strong>エージェンティックコマース対応ロードマップ策定</strong>
-Stripe ACS・Shopify UCP・Mastercard Lobster.cashの動向を踏まえ、自社ECのAIエージェント対応計画を策定。目標：2026年Q3までに主力商品のエージェント検索対応。
-</div>
-<div class="act-item g">
-<strong>EU関税改革（7/1施行）対応・越境EC価格設定見直し</strong>
-7月1日から150ユーロ未満に3ユーロ課税。EU向け越境EC出品の送料・価格設定を5月中に見直し。ECプラットフォームとしての輸入責任への対応方針を確認。
-</div>
-<div class="act-item g">
-<strong>「デジタル化・AI導入補助金」申請準備（最大350万円）</strong>
-AI受注処理・在庫予測・AIチャットボット導入に最大350万円（補助率最大3/4）。要件確認と申請書類の準備を開始。担当部署（DX推進）と協議。
-</div>
-</div>
-
-</div>
-</div>
-
-<footer style="border-top:1px solid var(--border);padding:18px 0;margin-top:20px;text-align:center;">
-<div style="font-size:.72rem;color:var(--sub);">
-EC業界日次情報レポート | 2026年4月21日（火） | 株式会社サイバーレコード EC事業本部<br>
-Generated by Skywork Agent | <a href="https://m-hirasawa95.github.io/ec-report/" target="_blank">🔗 https://m-hirasawa95.github.io/ec-report/</a>
-</div>
+<footer style="background:#0D1117;border-top:1px solid var(--border);padding:16px 0;margin-top:30px;text-align:center;font-size:.68rem;color:var(--sub);">
+<div class="container">EC業界日次情報レポート 2026年4月22日（水）｜株式会社サイバーレコード EC事業本部<br>
+<span style="font-size:.6rem;">データ収集：2026/04/22 JST ／ 本レポートは公開情報に基づき作成。投資・取引判断はご自身の責任でお願いします。</span></div>
 </footer>
 </div>
 
 <script>
-// チャート
-const salesData = {
-  labels:['楽天G','Amazon JP','LINEヤフー','アダストリア','ZOZO(GMV)','Shopify(G)','オイシックス','BASE','メルカリ','CA'],
-  vals:[22513,48000,14953,3043,5029,115000,1946,207,568,2000]
-};
-const growthData = {
-  labels:['Shopify(G)','BASE','メルカリ','Amazon JP','ZOZO','楽天G','LINEヤフー','アダストリア','CA'],
-  vals:[30,29.7,15,12,9.1,10.5,4.7,3.8,5]
-};
-new Chart(document.getElementById('cSales'),{
-  type:'bar',
-  data:{
-    labels:salesData.labels,
-    datasets:[{
-      label:'売上高（億円）',
-      data:salesData.vals,
-      backgroundColor:salesData.vals.map((_,i)=>i%2===0?'rgba(43,92,230,.75)':'rgba(75,123,255,.6)'),
-      borderRadius:5,borderWidth:0
-    }]
-  },
-  options:{
-    responsive:true,
-    plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>c.parsed.y.toLocaleString()+'億円'}}},
-    scales:{
-      x:{ticks:{color:'#9CA3AF',font:{size:9}},grid:{color:'rgba(255,255,255,.04)'}},
-      y:{ticks:{color:'#9CA3AF',font:{size:9},callback:v=>v>=10000?(v/10000).toFixed(1)+'兆':v+'億'},grid:{color:'rgba(255,255,255,.07)'}}
-    }
-  }
+document.querySelectorAll('.ach').forEach(h=>{
+  h.onclick=()=>{
+    const acc=h.closest('.acc');
+    acc.classList.toggle('open');
+  };
 });
-new Chart(document.getElementById('cGrowth'),{
-  type:'bar',
-  data:{
-    labels:growthData.labels,
-    datasets:[{
-      label:'前年比成長率（%）',
-      data:growthData.vals,
-      backgroundColor:growthData.vals.map(v=>v>=10?'rgba(16,185,129,.75)':v>=5?'rgba(43,92,230,.7)':'rgba(245,158,11,.7)'),
-      borderRadius:5,borderWidth:0
-    }]
-  },
-  options:{
-    indexAxis:'y',
-    responsive:true,
-    plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>'+'+c.parsed.x+'%'}}},
-    scales:{
-      x:{ticks:{color:'#9CA3AF',font:{size:9},callback:v=>'+'+v+'%'},grid:{color:'rgba(255,255,255,.07)'}},
-      y:{ticks:{color:'#9CA3AF',font:{size:9}},grid:{color:'rgba(255,255,255,.04)'}}
-    }
-  }
-});
+
+// IR売上グラフ
+const sCtx=document.getElementById('cS');
+if(sCtx){
+  new Chart(sCtx,{type:'bar',data:{
+    labels:['楽天
+グループ','メルカリ
+(Q2)','サイバー
+エージェント','アダスト
+リア','BASE','オイシックス
+(Q3累計)','スクロール
+(Q3累計)'],
+    datasets:[{label:'売上高（億円）',data:[22713,1062,2015,3043,195,1946,659],
+      backgroundColor:['rgba(239,68,68,.6)','rgba(249,115,22,.6)','rgba(245,158,11,.6)','rgba(16,185,129,.6)','rgba(43,92,230,.6)','rgba(139,92,246,.6)','rgba(6,182,212,.6)'],
+      borderColor:['rgba(239,68,68,1)','rgba(249,115,22,1)','rgba(245,158,11,1)','rgba(16,185,129,1)','rgba(43,92,230,1)','rgba(139,92,246,1)','rgba(6,182,212,1)'],
+      borderWidth:1}]
+  },options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>`¥${c.raw.toLocaleString()}億円`}}},scales:{y:{ticks:{color:'#9CA3AF',callback:v=>v>=1000?v/1000+'千':v},grid:{color:'rgba(255,255,255,.05)'}},x:{ticks:{color:'#9CA3AF'},grid:{display:false}}}}});
+}
+
+// 成長率グラフ
+const gCtx=document.getElementById('cG');
+if(gCtx){
+  new Chart(gCtx,{type:'bar',data:{
+    labels:['BASE','Shopify
+(Global)','CA','Amazon
+(Global)','メルカリ','楽天
+Grp','ZOZO','アダスト
+リア','スクロール','オイシックス'],
+    datasets:[{label:'前年比成長率(%)',data:[38.5,26,11.2,12,12.8,7.8,8.6,3.8,4.9,0.5],
+      backgroundColor:d=>d.raw>=20?'rgba(239,68,68,.6)':d.raw>=10?'rgba(245,158,11,.6)':'rgba(43,92,230,.5)',
+      borderWidth:1}]
+  },options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>`+${c.raw}%`}}},scales:{y:{ticks:{color:'#9CA3AF',callback:v=>v+'%'},grid:{color:'rgba(255,255,255,.05)'}},x:{ticks:{color:'#9CA3AF',font:{size:10}},grid:{display:false}}}}});
+}
 </script>
 </body>
 </html>
