@@ -107,7 +107,8 @@ def collect_news(date_str: str) -> dict:
 # ── 3. Gemini API でHTML生成 ─────────────────────────────────
 def call_gemini(prompt: str) -> str:
     import google.generativeai as genai
-    genai.configure(api_key=GEMINI_API_KEY)
+    api_key = GEMINI_API_KEY or os.environ.get("GOOGLE_API_KEY", "")
+    genai.configure(api_key=api_key)
     model = genai.GenerativeModel(GEMINI_MODEL)
     response = model.generate_content(
         prompt,
