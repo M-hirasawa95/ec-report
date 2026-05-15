@@ -106,18 +106,27 @@ def collect_news(date_str: str) -> dict:
 
 # ── 3. Gemini API でHTML生成 ─────────────────────────────────
 def call_gemini(prompt: str) -> str:
-    import google.generativeai as genai
     api_key = GEMINI_API_KEY or os.environ.get("GOOGLE_API_KEY", "")
-    genai.configure(api_key=api_key)
-    model = genai.GenerativeModel(GEMINI_MODEL)
-    response = model.generate_content(
-        prompt,
-        generation_config=genai.GenerationConfig(
-            max_output_tokens=8192,
-            temperature=0.7,
-        ),
+    url = (
+        f"https://generativelanguage.googleapis.com/v1beta/models/"
+        f"{GEMINI_MODEL}:generateContent?key={api_key}"
     )
-    return response.text
+    payload = json.dumps({
+        "contents": [{"parts": [{"text": prompt}]}],
+        "generationConfig": {
+            "maxOutputTokens": 8192,
+            "temperature": 0.7,
+        },
+    }).encode()
+    req = urllib.request.Request(
+        url,
+        data=payload,
+        headers={"Content-Type": "application/json"},
+        method="POST",
+    )
+    with urllib.request.urlopen(req, timeout=120) as resp:
+        data = json.loads(resp.read().decode())
+    return data["candidates"][0]["content"]["parts"][0]["text"]
 
 
 def build_news_context(news: dict) -> str:
