@@ -24,307 +24,333 @@ GEMINI_MODEL = "gemini-2.5-flash-lite"
 # ── カテゴリ定義 ─────────────────────────────────────────────────
 CATEGORIES = [
     {
-        "id": "breaking",
-        "icon": "🚨",
-        "title": "重要ニュース",
-        "type": "breaking",
+        "id": "breaking", "icon": "🚨", "title": "重要ニュース",
+        "type": "breaking", "color": "#EF4444", "bg": "#FFF5F5",
         "queries": [
-            "EC eコマース 重要 大型発表 速報 {date}",
-            "Amazon 楽天 メルカリ 重大発表 障害 {date}",
+            "EC eコマース 重要ニュース 最新 {yearmonth}",
+            "Amazon 楽天 メルカリ ZOZO 重大発表 最新 {year}",
         ],
     },
     {
-        "id": "ir",
-        "icon": "📊",
-        "title": "IR・決算情報",
-        "type": "ir",
+        "id": "ir", "icon": "📊", "title": "IR・決算情報",
+        "type": "ir", "color": "#2563EB", "bg": "#EFF6FF",
         "queries": [
-            "楽天グループ Amazon メルカリ ZOZO BASE 決算 業績 {year}",
-            "EC企業 株価 IR 決算発表 資金調達 {date}",
+            "楽天グループ Amazon メルカリ ZOZO BASE 決算 業績 売上 {year}",
+            "EC企業 IR 決算発表 資金調達 株価 {yearmonth}",
         ],
     },
     {
-        "id": "platform",
-        "icon": "🛒",
-        "title": "プラットフォーム動向",
-        "type": "accordion",
+        "id": "platform", "icon": "🛒", "title": "プラットフォーム動向",
+        "type": "accordion", "color": "#7C3AED", "bg": "#F5F3FF",
         "queries": [
-            "Amazon 楽天 Yahoo 新機能 手数料 規約変更 {date}",
-            "ECモール セール キャンペーン スーパーSALE {date}",
+            "Amazon 楽天市場 Yahoo 手数料 規約変更 新機能 {yearmonth}",
+            "ECモール セール キャンペーン スーパーSALE {yearmonth}",
         ],
     },
     {
-        "id": "ads",
-        "icon": "📢",
-        "title": "広告・マーケティング費用",
-        "type": "accordion",
+        "id": "ads", "icon": "📢", "title": "広告・マーケティング費用",
+        "type": "accordion", "color": "#D97706", "bg": "#FFFBEB",
         "queries": [
-            "EC広告 ROAS CPC CPM 相場 {date}",
-            "Amazon広告 楽天広告 スポンサー広告 運用 {date}",
+            "EC広告 ROAS CPC CPM 相場 最新 {year}",
+            "Amazon広告 楽天広告 スポンサー 運用 事例 {yearmonth}",
         ],
     },
     {
-        "id": "logistics",
-        "icon": "🚚",
-        "title": "物流・フルフィルメント",
-        "type": "accordion",
+        "id": "logistics", "icon": "🚚", "title": "物流・フルフィルメント",
+        "type": "accordion", "color": "#059669", "bg": "#ECFDF5",
         "queries": [
-            "物流 配送 EC 送料改定 ヤマト 佐川 {date}",
-            "FBA 楽天物流 3PL フルフィルメント {date}",
+            "EC 物流 配送 送料改定 ヤマト運輸 佐川急便 {yearmonth}",
+            "FBA 楽天物流 3PL フルフィルメント 最新 {year}",
         ],
     },
     {
-        "id": "consumer",
-        "icon": "👥",
-        "title": "消費者トレンド",
-        "type": "accordion",
+        "id": "consumer", "icon": "👥", "title": "消費者トレンド",
+        "type": "accordion", "color": "#EC4899", "bg": "#FDF2F8",
         "queries": [
-            "消費者 購買トレンド EC ランキング {date}",
-            "TikTok バイラル 流行 商品 トレンド {date}",
+            "消費者 購買トレンド EC ランキング 人気 {yearmonth}",
+            "TikTok バイラル 話題 商品 トレンド {yearmonth}",
         ],
     },
     {
-        "id": "legal",
-        "icon": "⚖️",
-        "title": "法規制・業界ニュース",
-        "type": "accordion",
+        "id": "legal", "icon": "⚖️", "title": "法規制・業界ニュース",
+        "type": "accordion", "color": "#6366F1", "bg": "#EEF2FF",
         "queries": [
-            "EC 景表法 特商法 規制 法改正 {date}",
-            "個人情報 セキュリティ EC 不正アクセス {date}",
+            "EC 景表法 特商法 規制 法改正 {year}",
+            "個人情報 セキュリティ EC 不正アクセス {yearmonth}",
         ],
     },
     {
-        "id": "competitor",
-        "icon": "🏪",
-        "title": "他社EC運営情報",
-        "type": "accordion",
+        "id": "competitor", "icon": "🏪", "title": "他社EC運営情報",
+        "type": "accordion", "color": "#0891B2", "bg": "#ECFEFF",
         "queries": [
-            "EC 運営 成功事例 D2C ブランド 施策 {date}",
-            "越境EC 海外展開 Temu Shein 事例 {date}",
+            "EC 運営 成功事例 D2C ブランド 施策 {year}",
+            "越境EC Temu Shein 日本 海外展開 {yearmonth}",
         ],
     },
     {
-        "id": "cart",
-        "icon": "🖥️",
-        "title": "ECカートシステム",
-        "type": "accordion",
+        "id": "cart", "icon": "🖥️", "title": "ECカートシステム",
+        "type": "accordion", "color": "#8B5CF6", "bg": "#FAF5FF",
         "queries": [
-            "Shopify MakeShop カラーミー BASE STORES futureshop アップデート {date}",
-            "ECカート 新機能 乗り換え 比較 {date}",
+            "Shopify MakeShop カラーミー BASE STORES futureshop 新機能 {yearmonth}",
+            "ECカート 乗り換え 比較 費用 {year}",
         ],
     },
     {
-        "id": "tools",
-        "icon": "🔧",
-        "title": "ECツール情報",
-        "type": "accordion",
+        "id": "tools", "icon": "🔧", "title": "ECツール情報",
+        "type": "accordion", "color": "#16A34A", "bg": "#F0FDF4",
         "queries": [
-            "EC ツール 新サービス MA CRM メール配信 リリース {date}",
-            "EC在庫管理 分析 価格監視 AI ツール {date}",
+            "EC ツール 新サービス MA CRM メール配信 リリース {yearmonth}",
+            "EC 在庫管理 分析 価格監視 AI 自動化 {year}",
         ],
     },
     {
-        "id": "marketing",
-        "icon": "📣",
-        "title": "マーケティング全般",
-        "type": "accordion",
+        "id": "marketing", "icon": "📣", "title": "マーケティング全般",
+        "type": "accordion", "color": "#EA580C", "bg": "#FFF7ED",
         "queries": [
-            "Google Meta LINE TikTok 広告 マーケティング アップデート {date}",
-            "SEO コンテンツ AI マーケティング トレンド {date}",
+            "Google Meta LINE TikTok 広告 マーケティング アップデート {yearmonth}",
+            "SEO コンテンツ AI 生成AI マーケティング トレンド {year}",
         ],
     },
 ]
 
-# ── CSS（Python固定・Gemini非生成）──────────────────────────────
+# ── CSS（Python固定定義）────────────────────────────────────────
 CSS = """
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body {
-      font-family: 'Noto Sans JP', sans-serif;
-      background: #F1F5F9;
-      color: #1E293B;
-      font-size: 14px;
-      line-height: 1.6;
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --radius: 16px;
+      --shadow: 0 4px 24px rgba(0,0,0,0.07), 0 1px 4px rgba(0,0,0,0.04);
+      --border: rgba(0,0,0,0.06);
     }
-    a { color: #2563EB; text-decoration: none; }
-    a:hover { text-decoration: underline; }
+    body {
+      font-family: 'Noto Sans JP', -apple-system, sans-serif;
+      background: #F0F4FF;
+      color: #0F172A;
+      font-size: 14px;
+      line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: inherit; text-decoration: none; }
+    a:hover { opacity: 0.75; }
 
+    /* ── カテゴリカラーマップ ── */
+    [data-cat]              { --cc: #2563EB; --cb: #EFF6FF; }
+    [data-cat="breaking"]   { --cc: #EF4444; --cb: #FFF5F5; }
+    [data-cat="ir"]         { --cc: #2563EB; --cb: #EFF6FF; }
+    [data-cat="platform"]   { --cc: #7C3AED; --cb: #F5F3FF; }
+    [data-cat="ads"]        { --cc: #D97706; --cb: #FFFBEB; }
+    [data-cat="logistics"]  { --cc: #059669; --cb: #ECFDF5; }
+    [data-cat="consumer"]   { --cc: #EC4899; --cb: #FDF2F8; }
+    [data-cat="legal"]      { --cc: #6366F1; --cb: #EEF2FF; }
+    [data-cat="competitor"] { --cc: #0891B2; --cb: #ECFEFF; }
+    [data-cat="cart"]       { --cc: #8B5CF6; --cb: #FAF5FF; }
+    [data-cat="tools"]      { --cc: #16A34A; --cb: #F0FDF4; }
+    [data-cat="marketing"]  { --cc: #EA580C; --cb: #FFF7ED; }
+
+    /* ── ヘッダー ── */
     .header {
-      background: linear-gradient(135deg, #1E40AF, #2563EB);
+      background: linear-gradient(135deg, #0F172A 0%, #1E3A8A 100%);
       color: white;
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+      position: sticky; top: 0; z-index: 100;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.3);
     }
     .header-inner {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 14px 24px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
+      max-width: 1200px; margin: 0 auto;
+      padding: 16px 28px;
+      display: flex; align-items: center; justify-content: space-between; gap: 16px;
     }
-    .header h1 { font-size: 20px; font-weight: 700; }
-    .date-badge {
-      background: rgba(255,255,255,0.25);
-      padding: 4px 14px;
-      border-radius: 20px;
-      font-size: 13px;
-      font-weight: 500;
+    .header-left { display: flex; align-items: center; gap: 12px; }
+    .header-logo {
+      width: 38px; height: 38px; border-radius: 10px;
+      background: linear-gradient(135deg,#60A5FA,#2563EB);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 20px;
     }
+    .header h1 { font-size: 19px; font-weight: 800; letter-spacing: -0.3px; }
+    .header-sub { font-size: 11px; color: rgba(255,255,255,0.5); margin-top: 1px; }
+    .header-badge {
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.2);
+      padding: 6px 16px; border-radius: 24px;
+      font-size: 13px; font-weight: 600;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .live-dot {
+      width: 7px; height: 7px; border-radius: 50%;
+      background: #4ADE80;
+      animation: blink 2s infinite;
+    }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:.3} }
 
+    /* ── ナビゲーション ── */
     .category-nav {
       background: white;
-      border-bottom: 1px solid #E2E8F0;
-      overflow-x: auto;
-      white-space: nowrap;
-      position: sticky;
-      top: 52px;
-      z-index: 99;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+      border-bottom: 1px solid var(--border);
+      overflow-x: auto; white-space: nowrap;
+      position: sticky; top: 58px; z-index: 99;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+      scrollbar-width: none;
     }
+    .category-nav::-webkit-scrollbar { display: none; }
     .category-nav-inner {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 0 24px;
-      display: flex;
+      max-width: 1200px; margin: 0 auto;
+      padding: 8px 28px;
+      display: flex; gap: 6px;
     }
     .nav-link {
-      display: inline-block;
-      padding: 10px 12px;
-      text-decoration: none !important;
-      color: #64748B;
-      font-size: 12px;
-      font-weight: 500;
-      border-bottom: 2px solid transparent;
-      transition: all 0.2s;
+      display: inline-flex; align-items: center; gap: 5px;
+      padding: 6px 14px; border-radius: 24px;
+      font-size: 12px; font-weight: 600;
+      background: #F1F5F9; color: #64748B;
+      transition: all .2s; white-space: nowrap;
     }
-    .nav-link:hover { color: #2563EB; border-bottom-color: #2563EB; }
+    .nav-link:hover { background: var(--cb,#EFF6FF); color: var(--cc,#2563EB); opacity:1; }
 
-    .container { max-width: 1200px; margin: 0 auto; padding: 24px; }
+    /* ── コンテナ ── */
+    .container { max-width: 1200px; margin: 0 auto; padding: 28px; }
 
+    /* ── セクションカード ── */
     .section-card {
       background: white;
-      border-radius: 12px;
-      border: 1px solid #E2E8F0;
-      margin-bottom: 20px;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      margin-bottom: 24px;
       overflow: hidden;
-      box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+      border: 1px solid var(--border);
+      border-left: 4px solid var(--cc, #2563EB);
     }
     .section-header {
-      padding: 14px 20px;
-      border-bottom: 1px solid #E2E8F0;
-      background: #F8FAFC;
+      padding: 18px 24px;
+      background: linear-gradient(120deg, var(--cb,#EFF6FF) 0%, rgba(255,255,255,0) 65%);
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; gap: 14px;
     }
-    .section-title { font-size: 15px; font-weight: 700; color: #1E293B; }
-    .section-body { padding: 20px; }
+    .cat-icon {
+      width: 46px; height: 46px; border-radius: 13px;
+      background: var(--cc,#2563EB);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 22px; flex-shrink: 0;
+      box-shadow: 0 4px 12px color-mix(in srgb, var(--cc,#2563EB) 30%, transparent);
+    }
+    .section-title-wrap { flex: 1; }
+    .section-title { font-size: 16px; font-weight: 800; color: #0F172A; }
+    .section-sub { font-size: 11px; color: #94A3B8; margin-top: 2px; }
+    .section-badge {
+      background: var(--cc,#2563EB); color: white;
+      padding: 3px 12px; border-radius: 20px;
+      font-size: 11px; font-weight: 700; flex-shrink: 0;
+    }
+    .section-body { padding: 20px 24px; }
 
-    .highlight-section {
-      background: #EFF6FF;
-      border: 1px solid #BFDBFE;
-      border-radius: 8px;
-      padding: 16px 20px;
-    }
-    .highlight-title { font-weight: 700; color: #1D4ED8; margin-bottom: 12px; font-size: 14px; }
-    .highlight-list {
-      list-style: none;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 8px 32px;
-    }
-    .highlight-list li {
-      color: #1E293B;
-      font-size: 13px;
-      padding-left: 16px;
-      position: relative;
-      line-height: 1.5;
-    }
-    .highlight-list li::before {
-      content: '▸';
-      position: absolute;
-      left: 0;
-      color: #2563EB;
-      font-size: 10px;
-      top: 3px;
-    }
-
-    .breaking-card { border-top: 3px solid #EF4444; }
-    .breaking-card .section-header { background: #FFF5F5; }
-    .breaking-card .section-title { color: #DC2626; }
-
+    /* ── ニュースアイテム ── */
     .news-list { list-style: none; }
     .news-item {
-      padding: 10px 0;
-      border-bottom: 1px solid #F1F5F9;
-      display: flex;
-      gap: 10px;
+      display: flex; gap: 14px;
+      padding: 14px 0;
+      border-bottom: 1px solid #F8FAFC;
       align-items: flex-start;
     }
-    .news-item:last-child { border-bottom: none; }
-    .news-bullet { color: #2563EB; font-size: 10px; flex-shrink: 0; margin-top: 4px; }
+    .news-item:last-child { border-bottom: none; padding-bottom: 0; }
+    .news-num {
+      min-width: 28px; height: 28px; border-radius: 8px;
+      background: var(--cc,#2563EB); color: white;
+      font-size: 11px; font-weight: 800;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; margin-top: 1px;
+    }
     .news-content { flex: 1; min-width: 0; }
-    .news-title { font-weight: 600; color: #1E293B; margin-bottom: 3px; font-size: 13px; }
-    .news-snippet { color: #64748B; font-size: 12px; line-height: 1.6; }
-    .news-source { color: #94A3B8; font-size: 11px; margin-top: 3px; }
+    .news-title { font-weight: 700; color: #0F172A; font-size: 13px; line-height: 1.5; margin-bottom: 4px; }
+    .news-snippet { color: #64748B; font-size: 12px; line-height: 1.65; margin-bottom: 7px; }
+    .news-meta { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+    .news-source {
+      background: #F1F5F9; color: #64748B;
+      padding: 2px 9px; border-radius: 5px;
+      font-size: 10px; font-weight: 600;
+    }
+    .news-tag {
+      background: var(--cb,#EFF6FF); color: var(--cc,#2563EB);
+      padding: 2px 9px; border-radius: 5px;
+      font-size: 10px; font-weight: 600;
+    }
 
+    /* ── アコーディオン ── */
     details summary {
-      list-style: none;
-      cursor: pointer;
-      padding: 12px 20px;
-      border-bottom: 1px solid #E2E8F0;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      background: #F8FAFC;
-      user-select: none;
+      list-style: none; cursor: pointer;
+      padding: 14px 24px;
+      display: flex; align-items: center; justify-content: space-between;
+      border-bottom: 1px solid var(--border);
+      background: #FAFBFF; user-select: none;
     }
     details summary::-webkit-details-marker { display: none; }
-    .summary-label { color: #475569; font-size: 13px; }
-    .toggle-icon { color: #94A3B8; transition: transform 0.2s; font-size: 12px; }
+    .summary-label { color: #64748B; font-size: 13px; font-weight: 500; }
+    .toggle-icon { color: #CBD5E1; transition: transform .25s; font-size: 14px; }
     details[open] .toggle-icon { transform: rotate(180deg); }
-    .details-body { padding: 20px; }
+    .details-body { padding: 20px 24px; }
 
-    .ir-charts { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px; }
+    /* ── ハイライトセクション ── */
+    .highlight-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+    }
+    .highlight-item {
+      background: linear-gradient(135deg,#F0F9FF,white);
+      border: 1px solid #BAE6FD;
+      border-left: 4px solid #0EA5E9;
+      border-radius: 9px; padding: 12px 15px;
+      font-size: 13px; color: #0F172A; line-height: 1.55; font-weight: 500;
+    }
+
+    /* ── 重要ニュース ── */
+    .breaking-banner {
+      background: linear-gradient(135deg,#EF4444,#B91C1C);
+      color: white; padding: 8px 24px;
+      font-size: 10px; font-weight: 800;
+      letter-spacing: 2.5px; text-transform: uppercase;
+    }
+
+    /* ── IR メトリクス ── */
+    .metric-grid {
+      display: grid; grid-template-columns: repeat(auto-fit,minmax(130px,1fr));
+      gap: 12px; margin-bottom: 20px;
+    }
+    .metric-card {
+      background: linear-gradient(135deg,#EFF6FF,white);
+      border: 1px solid #BFDBFE; border-radius: 12px;
+      padding: 16px; text-align: center;
+    }
+    .metric-value { font-size: 21px; font-weight: 800; color: #1D4ED8; line-height: 1.2; }
+    .metric-label { font-size: 10px; color: #64748B; margin-top: 4px; font-weight: 500; }
+    .metric-trend { font-size: 11px; font-weight: 700; margin-top: 4px; }
+    .trend-up   { color: #059669; }
+    .trend-down { color: #EF4444; }
+    .ir-charts { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px; }
     .chart-box {
-      position: relative;
-      height: 240px;
-      padding: 10px;
-      border: 1px solid #E2E8F0;
-      border-radius: 8px;
-      background: #FAFAFA;
+      position: relative; height: 220px; padding: 12px;
+      border: 1px solid #E2E8F0; border-radius: 12px; background: #FAFCFF;
     }
-    .ir-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+    .ir-table { width: 100%; border-collapse: collapse; font-size: 12px; margin-top: 16px; }
     .ir-table th {
-      background: #F8FAFC;
-      padding: 8px 10px;
-      text-align: left;
-      font-weight: 600;
-      border-bottom: 2px solid #E2E8F0;
-      color: #475569;
-      white-space: nowrap;
+      background: #F8FAFC; padding: 10px 12px; text-align: left;
+      font-weight: 700; border-bottom: 2px solid #E2E8F0;
+      color: #475569; white-space: nowrap;
     }
-    .ir-table td { padding: 8px 10px; border-bottom: 1px solid #F1F5F9; }
+    .ir-table td { padding: 10px 12px; border-bottom: 1px solid #F1F5F9; vertical-align: top; }
     .ir-table tr:hover td { background: #F8FAFC; }
-    .tag-up { color: #059669; font-weight: 600; }
-    .tag-down { color: #DC2626; font-weight: 600; }
-    .tag-neutral { color: #64748B; }
+    .tag-up   { color: #059669; font-weight: 700; }
+    .tag-down { color: #EF4444; font-weight: 700; }
 
+    /* ── フッター ── */
     .footer {
-      background: #1E293B;
-      color: #94A3B8;
-      text-align: center;
-      padding: 20px;
-      font-size: 12px;
-      margin-top: 24px;
-      line-height: 2;
+      background: #0F172A; color: #475569;
+      text-align: center; padding: 28px;
+      font-size: 12px; margin-top: 32px; line-height: 2.2;
     }
 
+    /* ── レスポンシブ ── */
     @media (max-width: 768px) {
       .container { padding: 16px; }
-      .header-inner { flex-wrap: wrap; gap: 8px; }
+      .header-inner { flex-wrap: wrap; }
       .header h1 { font-size: 16px; }
-      .ir-charts { grid-template-columns: 1fr; }
-      .highlight-list { grid-template-columns: 1fr; }
+      .ir-charts, .highlight-grid { grid-template-columns: 1fr; }
+      .metric-grid { grid-template-columns: repeat(2,1fr); }
       .category-nav { position: relative; top: auto; }
     }
 """
@@ -333,18 +359,30 @@ HTML_CLASS_GUIDE = """
 【使用するHTMLクラス構造】
 
 通常セクション(type=accordion):
-<section id="{cat_id}" class="section-card">
-  <div class="section-header"><span class="section-title">{icon} {title}</span></div>
+<section id="{id}" class="section-card" data-cat="{id}">
+  <div class="section-header">
+    <div class="cat-icon">{icon}</div>
+    <div class="section-title-wrap">
+      <div class="section-title">{title}</div>
+      <div class="section-sub">最新 {N}件</div>
+    </div>
+    <span class="section-badge">{N}</span>
+  </div>
   <details open>
-    <summary><span class="summary-label">ニュース一覧</span><span class="toggle-icon">▼</span></summary>
+    <summary>
+      <span class="summary-label">ニュース一覧を見る</span>
+      <span class="toggle-icon">▼</span>
+    </summary>
     <div class="details-body">
       <ul class="news-list">
         <li class="news-item">
-          <span class="news-bullet">▸</span>
+          <div class="news-num">01</div>
           <div class="news-content">
             <div class="news-title">タイトル</div>
-            <div class="news-snippet">詳細内容</div>
-            <div class="news-source"><a href="URL">出典</a></div>
+            <div class="news-snippet">詳細内容（具体的に）</div>
+            <div class="news-meta">
+              <span class="news-source"><a href="URL">出典</a></span>
+            </div>
           </div>
         </li>
       </ul>
@@ -353,17 +391,39 @@ HTML_CLASS_GUIDE = """
 </section>
 
 重要ニュース(type=breaking):
-<section id="breaking" class="section-card breaking-card">
-  <div class="section-header"><span class="section-title">🚨 重要ニュース</span></div>
+<section id="breaking" class="section-card" data-cat="breaking">
+  <div class="breaking-banner">🚨 BREAKING — 重要ニュース</div>
+  <div class="section-header">
+    <div class="cat-icon">🚨</div>
+    <div class="section-title-wrap">
+      <div class="section-title">重要ニュース</div>
+      <div class="section-sub">本日の注目トピック</div>
+    </div>
+    <span class="section-badge">{N}</span>
+  </div>
   <div class="section-body">
     <ul class="news-list">（ニュースアイテム）</ul>
   </div>
 </section>
 
 IRセクション(type=ir):
-<section id="ir" class="section-card">
-  <div class="section-header"><span class="section-title">📊 IR・決算情報</span></div>
+<section id="ir" class="section-card" data-cat="ir">
+  <div class="section-header">
+    <div class="cat-icon">📊</div>
+    <div class="section-title-wrap">
+      <div class="section-title">IR・決算情報</div>
+      <div class="section-sub">主要EC企業の業績</div>
+    </div>
+  </div>
   <div class="section-body">
+    <div class="metric-grid">
+      <div class="metric-card">
+        <div class="metric-value">X.X兆円</div>
+        <div class="metric-label">楽天グループ売上</div>
+        <div class="metric-trend trend-up">↑ X.X%</div>
+      </div>
+      （企業ごとにmetric-cardを追加）
+    </div>
     <div class="ir-charts">
       <div class="chart-box"><canvas id="revenueChart"></canvas></div>
       <div class="chart-box"><canvas id="growthChart"></canvas></div>
@@ -373,7 +433,10 @@ IRセクション(type=ir):
       <tbody>...</tbody>
     </table>
     <ul class="news-list">（IRニュース）</ul>
-    <script>/* Chart.js初期化 */</script>
+    <script>
+      new Chart(document.getElementById('revenueChart'),{type:'bar',data:{labels:[...],datasets:[{label:'売上高（億円）',data:[...],backgroundColor:'#2563EB',borderRadius:6}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}}}});
+      new Chart(document.getElementById('growthChart'),{type:'bar',data:{labels:[...],datasets:[{label:'成長率（%）',data:[...],backgroundColor:'#059669',borderRadius:6}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}}}});
+    </script>
   </div>
 </section>
 """
@@ -394,7 +457,7 @@ def get_jst_date() -> str:
 
 
 # ── 2. ニュース収集 ────────────────────────────────────────────
-def ddg_search(query: str, max_results: int = 4) -> list[dict]:
+def ddg_search(query: str, max_results: int = 5) -> list[dict]:
     results = []
     try:
         q = urllib.parse.quote_plus(query)
@@ -425,18 +488,27 @@ def ddg_search(query: str, max_results: int = 4) -> list[dict]:
 
 
 def collect_all_news(date_str: str) -> dict:
-    year, month, day = date_str.split("-")
-    date_jp = f"{year}年{month}月{day}日"
+    year, month, _ = date_str.split("-")
+    yearmonth = f"{year}年{month}月"
+    year_str  = f"{year}年"
+
     news = {}
     for cat in CATEGORIES:
         cat_id = cat["id"]
         news[cat_id] = []
         for query_tmpl in cat["queries"]:
-            query = query_tmpl.format(date=date_jp, year=f"{year}年")
+            query = query_tmpl.format(yearmonth=yearmonth, year=year_str)
             print(f"  🔍 [{cat_id}] {query[:50]}...")
             results = ddg_search(query, max_results=4)
             news[cat_id].extend(results)
             time.sleep(0.5)
+
+        # 取得不足時のフォールバック（日時なし広域クエリ）
+        if len(news[cat_id]) < 3:
+            fallback = re.sub(r"\{[^}]+\}", "", cat["queries"][0]).strip()
+            print(f"  [FALLBACK] {cat_id}: 広域クエリ再試行...")
+            news[cat_id].extend(ddg_search(fallback, max_results=5))
+
     return news
 
 
@@ -497,27 +569,29 @@ def generate_summary_section(news: dict, date_jp: str) -> str:
         if items:
             top_snippets.append(f"[{cat['title']}] {items[0]['snippet'][:80]}")
 
-    prompt = f"""EC業界ダッシュボード {date_jp} の「本日のハイライト」セクションのHTMLを生成してください。
+    prompt = f"""EC業界ダッシュボード {date_jp} の「本日のハイライト」セクションを生成してください。
 
 【ニュースサマリー】
 {chr(10).join(top_snippets)}
 
-以下の構造で出力してください:
-<section id="summary" class="section-card">
-  <div class="section-header"><span class="section-title">✨ 本日のハイライト</span></div>
+以下の構造で出力してください（コードブロック記号```不要、<section>タグのみ）:
+
+<section id="summary" class="section-card" data-cat="ir">
+  <div class="section-header">
+    <div class="cat-icon">✨</div>
+    <div class="section-title-wrap">
+      <div class="section-title">本日のハイライト</div>
+      <div class="section-sub">{date_jp} EC業界トピックス</div>
+    </div>
+  </div>
   <div class="section-body">
-    <div class="highlight-section">
-      <div class="highlight-title">📋 {date_jp} EC業界トピックス</div>
-      <ul class="highlight-list">
-        <li>（ハイライト項目）</li>
-      </ul>
+    <div class="highlight-grid">
+      <div class="highlight-item">ハイライト1</div>
+      （6〜8項目、各40文字以内、具体的に）
     </div>
   </div>
 </section>
-
-重要ポイントを6〜8項目、各40文字以内で簡潔にまとめてください。
-コードブロック記号```は不要。<section>タグのみ出力。"""
-
+"""
     return clean_output(call_gemini(prompt))
 
 
@@ -538,10 +612,10 @@ def generate_sections_batch(categories_batch: list, news: dict, date_jp: str) ->
     if any(cat["id"] == "ir" for cat in categories_batch):
         ir_extra = """
 IRセクション追加指示:
-- ir-chartsにChart.js棒グラフを2つ（revenueChart: 売上高, growthChart: 成長率）
-- セクション内に<script>タグでChart.js初期化コードを含める
-- ニュースデータから数値を推測（不明は0）
-- ir-tableで企業別テーブルも表示（企業名・最新売上・前年比・注目ポイント）
+- metric-gridにEC主要企業（楽天/メルカリ/ZOZO/BASE/Amazon等）のmetric-cardを5〜6個配置
+- 数値はニュースデータから推測、不明は「-」
+- Chart.jsコードはscriptタグ内にまとめて記述
+- ir-tableで詳細テーブルも表示
 """
 
     prompt = f"""EC業界ダッシュボード {date_jp} のHTMLセクション群を生成してください。
@@ -556,8 +630,10 @@ IRセクション追加指示:
 
 【出力ルール】
 - 各セクションを<section>タグで生成（<!DOCTYPE html>等は不要）
-- ニュース項目はURLをそのまま<a href>に使用
-- 内容は具体的に日本語で記述
+- data-cat属性に必ずカテゴリIDを設定（例: data-cat="platform"）
+- ニュース項目のURLをそのまま<a href>に使用
+- 内容は具体的な日本語で記述（抽象的な表現は避ける）
+- ニュースがない場合は「本日の情報収集中です」と表示
 - コードブロック記号```は絶対に使わない
 - 最初の文字は必ず<section で始める
 """
@@ -569,7 +645,8 @@ def build_html_shell(date_str: str, body_content: str) -> str:
     date_jp = f"{year}年{month}月{day}日"
 
     nav_links = "\n      ".join(
-        f'<a href="#{cat["id"]}" class="nav-link">{cat["icon"]} {cat["title"]}</a>'
+        f'<a href="#{cat["id"]}" class="nav-link" data-cat="{cat["id"]}" '
+        f'style="--cc:{cat["color"]};--cb:{cat["bg"]}">{cat["icon"]} {cat["title"]}</a>'
         for cat in CATEGORIES
     )
 
@@ -579,7 +656,7 @@ def build_html_shell(date_str: str, body_content: str) -> str:
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>EC業界ダッシュボード - {date_jp}</title>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;800&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
 {CSS}
@@ -589,14 +666,22 @@ def build_html_shell(date_str: str, body_content: str) -> str:
 
 <header class="header">
   <div class="header-inner">
-    <h1>📈 EC業界ダッシュボード</h1>
-    <span class="date-badge">{date_jp}</span>
+    <div class="header-left">
+      <div class="header-logo">📈</div>
+      <div>
+        <h1>EC業界ダッシュボード</h1>
+        <div class="header-sub">毎日自動更新 · Powered by Gemini AI</div>
+      </div>
+    </div>
+    <div class="header-badge">
+      <span class="live-dot"></span>{date_jp}
+    </div>
   </div>
 </header>
 
 <nav class="category-nav">
   <div class="category-nav-inner">
-    <a href="#summary" class="nav-link">✨ ハイライト</a>
+    <a href="#summary" class="nav-link" style="--cc:#0EA5E9;--cb:#F0F9FF">✨ ハイライト</a>
     {nav_links}
   </div>
 </nav>
@@ -606,8 +691,8 @@ def build_html_shell(date_str: str, body_content: str) -> str:
 </main>
 
 <footer class="footer">
-  <p>本ダッシュボードは自動生成です。情報の正確性は保証しません。</p>
-  <p>生成日時: {date_jp} ｜ Powered by Gemini API + DuckDuckGo</p>
+  <div>本ダッシュボードはAIが自動生成しています。情報の正確性は保証しません。</div>
+  <div>更新日時: {date_jp} ｜ Powered by Gemini API + DuckDuckGo</div>
 </footer>
 
 </body>
@@ -615,6 +700,7 @@ def build_html_shell(date_str: str, body_content: str) -> str:
 
 
 def generate_html(date_str: str, news: dict) -> str:
+    _, _, _ = date_str.split("-")
     year, month, day = date_str.split("-")
     date_jp = f"{year}年{month}月{day}日"
     sections = []
