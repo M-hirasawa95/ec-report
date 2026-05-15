@@ -520,7 +520,7 @@ def call_gemini(prompt: str, retries: int = 3) -> str:
     )
     payload = json.dumps({
         "contents": [{"parts": [{"text": prompt}]}],
-        "generationConfig": {"maxOutputTokens": 8192, "temperature": 0.7},
+        "generationConfig": {"maxOutputTokens": 16384, "temperature": 0.7},
     }).encode()
 
     for attempt in range(retries):
@@ -719,9 +719,14 @@ def generate_html(date_str: str, news: dict) -> str:
     sections.append(generate_sections_batch(batch2, news, date_jp))
     time.sleep(5)
 
-    print("  🤖 Batch3: 法規制〜マーケティング...")
-    batch3 = [c for c in CATEGORIES if c["id"] in ("legal", "competitor", "cart", "tools", "marketing")]
+    print("  🤖 Batch3: 法規制・他社EC・カート...")
+    batch3 = [c for c in CATEGORIES if c["id"] in ("legal", "competitor", "cart")]
     sections.append(generate_sections_batch(batch3, news, date_jp))
+    time.sleep(5)
+
+    print("  🤖 Batch4: ツール・マーケティング...")
+    batch4 = [c for c in CATEGORIES if c["id"] in ("tools", "marketing")]
+    sections.append(generate_sections_batch(batch4, news, date_jp))
 
     return build_html_shell(date_str, "\n\n".join(sections))
 
