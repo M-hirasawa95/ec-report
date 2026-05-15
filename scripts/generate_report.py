@@ -26,7 +26,7 @@ GH_REPO   = "ec-report"
 GH_FILE   = "index.html"
 GH_BRANCH = "main"
 
-GEMINI_MODEL = "gemini-1.5-flash"
+GEMINI_MODEL = "gemini-2.5-flash-lite"
 
 
 # ── 1. JST 日付取得 ──────────────────────────────────────────
