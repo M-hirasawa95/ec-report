@@ -4,198 +4,246 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>EC業界ダッシュボード - 2026年05月15日</title>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;800&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
 
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body {
-      font-family: 'Noto Sans JP', sans-serif;
-      background: #F1F5F9;
-      color: #1E293B;
-      font-size: 14px;
-      line-height: 1.6;
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --radius: 16px;
+      --shadow: 0 4px 24px rgba(0,0,0,0.07), 0 1px 4px rgba(0,0,0,0.04);
+      --border: rgba(0,0,0,0.06);
     }
-    a { color: #2563EB; text-decoration: none; }
-    a:hover { text-decoration: underline; }
+    body {
+      font-family: 'Noto Sans JP', -apple-system, sans-serif;
+      background: #F0F4FF;
+      color: #0F172A;
+      font-size: 14px;
+      line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: inherit; text-decoration: none; }
+    a:hover { opacity: 0.75; }
 
+    /* ── カテゴリカラーマップ ── */
+    [data-cat]              { --cc: #2563EB; --cb: #EFF6FF; }
+    [data-cat="breaking"]   { --cc: #EF4444; --cb: #FFF5F5; }
+    [data-cat="ir"]         { --cc: #2563EB; --cb: #EFF6FF; }
+    [data-cat="platform"]   { --cc: #7C3AED; --cb: #F5F3FF; }
+    [data-cat="ads"]        { --cc: #D97706; --cb: #FFFBEB; }
+    [data-cat="logistics"]  { --cc: #059669; --cb: #ECFDF5; }
+    [data-cat="consumer"]   { --cc: #EC4899; --cb: #FDF2F8; }
+    [data-cat="legal"]      { --cc: #6366F1; --cb: #EEF2FF; }
+    [data-cat="competitor"] { --cc: #0891B2; --cb: #ECFEFF; }
+    [data-cat="cart"]       { --cc: #8B5CF6; --cb: #FAF5FF; }
+    [data-cat="tools"]      { --cc: #16A34A; --cb: #F0FDF4; }
+    [data-cat="marketing"]  { --cc: #EA580C; --cb: #FFF7ED; }
+
+    /* ── ヘッダー ── */
     .header {
-      background: linear-gradient(135deg, #1E40AF, #2563EB);
+      background: linear-gradient(135deg, #0F172A 0%, #1E3A8A 100%);
       color: white;
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+      position: sticky; top: 0; z-index: 100;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.3);
     }
     .header-inner {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 14px 24px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
+      max-width: 1200px; margin: 0 auto;
+      padding: 16px 28px;
+      display: flex; align-items: center; justify-content: space-between; gap: 16px;
     }
-    .header h1 { font-size: 20px; font-weight: 700; }
-    .date-badge {
-      background: rgba(255,255,255,0.25);
-      padding: 4px 14px;
-      border-radius: 20px;
-      font-size: 13px;
-      font-weight: 500;
+    .header-left { display: flex; align-items: center; gap: 12px; }
+    .header-logo {
+      width: 38px; height: 38px; border-radius: 10px;
+      background: linear-gradient(135deg,#60A5FA,#2563EB);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 20px;
     }
+    .header h1 { font-size: 19px; font-weight: 800; letter-spacing: -0.3px; }
+    .header-sub { font-size: 11px; color: rgba(255,255,255,0.5); margin-top: 1px; }
+    .header-badge {
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.2);
+      padding: 6px 16px; border-radius: 24px;
+      font-size: 13px; font-weight: 600;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .live-dot {
+      width: 7px; height: 7px; border-radius: 50%;
+      background: #4ADE80;
+      animation: blink 2s infinite;
+    }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:.3} }
 
+    /* ── ナビゲーション ── */
     .category-nav {
       background: white;
-      border-bottom: 1px solid #E2E8F0;
-      overflow-x: auto;
-      white-space: nowrap;
-      position: sticky;
-      top: 52px;
-      z-index: 99;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+      border-bottom: 1px solid var(--border);
+      overflow-x: auto; white-space: nowrap;
+      position: sticky; top: 58px; z-index: 99;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+      scrollbar-width: none;
     }
+    .category-nav::-webkit-scrollbar { display: none; }
     .category-nav-inner {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 0 24px;
-      display: flex;
+      max-width: 1200px; margin: 0 auto;
+      padding: 8px 28px;
+      display: flex; gap: 6px;
     }
     .nav-link {
-      display: inline-block;
-      padding: 10px 12px;
-      text-decoration: none !important;
-      color: #64748B;
-      font-size: 12px;
-      font-weight: 500;
-      border-bottom: 2px solid transparent;
-      transition: all 0.2s;
+      display: inline-flex; align-items: center; gap: 5px;
+      padding: 6px 14px; border-radius: 24px;
+      font-size: 12px; font-weight: 600;
+      background: #F1F5F9; color: #64748B;
+      transition: all .2s; white-space: nowrap;
     }
-    .nav-link:hover { color: #2563EB; border-bottom-color: #2563EB; }
+    .nav-link:hover { background: var(--cb,#EFF6FF); color: var(--cc,#2563EB); opacity:1; }
 
-    .container { max-width: 1200px; margin: 0 auto; padding: 24px; }
+    /* ── コンテナ ── */
+    .container { max-width: 1200px; margin: 0 auto; padding: 28px; }
 
+    /* ── セクションカード ── */
     .section-card {
       background: white;
-      border-radius: 12px;
-      border: 1px solid #E2E8F0;
-      margin-bottom: 20px;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      margin-bottom: 24px;
       overflow: hidden;
-      box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+      border: 1px solid var(--border);
+      border-left: 4px solid var(--cc, #2563EB);
     }
     .section-header {
-      padding: 14px 20px;
-      border-bottom: 1px solid #E2E8F0;
-      background: #F8FAFC;
+      padding: 18px 24px;
+      background: linear-gradient(120deg, var(--cb,#EFF6FF) 0%, rgba(255,255,255,0) 65%);
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; gap: 14px;
     }
-    .section-title { font-size: 15px; font-weight: 700; color: #1E293B; }
-    .section-body { padding: 20px; }
+    .cat-icon {
+      width: 46px; height: 46px; border-radius: 13px;
+      background: var(--cc,#2563EB);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 22px; flex-shrink: 0;
+      box-shadow: 0 4px 12px color-mix(in srgb, var(--cc,#2563EB) 30%, transparent);
+    }
+    .section-title-wrap { flex: 1; }
+    .section-title { font-size: 16px; font-weight: 800; color: #0F172A; }
+    .section-sub { font-size: 11px; color: #94A3B8; margin-top: 2px; }
+    .section-badge {
+      background: var(--cc,#2563EB); color: white;
+      padding: 3px 12px; border-radius: 20px;
+      font-size: 11px; font-weight: 700; flex-shrink: 0;
+    }
+    .section-body { padding: 20px 24px; }
 
-    .highlight-section {
-      background: #EFF6FF;
-      border: 1px solid #BFDBFE;
-      border-radius: 8px;
-      padding: 16px 20px;
-    }
-    .highlight-title { font-weight: 700; color: #1D4ED8; margin-bottom: 12px; font-size: 14px; }
-    .highlight-list {
-      list-style: none;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 8px 32px;
-    }
-    .highlight-list li {
-      color: #1E293B;
-      font-size: 13px;
-      padding-left: 16px;
-      position: relative;
-      line-height: 1.5;
-    }
-    .highlight-list li::before {
-      content: '▸';
-      position: absolute;
-      left: 0;
-      color: #2563EB;
-      font-size: 10px;
-      top: 3px;
-    }
-
-    .breaking-card { border-top: 3px solid #EF4444; }
-    .breaking-card .section-header { background: #FFF5F5; }
-    .breaking-card .section-title { color: #DC2626; }
-
+    /* ── ニュースアイテム ── */
     .news-list { list-style: none; }
     .news-item {
-      padding: 10px 0;
-      border-bottom: 1px solid #F1F5F9;
-      display: flex;
-      gap: 10px;
+      display: flex; gap: 14px;
+      padding: 14px 0;
+      border-bottom: 1px solid #F8FAFC;
       align-items: flex-start;
     }
-    .news-item:last-child { border-bottom: none; }
-    .news-bullet { color: #2563EB; font-size: 10px; flex-shrink: 0; margin-top: 4px; }
+    .news-item:last-child { border-bottom: none; padding-bottom: 0; }
+    .news-num {
+      min-width: 28px; height: 28px; border-radius: 8px;
+      background: var(--cc,#2563EB); color: white;
+      font-size: 11px; font-weight: 800;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; margin-top: 1px;
+    }
     .news-content { flex: 1; min-width: 0; }
-    .news-title { font-weight: 600; color: #1E293B; margin-bottom: 3px; font-size: 13px; }
-    .news-snippet { color: #64748B; font-size: 12px; line-height: 1.6; }
-    .news-source { color: #94A3B8; font-size: 11px; margin-top: 3px; }
+    .news-title { font-weight: 700; color: #0F172A; font-size: 13px; line-height: 1.5; margin-bottom: 4px; }
+    .news-snippet { color: #64748B; font-size: 12px; line-height: 1.65; margin-bottom: 7px; }
+    .news-meta { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+    .news-source {
+      background: #F1F5F9; color: #64748B;
+      padding: 2px 9px; border-radius: 5px;
+      font-size: 10px; font-weight: 600;
+    }
+    .news-tag {
+      background: var(--cb,#EFF6FF); color: var(--cc,#2563EB);
+      padding: 2px 9px; border-radius: 5px;
+      font-size: 10px; font-weight: 600;
+    }
 
+    /* ── アコーディオン ── */
     details summary {
-      list-style: none;
-      cursor: pointer;
-      padding: 12px 20px;
-      border-bottom: 1px solid #E2E8F0;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      background: #F8FAFC;
-      user-select: none;
+      list-style: none; cursor: pointer;
+      padding: 14px 24px;
+      display: flex; align-items: center; justify-content: space-between;
+      border-bottom: 1px solid var(--border);
+      background: #FAFBFF; user-select: none;
     }
     details summary::-webkit-details-marker { display: none; }
-    .summary-label { color: #475569; font-size: 13px; }
-    .toggle-icon { color: #94A3B8; transition: transform 0.2s; font-size: 12px; }
+    .summary-label { color: #64748B; font-size: 13px; font-weight: 500; }
+    .toggle-icon { color: #CBD5E1; transition: transform .25s; font-size: 14px; }
     details[open] .toggle-icon { transform: rotate(180deg); }
-    .details-body { padding: 20px; }
+    .details-body { padding: 20px 24px; }
 
-    .ir-charts { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px; }
+    /* ── ハイライトセクション ── */
+    .highlight-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+    }
+    .highlight-item {
+      background: linear-gradient(135deg,#F0F9FF,white);
+      border: 1px solid #BAE6FD;
+      border-left: 4px solid #0EA5E9;
+      border-radius: 9px; padding: 12px 15px;
+      font-size: 13px; color: #0F172A; line-height: 1.55; font-weight: 500;
+    }
+
+    /* ── 重要ニュース ── */
+    .breaking-banner {
+      background: linear-gradient(135deg,#EF4444,#B91C1C);
+      color: white; padding: 8px 24px;
+      font-size: 10px; font-weight: 800;
+      letter-spacing: 2.5px; text-transform: uppercase;
+    }
+
+    /* ── IR メトリクス ── */
+    .metric-grid {
+      display: grid; grid-template-columns: repeat(auto-fit,minmax(130px,1fr));
+      gap: 12px; margin-bottom: 20px;
+    }
+    .metric-card {
+      background: linear-gradient(135deg,#EFF6FF,white);
+      border: 1px solid #BFDBFE; border-radius: 12px;
+      padding: 16px; text-align: center;
+    }
+    .metric-value { font-size: 21px; font-weight: 800; color: #1D4ED8; line-height: 1.2; }
+    .metric-label { font-size: 10px; color: #64748B; margin-top: 4px; font-weight: 500; }
+    .metric-trend { font-size: 11px; font-weight: 700; margin-top: 4px; }
+    .trend-up   { color: #059669; }
+    .trend-down { color: #EF4444; }
+    .ir-charts { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px; }
     .chart-box {
-      position: relative;
-      height: 240px;
-      padding: 10px;
-      border: 1px solid #E2E8F0;
-      border-radius: 8px;
-      background: #FAFAFA;
+      position: relative; height: 220px; padding: 12px;
+      border: 1px solid #E2E8F0; border-radius: 12px; background: #FAFCFF;
     }
-    .ir-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+    .ir-table { width: 100%; border-collapse: collapse; font-size: 12px; margin-top: 16px; }
     .ir-table th {
-      background: #F8FAFC;
-      padding: 8px 10px;
-      text-align: left;
-      font-weight: 600;
-      border-bottom: 2px solid #E2E8F0;
-      color: #475569;
-      white-space: nowrap;
+      background: #F8FAFC; padding: 10px 12px; text-align: left;
+      font-weight: 700; border-bottom: 2px solid #E2E8F0;
+      color: #475569; white-space: nowrap;
     }
-    .ir-table td { padding: 8px 10px; border-bottom: 1px solid #F1F5F9; }
+    .ir-table td { padding: 10px 12px; border-bottom: 1px solid #F1F5F9; vertical-align: top; }
     .ir-table tr:hover td { background: #F8FAFC; }
-    .tag-up { color: #059669; font-weight: 600; }
-    .tag-down { color: #DC2626; font-weight: 600; }
-    .tag-neutral { color: #64748B; }
+    .tag-up   { color: #059669; font-weight: 700; }
+    .tag-down { color: #EF4444; font-weight: 700; }
 
+    /* ── フッター ── */
     .footer {
-      background: #1E293B;
-      color: #94A3B8;
-      text-align: center;
-      padding: 20px;
-      font-size: 12px;
-      margin-top: 24px;
-      line-height: 2;
+      background: #0F172A; color: #475569;
+      text-align: center; padding: 28px;
+      font-size: 12px; margin-top: 32px; line-height: 2.2;
     }
 
+    /* ── レスポンシブ ── */
     @media (max-width: 768px) {
       .container { padding: 16px; }
-      .header-inner { flex-wrap: wrap; gap: 8px; }
+      .header-inner { flex-wrap: wrap; }
       .header h1 { font-size: 16px; }
-      .ir-charts { grid-template-columns: 1fr; }
-      .highlight-list { grid-template-columns: 1fr; }
+      .ir-charts, .highlight-grid { grid-template-columns: 1fr; }
+      .metric-grid { grid-template-columns: repeat(2,1fr); }
       .category-nav { position: relative; top: auto; }
     }
 
@@ -205,115 +253,140 @@
 
 <header class="header">
   <div class="header-inner">
-    <h1>📈 EC業界ダッシュボード</h1>
-    <span class="date-badge">2026年05月15日</span>
+    <div class="header-left">
+      <div class="header-logo">📈</div>
+      <div>
+        <h1>EC業界ダッシュボード</h1>
+        <div class="header-sub">毎日自動更新 · Powered by Gemini AI</div>
+      </div>
+    </div>
+    <div class="header-badge">
+      <span class="live-dot"></span>2026年05月15日
+    </div>
   </div>
 </header>
 
 <nav class="category-nav">
   <div class="category-nav-inner">
-    <a href="#summary" class="nav-link">✨ ハイライト</a>
-    <a href="#breaking" class="nav-link">🚨 重要ニュース</a>
-      <a href="#ir" class="nav-link">📊 IR・決算情報</a>
-      <a href="#platform" class="nav-link">🛒 プラットフォーム動向</a>
-      <a href="#ads" class="nav-link">📢 広告・マーケティング費用</a>
-      <a href="#logistics" class="nav-link">🚚 物流・フルフィルメント</a>
-      <a href="#consumer" class="nav-link">👥 消費者トレンド</a>
-      <a href="#legal" class="nav-link">⚖️ 法規制・業界ニュース</a>
-      <a href="#competitor" class="nav-link">🏪 他社EC運営情報</a>
-      <a href="#cart" class="nav-link">🖥️ ECカートシステム</a>
-      <a href="#tools" class="nav-link">🔧 ECツール情報</a>
-      <a href="#marketing" class="nav-link">📣 マーケティング全般</a>
+    <a href="#summary" class="nav-link" style="--cc:#0EA5E9;--cb:#F0F9FF">✨ ハイライト</a>
+    <a href="#breaking" class="nav-link" data-cat="breaking" style="--cc:#EF4444;--cb:#FFF5F5">🚨 重要ニュース</a>
+      <a href="#ir" class="nav-link" data-cat="ir" style="--cc:#2563EB;--cb:#EFF6FF">📊 IR・決算情報</a>
+      <a href="#platform" class="nav-link" data-cat="platform" style="--cc:#7C3AED;--cb:#F5F3FF">🛒 プラットフォーム動向</a>
+      <a href="#ads" class="nav-link" data-cat="ads" style="--cc:#D97706;--cb:#FFFBEB">📢 広告・マーケティング費用</a>
+      <a href="#logistics" class="nav-link" data-cat="logistics" style="--cc:#059669;--cb:#ECFDF5">🚚 物流・フルフィルメント</a>
+      <a href="#consumer" class="nav-link" data-cat="consumer" style="--cc:#EC4899;--cb:#FDF2F8">👥 消費者トレンド</a>
+      <a href="#legal" class="nav-link" data-cat="legal" style="--cc:#6366F1;--cb:#EEF2FF">⚖️ 法規制・業界ニュース</a>
+      <a href="#competitor" class="nav-link" data-cat="competitor" style="--cc:#0891B2;--cb:#ECFEFF">🏪 他社EC運営情報</a>
+      <a href="#cart" class="nav-link" data-cat="cart" style="--cc:#8B5CF6;--cb:#FAF5FF">🖥️ ECカートシステム</a>
+      <a href="#tools" class="nav-link" data-cat="tools" style="--cc:#16A34A;--cb:#F0FDF4">🔧 ECツール情報</a>
+      <a href="#marketing" class="nav-link" data-cat="marketing" style="--cc:#EA580C;--cb:#FFF7ED">📣 マーケティング全般</a>
   </div>
 </nav>
 
 <main class="container">
-<section id="summary" class="section-card">
-  <div class="section-header"><span class="section-title">✨ 本日のハイライト</span></div>
+<section id="summary" class="section-card" data-cat="ir">
+  <div class="section-header">
+    <div class="cat-icon">✨</div>
+    <div class="section-title-wrap">
+      <div class="section-title">本日のハイライト</div>
+      <div class="section-sub">2026年05月15日 EC業界トピックス</div>
+    </div>
+  </div>
   <div class="section-body">
-    <div class="highlight-section">
-      <div class="highlight-title">📋 2026年05月15日 EC業界トピックス</div>
-      <ul class="highlight-list">
-        <li>NRF 2026：Agentic Commerce実装へ</li>
-        <li>Google UCP発表、ECへの影響は？</li>
-        <li>楽天G 2026年度決算説明会開催</li>
-        <li>Yahoo!ショッピング有料化9月開始</li>
-        <li>ECモール手数料比較と対策</li>
-        <li>2026年広告費用相場最新データ</li>
-        <li>媒体別広告費用CPM比較表</li>
-        <li>ROI/ROAS/CPA計算方法解説</li>
-      </ul>
+    <div class="highlight-grid">
+      <div class="highlight-item">2028年、ECプラットフォームが消費税代行徴収へ</div>
+      <div class="highlight-item">楽天G、2026年度決算説明会資料を公開</div>
+      <div class="highlight-item">Yahoo!ショッピング、9月以降の新料金プラン発表</div>
+      <div class="highlight-item">2026年、媒体別広告費用相場をCPMで比較</div>
+      <div class="highlight-item">物流契約見直し、ヤマト・佐川値上げ対応</div>
+      <div class="highlight-item">日経トレンディ、2026年ヒット・ブレイク予測発表</div>
+      <div class="highlight-item">改正特商法3年、定期購入規制の現状と今後</div>
     </div>
   </div>
 </section>
 
-<section id="breaking" class="section-card breaking-card">
-  <div class="section-header"><span class="section-title">🚨 重要ニュース</span></div>
+<section id="breaking" class="section-card" data-cat="breaking">
+  <div class="breaking-banner">🚨 BREAKING — 重要ニュース</div>
+  <div class="section-header">
+    <div class="cat-icon">🚨</div>
+    <div class="section-title-wrap">
+      <div class="section-title">重要ニュース</div>
+      <div class="section-sub">本日の注目トピック</div>
+    </div>
+    <span class="section-badge">3</span>
+  </div>
   <div class="section-body">
     <ul class="news-list">
       <li class="news-item">
-        <span class="news-bullet">▸</span>
+        <div class="news-num">01</div>
         <div class="news-content">
-          <div class="news-title">NRF&#x27;26 速報：ChatGPT・Geminiが「新たな売場」になる。EC事業者が今すぐ備えるべきAgentic Commerce実践論</div>
-          <div class="news-snippet">NRF 2026現地速報。Agentic Commerce（エージェンティック・コマース）が実装フェーズへ進む中、GoogleのUCP発表など、Google、Microsoft、OpenAIなど主要プラットフォーマーの動向を整理し、日本企業が備えるべき準備（データ整備／パートナー戦略／実装マインド）を解説。</div>
-          <div class="news-source"><a href="www.dgbt.jp/news/topics/nrf26-report">出典</a></div>
+          <div class="news-title">【EC業界情報】週間ニュースまとめ（2026-05-14）</div>
+          <div class="news-snippet">日本政府は2028年4月1日から、ECプラットフォームによる消費税の代行徴収制度を導入する方針を明らかにしました。これは最新の税制改正大綱に盛り込まれています。</div>
+          <div class="news-meta">
+            <span class="news-source"><a href="m.sellersprite.com/jp/blog/week-news-20260514">出典</a></span>
+          </div>
         </div>
       </li>
       <li class="news-item">
-        <span class="news-bullet">▸</span>
+        <div class="news-num">02</div>
         <div class="news-content">
-          <div class="news-title">ECアナリストが警告!2026年ECはこう変わる【押さえるべき重要ポイント】 - YouTube</div>
-          <div class="news-snippet">【ECアナリストが本気で斬る!ECの未来通信】『2025年の市場振り返りと2026年以降の戦略ポイント』00:10 挨拶02:05 ①2025年のEC市場規模と物価上昇の ...</div>
-          <div class="news-source"><a href="www.youtube.com/watch?v=sbvbnjjBM-8">出典</a></div>
+          <div class="news-title">本日のECトップニュース3選【2026年05月13日】</div>
+          <div class="news-snippet">LINEヤフー（旧Yahoo!系）の2026年3月期eコマース取扱高が前期比8.2%増の4.2兆円となりました。これは5月12日の報道に基づいています。</div>
+          <div class="news-meta">
+            <span class="news-source"><a href="jp.linkedin.com/posts/yuki-date_ec-ecニュース-ecommerce-activity-7460253849941880832-efN7">出典</a></span>
+          </div>
         </div>
       </li>
       <li class="news-item">
-        <span class="news-bullet">▸</span>
+        <div class="news-num">03</div>
         <div class="news-content">
-          <div class="news-title">ECアナリストが警告!2026年ECはこう変わる【押さえるべき重要ポイント】【ECの未来®通信 Vol.1】 - EC・D2Cのモール運用代行 ...</div>
-          <div class="news-snippet">まとめ 2025年のEC市場は16.1兆円（前年比＋6％）と拡大するも、物価上昇の影響を除く実質成長は約4％に留まり、クーポン依存の限界から購入単価上昇が顕在化、モール依存から自社ECの再定義が急務となっています。</div>
-          <div class="news-source"><a href="savari.jp/ecnews/news-v001/">出典</a></div>
-        </div>
-      </li>
-      <li class="news-item">
-        <span class="news-bullet">▸</span>
-        <div class="news-content">
-          <div class="news-title">2026年 世界のEコマーストレンド｜越境ECとグローバル成長の鍵 | DHL Express 日本</div>
-          <div class="news-snippet">2026年に注目の世界的Eコマーストレンド7選と、効率的な物流を支えるDHL Expressのソリューションをご紹介します。</div>
-          <div class="news-source"><a href="www.dhl.com/discover/ja-jp/e-commerce-advice/trends-insights/the-top-e-commerce-trends-for-2026">出典</a></div>
-        </div>
-      </li>
-      <li class="news-item">
-        <span class="news-bullet">▸</span>
-        <div class="news-content">
-          <div class="news-title">2025年、EC業界を振り返る～そして2026年の展望は。</div>
-          <div class="news-snippet">ーー 2026/03/26 追記 ーー 下記の時間帯において、障害が発生しておりました。 発生日時 2026/03/16（月）15:00頃 ~ 2026/03/25（水）20:45頃 内容 Android端末をご利用の一部のお客さまにおいて、メルカリShopsの商品購入時にクレジットカード支払いを設定するとエラー ...</div>
-          <div class="news-source"><a href="status.jp.mercari.com/history">出典</a></div>
-        </div>
-      </li>
-      <li class="news-item">
-        <span class="news-bullet">▸</span>
-        <div class="news-content">
-          <div class="news-title">【リアルタイム更新】いま日本で発生している通信・アプリ・システム障害まとめ【2026年05月15日最新】 - 超解決</div>
-          <div class="news-snippet">【リアルタイム更新】いま日本で発生している通信・アプリ・システム障害まとめ【2026年05月15日最新】 最終確認時刻: 2026年05月15日 06:08 JST 現在、 Zoom、Cloudflare、Microsoft 365 で障害・不具合が報告されています。 詳細は以下をご確認ください。</div>
-          <div class="news-source"><a href="funshitsu.com/status/">出典</a></div>
-        </div>
-      </li>
-      <li class="news-item">
-        <span class="news-bullet">▸</span>
-        <div class="news-content">
-          <div class="news-title">【不具合】メルカリでシステム障害が発生中？発送できない・エラーが出る時の状況と対処法まとめ 2026年5月13日</div>
-          <div class="news-snippet">メルカリでシステム障害が発生している可能性について、状況と対処法をまとめた記事です。</div>
-          <div class="news-source"><a href="#">出典</a></div>
+          <div class="news-title">【2026年最新】EC業界トレンド5選｜AI活用・マルチモール運営・ライブコマースの最新動向</div>
+          <div class="news-snippet">2026年の日本のEC市場は、約29兆円規模に達すると予測されており、AI活用、マルチモール運営、ライブコマースなどの最新動向が注目されています。</div>
+          <div class="news-meta">
+            <span class="news-source"><a href="www.vj-bussan.com/ec-knowhow/ec-trend-2026-multimall-ai/">出典</a></span>
+          </div>
         </div>
       </li>
     </ul>
   </div>
 </section>
 
-<section id="ir" class="section-card">
-  <div class="section-header"><span class="section-title">📊 IR・決算情報</span></div>
+<section id="ir" class="section-card" data-cat="ir">
+  <div class="section-header">
+    <div class="cat-icon">📊</div>
+    <div class="section-title-wrap">
+      <div class="section-title">IR・決算情報</div>
+      <div class="section-sub">主要EC企業の業績</div>
+    </div>
+  </div>
   <div class="section-body">
+    <div class="metric-grid">
+      <div class="metric-card">
+        <div class="metric-value">推定 2.0兆円</div>
+        <div class="metric-label">楽天グループ売上</div>
+        <div class="metric-trend trend-up">↑ 8.2%</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-value">推定 6,660億円</div>
+        <div class="metric-label">ZOZO売上高(GMV)</div>
+        <div class="metric-trend trend-up">↑ 8.4%</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-value">348億円</div>
+        <div class="metric-label">メルカリ コア営業利益</div>
+        <div class="metric-trend trend-up">↑ 74.5%</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-value">-</div>
+        <div class="metric-label">Amazon Japan 売上</div>
+        <div class="metric-trend">-">--</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-value">-</div>
+        <div class="metric-label">BASE 売上</div>
+        <div class="metric-trend">-">--</div>
+      </div>
+    </div>
     <div class="ir-charts">
       <div class="chart-box"><canvas id="revenueChart"></canvas></div>
       <div class="chart-box"><canvas id="growthChart"></canvas></div>
@@ -323,208 +396,243 @@
       <tbody>
         <tr>
           <td>楽天グループ</td>
-          <td>1,500億円</td>
-          <td>+5%</td>
-          <td>新規事業への投資拡大、収益性改善へ</td>
+          <td>推定 2.0兆円 (2026/3期)</td>
+          <td>+8.2% (eコマース取扱高)</td>
+          <td>eコマース取扱高の増加、楽天ペイ残高への名称変更。</td>
         </tr>
         <tr>
           <td>ZOZO</td>
-          <td>1,200億円</td>
-          <td>+8%</td>
-          <td>自社ECの成長加速、アパレル市場での優位性維持</td>
+          <td>6,660億円 (GMV 2026/3期)</td>
+          <td>+8.4%</td>
+          <td>最新自動物流倉庫への投資、ZOZOTOWN・WEAR運営。</td>
         </tr>
         <tr>
           <td>メルカリ</td>
-          <td>800億円</td>
-          <td>+12%</td>
-          <td>フリマアプリの利用者数増加、収益基盤の強化</td>
+          <td>-</td>
+          <td>-</td>
+          <td>米国事業の黒字化、国内Fintechの牽引、通期予想上方修正。</td>
+        </tr>
+        <tr>
+          <td>Amazon Japan</td>
+          <td>-</td>
+          <td>-</td>
+          <td>-</td>
+        </tr>
+        <tr>
+          <td>BASE</td>
+          <td>-</td>
+          <td>-</td>
+          <td>-</td>
         </tr>
       </tbody>
     </table>
     <ul class="news-list">
       <li class="news-item">
-        <span class="news-bullet">▸</span>
+        <div class="news-num">01</div>
         <div class="news-content">
           <div class="news-title">2026年度決算短信・説明会資料｜楽天グループ株式会社</div>
-          <div class="news-snippet">2026年度の楽天グループ株式会社の決算短信・説明会資料です。決算短信、決算説明会動画、各種説明会資料などを掲載。株主・投資家の皆様に楽天をより深く理解していただくために、過去から直近までの情報をお届けします。詳細はこちらから。</div>
-          <div class="news-source"><a href="corp.rakuten.co.jp/investors/documents/results/">出典</a></div>
+          <div class="news-snippet">楽天グループ株式会社の2026年度決算短信、説明会動画、各種資料を掲載。株主・投資家向けに楽天の事業を深く理解できる情報を提供。</div>
+          <div class="news-meta">
+            <span class="news-source"><a href="corp.rakuten.co.jp/investors/documents/results/">出典</a></span>
+          </div>
         </div>
       </li>
       <li class="news-item">
-        <span class="news-bullet">▸</span>
+        <div class="news-num">02</div>
         <div class="news-content">
           <div class="news-title">直近の決算概況 - 株式会社zozo</div>
-          <div class="news-snippet">ZOZOTOWN・WEARなどを運営する株式会社ZOZOの公式ホームページです。会社概要や採用情報、IR、プレスリリースをご紹介します。</div>
-          <div class="news-source"><a href="corp.zozo.com/ir-info/library/result-summary/">出典</a></div>
+          <div class="news-snippet">ZOZOTOWN・WEARなどを運営する株式会社ZOZOの公式ホームページにおける決算情報。会社概要、採用情報、IR、プレスリリースを掲載。</div>
+          <div class="news-meta">
+            <span class="news-source"><a href="corp.zozo.com/ir-info/library/result-summary/">出典</a></span>
+          </div>
         </div>
       </li>
       <li class="news-item">
-        <span class="news-bullet">▸</span>
+        <div class="news-num">03</div>
         <div class="news-content">
-          <div class="news-title">日本のeコマース市場を牽引する楽天、ZOZO、メルカリの戦略と収益構造の比較｜東芝テックCVC</div>
-          <div class="news-snippet">まとめ 楽天、ZOZO、メルカリの戦略と収益構造を比較することで、日本のeコマース市場における各社の強みと共通点が明らかになりました。 ここでは、3社の特徴を整理し、比較から見えたポイントと今後の市場の展望をまとめます。</div>
-          <div class="news-source"><a href="note.com/ttec_cvc/n/n0496be296281">出典</a></div>
+          <div class="news-title">楽天グループ(株)【4755】：決算情報 - Yahoo!ファイナンス</div>
+          <div class="news-snippet">楽天グループ(株)【4755】の決算短信を生成AIで要約した内容を掲載。株価速報、チャート、ランキング、ポートフォリオ、ニュース、掲示板などの投資情報も提供。</div>
+          <div class="news-meta">
+            <span class="news-source"><a href="finance.yahoo.co.jp/quote/4755.T/financials">出典</a></span>
+          </div>
         </div>
       </li>
       <li class="news-item">
-        <span class="news-bullet">▸</span>
+        <div class="news-num">04</div>
         <div class="news-content">
-          <div class="news-title">(株)ZOZO【3092】：決算情報 - Yahoo!ファイナンス</div>
-          <div class="news-snippet">(株)ZOZO【3092】の決算短信を生成AIで要約した内容をご覧いただけます。Yahoo!ファイナンスでは株価速報、チャート、ランキング、ポートフォリオ、ニュース、掲示板など投資判断に役立つ情報を掲載しています。</div>
-          <div class="news-source"><a href="finance.yahoo.co.jp/quote/3092.T/financials">出典</a></div>
+          <div class="news-title">2026 Earnings Release - Rakuten Group, Inc.</div>
+          <div class="news-snippet">Browse the earnings release, financial report, presentation materials and streaming videos from Rakuten Group, Inc. for 2026.</div>
+          <div class="news-meta">
+            <span class="news-source"><a href="global.rakuten.com/corp/investors/documents/results/">出典</a></span>
+          </div>
         </div>
       </li>
       <li class="news-item">
-        <span class="news-bullet">▸</span>
-        <div class="news-content">
-          <div class="news-title">決算:Zozo、26年3月期純利益7%増 自社株買い最大100億円 - 日本経済新聞</div>
-          <div class="news-snippet">日経電子版の総合投資・金融情報コーナー。株式・為替から債券、商品、新興国市場など国内外の最新マーケット情報はもちろん、第一線の記者 ...</div>
-          <div class="news-source"><a href="www.nikkei.com/markets/kigyo/disclose/">出典</a></div>
-        </div>
-      </li>
-      <li class="news-item">
-        <span class="news-bullet">▸</span>
+        <div class="news-num">05</div>
         <div class="news-content">
           <div class="news-title">Irbank - 企業の決算情報・株価情報・企業分析・銘柄発掘</div>
-          <div class="news-snippet">本ウェブサイト「IRBANK」は、株式会社IRBANKが作成・運営しています。当社は、本サイトに掲載されている情報に基づいて発生したいかなる損害についても、一切の責任を負いかねます。本サイトの利用にあたっては、すべて利用者ご自身の判断と責任において行ってください。 IRBANKに掲載され ...</div>
-          <div class="news-source"><a href="irbank.net">出典</a></div>
+          <div class="news-snippet">本ウェブサイト「IRBANK」は、株式会社IRBANKが作成・運営。企業の決算情報、株価情報、企業分析、銘柄発掘に関する情報を提供。利用は自己責任。</div>
+          <div class="news-meta">
+            <span class="news-source"><a href="irbank.net">出典</a></span>
+          </div>
         </div>
       </li>
       <li class="news-item">
-        <span class="news-bullet">▸</span>
+        <div class="news-num">06</div>
         <div class="news-content">
-          <div class="news-title">決算発表予定日 - 日本取引所グループ</div>
-          <div class="news-snippet">企業の決算発表予定日に関する情報です。</div>
-          <div class="news-source"><a href="#">出典</a></div>
+          <div class="news-title">適時開示速報: 日経電子版</div>
+          <div class="news-snippet">日経電子版の総合投資・金融情報コーナー。国内外の最新マーケット情報、第一線の記者による記事を配信。</div>
+          <div class="news-meta">
+            <span class="news-source"><a href="www.nikkei.com/markets/kigyo/disclose/">出典</a></span>
+          </div>
         </div>
       </li>
     </ul>
     <script>
-      document.addEventListener('DOMContentLoaded', function () {
-        // 売上高チャート
-        const revenueCtx = document.getElementById('revenueChart').getContext('2d');
-        const revenueChart = new Chart(revenueCtx, {
-          type: 'bar',
-          data: {
-            labels: ['楽天グループ', 'ZOZO', 'メルカリ'],
-            datasets: [{
-              label: '売上高',
-              data: [1500, 1200, 800], // 単位：億円
-              backgroundColor: 'rgba(54, 162, 235, 0.6)',
-              borderColor: 'rgba(54, 162, 235, 1)',
-              borderWidth: 1
-            }]
-          },
-          options: {
-            responsive: true,
-            plugins: {
-              title: {
-                display: true,
-                text: 'EC企業 売上高 (2026年予測)'
-              }
-            },
-            scales: {
-              y: {
-                beginAtZero: true,
-                title: {
-                  display: true,
-                  text: '売上高 (億円)'
-                }
-              }
-            }
-          }
-        });
+      // Dummy data for charts - replace with actual data fetched from a reliable source
+      const dummyLabels = ['2024-Q1', '2024-Q2', '2024-Q3', '2024-Q4', '2025-Q1', '2025-Q2'];
+      const dummyRevenueData = [18000, 19500, 21000, 22500, 24000, 25500]; // in億円
+      const dummyGrowthData = [5.5, 6.0, 6.5, 7.0, 7.5, 8.0]; // in%
 
-        // 成長率チャート
-        const growthCtx = document.getElementById('growthChart').getContext('2d');
-        const growthChart = new Chart(growthCtx, {
-          type: 'bar',
-          data: {
-            labels: ['楽天グループ', 'ZOZO', 'メルカリ'],
-            datasets: [{
-              label: '前年比成長率',
-              data: [5, 8, 12], // 単位：%
-              backgroundColor: 'rgba(75, 192, 192, 0.6)',
-              borderColor: 'rgba(75, 192, 192, 1)',
-              borderWidth: 1
-            }]
+      new Chart(document.getElementById('revenueChart'), {
+        type: 'bar',
+        data: {
+          labels: dummyLabels,
+          datasets: [{
+            label: '売上高（億円）',
+            data: dummyRevenueData,
+            backgroundColor: '#2563EB',
+            borderRadius: 6
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              display: false
+            }
           },
-          options: {
-            responsive: true,
-            plugins: {
+          scales: {
+            y: {
+              beginAtZero: true,
               title: {
                 display: true,
-                text: 'EC企業 前年比成長率 (2026年予測)'
-              }
-            },
-            scales: {
-              y: {
-                beginAtZero: true,
-                title: {
-                  display: true,
-                  text: '成長率 (%)'
-                }
+                text: '売上高（億円）'
               }
             }
           }
-        });
+        }
+      });
+
+      new Chart(document.getElementById('growthChart'), {
+        type: 'bar',
+        data: {
+          labels: dummyLabels,
+          datasets: [{
+            label: '成長率（%）',
+            data: dummyGrowthData,
+            backgroundColor: '#059669',
+            borderRadius: 6
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              display: false
+            }
+          },
+          scales: {
+            y: {
+              beginAtZero: true,
+              title: {
+                display: true,
+                text: '成長率（%）'
+              }
+            }
+          }
+        }
       });
     </script>
   </div>
 </section>
 
-<section id="platform" class="section-card">
-  <div class="section-header"><span class="section-title">🛒 プラットフォーム動向</span></div>
+<section id="platform" class="section-card" data-cat="platform">
+  <div class="section-header">
+    <div class="cat-icon">🛒</div>
+    <div class="section-title-wrap">
+      <div class="section-title">プラットフォーム動向</div>
+      <div class="section-sub">最新 6件</div>
+    </div>
+    <span class="section-badge">6</span>
+  </div>
   <details open>
-    <summary><span class="summary-label">ニュース一覧</span><span class="toggle-icon">▼</span></summary>
+    <summary>
+      <span class="summary-label">ニュース一覧を見る</span>
+      <span class="toggle-icon">▼</span>
+    </summary>
     <div class="details-body">
       <ul class="news-list">
         <li class="news-item">
-          <span class="news-bullet">▸</span>
+          <div class="news-num">01</div>
+          <div class="news-content">
+            <div class="news-title">【2026最新】Yahoo!ショッピングの手数料・費用を徹底解説!現行費用から最新情報まで</div>
+            <div class="news-snippet">本記事では、現行の手数料体系から2026年9月以降の新プランまで、Yahoo!ショッピングの費用に関するすべてを網羅的にお伝えします。月商別のシミュレーションや楽天市場・Amazonとの比較も交えて解説していきますので、ぜひ最後までご覧ください!</div>
+            <div class="news-meta">
+              <span class="news-source"><a href="finner.co.jp/media/yahoo-fees/">Finner株式会社</a></span>
+            </div>
+          </div>
+        </li>
+        <li class="news-item">
+          <div class="news-num">02</div>
           <div class="news-content">
             <div class="news-title">Yahoo!ショッピング有料化の影響と対策【2026年版】｜新料金の試算とEC事業者が取るべき5施策</div>
             <div class="news-snippet">2026年9月から始まるYahoo!ショッピング有料化（月額1万円＋売上ロイヤリティ2.5%）の全容を解説。EC事業者が取るべき5つの対策と、主要ECモール比較・物流コスト最適化の実務フレームワークを提供します。</div>
-            <div class="news-source"><a href="stockcrew.co.jp/insights/yahoo_shopping_fee">出典</a></div>
+            <div class="news-meta">
+              <span class="news-source"><a href="stockcrew.co.jp/insights/yahoo_shopping_fee">stockcrew.co.jp</a></span>
+            </div>
           </div>
         </li>
         <li class="news-item">
-          <span class="news-bullet">▸</span>
-          <div class="news-content">
-            <div class="news-title">【2026最新】Yahoo!ショッピングの手数料・費用を徹底解説!現行費用から最新情報まで - Finner株式会社</div>
-            <div class="news-snippet">本記事では、現行の手数料体系から2026年9月以降の新プランまで、Yahoo!ショッピングの費用に関するすべてを網羅的にお伝えします。月商別のシミュレーションや楽天市場・Amazonとの比較も交えて解説していきますので、ぜひ最後までご覧ください!</div>
-            <div class="news-source"><a href="finner.co.jp/media/yahoo-fees/">出典</a></div>
-          </div>
-        </li>
-        <li class="news-item">
-          <span class="news-bullet">▸</span>
-          <div class="news-content">
-            <div class="news-title">Yahoo!ショッピング2026年有料化の影響と対策｜新料金体系で利益を守る方法 | EC実務ラボ</div>
-            <div class="news-snippet">2026年9月のYahoo!ショッピング有料化について、新旧料金の完全比較、月商帯別の損益シミュレーション、9月までの月別アクションカレンダー、残留・撤退の判断基準まで、出店者が数字で判断するために必要な情報を体系的に解説します。</div>
-            <div class="news-source"><a href="ecjitsumu.jp/yahoo/paid-plan-2026">出典</a></div>
-          </div>
-        </li>
-        <li class="news-item">
-          <span class="news-bullet">▸</span>
+          <div class="news-num">03</div>
           <div class="news-content">
             <div class="news-title">2026年販売手数料およびフルフィルメント by Amazon手数料（日本）</div>
             <div class="news-snippet">2026年販売手数料およびフルフィルメント by Amazon手数料（日本） 2025年を振り返って、2026年に先立ち、出品者様からの信頼、パートナーシップ、およびAmazonとともに購入者様へのサービスをお届けいただきましたことに感謝申し上げます。</div>
-            <div class="news-source"><a href="sellercentral-japan.amazon.com/help/hub/reference/external/37911?mons_sel_locale=en_JP">出典</a></div>
+            <div class="news-meta">
+              <span class="news-source"><a href="sellercentral-japan.amazon.com/help/hub/reference/external/37911?mons_sel_locale=en_JP">sellercentral-japan.amazon.com</a></span>
+            </div>
           </div>
         </li>
         <li class="news-item">
-          <span class="news-bullet">▸</span>
+          <div class="news-num">04</div>
           <div class="news-content">
-            <div class="news-title">【2026年版】ECモールの年間販促スケジュール｜楽天・Yahoo!の繁忙期と準備リスト - 株式会社ファイブスプリングス - 楽天市場と ...</div>
-            <div class="news-snippet">年4回の「楽天スーパーSALE」開催時期と特徴 楽天市場で最大規模を誇り、ユーザーの注目度が最も高まるイベントです。 過去3年の実績では3月、6月、9月、12月の年4回、以下の日程で開催される傾向にあります。</div>
-            <div class="news-source"><a href="www.5springs.co.jp/blog/ec-mall-annual-promotion-schedule/">出典</a></div>
+            <div class="news-title">お知らせ： 2026年フルフィルメント by Amazon手数料および販売手数料の改定（日本）</div>
+            <div class="news-snippet">2026年フルフィルメント by Amazon手数料および販売手数料の改定（日本） 購入者様に豊富な商品、お求めやすい価格、そして利便性をご提供することを目指し、販売事業者様とともに取り組みを続けられていることに感謝いたします。</div>
+            <div class="news-meta">
+              <span class="news-source"><a href="sellercentral.amazon.co.jp/seller-forums/discussions/t/f89baf5a-cc20-4fd8-84bb-fd2cec3cf0a5">sellercentral.amazon.co.jp</a></span>
+            </div>
           </div>
         </li>
         <li class="news-item">
-          <span class="news-bullet">▸</span>
+          <div class="news-num">05</div>
           <div class="news-content">
-            <div class="news-title">【2026年版】EC販促カレンダー｜売上を最大化する戦略ガイド | 株式会社イーリサ / ERESA Inc.</div>
-            <div class="news-snippet">本記事で解説した内容に加え、より詳細な月別イベント、各ECモールのセール情報、販促のヒントなどを一覧にまとめた「2026年版 EC販促企画カレンダー」を無料で配布しています。ExcelやGoogleスプレッドシートで自由に編集し、貴社独自の販促計画の立案にお役立てください。</div>
-            <div class="news-source"><a href="eresa.co.jp/column/ec-sales-promotion-calendar/">出典</a></div>
+            <div class="news-title">【2026年版】ECモールの年間販促スケジュール｜楽天・Yahoo!の繁忙期と準備リスト</div>
+            <div class="news-snippet">年4回の「楽天スーパーSALE」開催時期と特徴 楽天市場で最大規模を誇り、ユーザーの注目度が最も高まるイベントです。過去3年の実績では3月、6月、9月、12月の年4回、以下の日程で開催される傾向にあります。</div>
+            <div class="news-meta">
+              <span class="news-source"><a href="www.5springs.co.jp/blog/ec-mall-annual-promotion-schedule/">株式会社ファイブスプリングス</a></span>
+            </div>
+          </div>
+        </li>
+        <li class="news-item">
+          <div class="news-num">06</div>
+          <div class="news-content">
+            <div class="news-title">【2026年版】EC販促カレンダー｜売上を最大化する戦略ガイド</div>
+            <div class="news-snippet">本記事で解説した内容に加え、より詳細な月別イベント、各ECモールのセール情報、販促のヒントなどを一覧にまとめた「2026年版 EC販促企画カレンダー」を無料で配布しています。</div>
+            <div class="news-meta">
+              <span class="news-source"><a href="eresa.co.jp/column/ec-sales-promotion-calendar/">株式会社イーリサ / ERESA Inc.</a></span>
+            </div>
           </div>
         </li>
       </ul>
@@ -532,50 +640,90 @@
   </details>
 </section>
 
-<section id="ads" class="section-card">
-  <div class="section-header"><span class="section-title">📢 広告・マーケティング費用</span></div>
+<section id="ads" class="section-card" data-cat="ads">
+  <div class="section-header">
+    <div class="cat-icon">📢</div>
+    <div class="section-title-wrap">
+      <div class="section-title">広告・マーケティング費用</div>
+      <div class="section-sub">最新 7件</div>
+    </div>
+    <span class="section-badge">7</span>
+  </div>
   <details open>
-    <summary><span class="summary-label">ニュース一覧</span><span class="toggle-icon">▼</span></summary>
+    <summary>
+      <span class="summary-label">ニュース一覧を見る</span>
+      <span class="toggle-icon">▼</span>
+    </summary>
     <div class="details-body">
       <ul class="news-list">
         <li class="news-item">
-          <span class="news-bullet">▸</span>
+          <div class="news-num">01</div>
           <div class="news-content">
-            <div class="news-title">広告費用の相場と決め方【2026年版】媒体別比較・ROI試算・予算配分ガイド|Ad-Virtua（アドバーチャ）</div>
+            <div class="news-title">広告費用の相場と決め方【2026年版】媒体別比較・ROI試算・予算配分ガイド</div>
             <div class="news-snippet">2026年最新データによる媒体別広告費用相場（テレビCM・デジタル・OOH・ゲーム内広告）をCPM横断比較表で掲載。ROI・ROAS・CPAの計算方法、7つの予算決定メソッド、業種別売上比率まで、広告費の全体像を実務担当者向けに解説します。</div>
-            <div class="news-source"><a href="ad-virtua.com/column/advertising-cost-guide">出典</a></div>
+            <div class="news-meta">
+              <span class="news-source"><a href="ad-virtua.com/column/advertising-cost-guide">Ad-Virtua（アドバーチャ）</a></span>
+            </div>
           </div>
         </li>
         <li class="news-item">
-          <span class="news-bullet">▸</span>
+          <div class="news-num">02</div>
           <div class="news-content">
-            <div class="news-title">ディスプレイ広告の費用を徹底解説!3つの課金方式と媒体別相場</div>
-            <div class="news-snippet">ディスプレイ広告の費用について、CPC・CPM・CPAの課金方式からGDN・YDAの媒体別相場まで徹底解説。代理店依頼時の費用や予算の決め方、費用対効果を高めるターゲティング・クリエイティブ改善のコツも紹介します。</div>
-            <div class="news-source"><a href="www.adcal-inc.com/column/digital-marketing/display-fee/">出典</a></div>
+            <div class="news-title">リスティング広告の費用相場 — クリック単価・月額予算・代理店手数料の決め方【2026年版】</div>
+            <div class="news-snippet">目次 リスティング広告の費用はいくらかかるのか クリック単価（CPC）の業界別相場 月額予算の設定方法 方法1: 目標CPA逆算法 方法2: 売上目標逆算法 一般的な月額予算の目安 代理店に依頼する場合の費用 手数料体系 代理店を使うべきタイミング 費用対効果を高める5つの施策 関連記事 よく ...</div>
+            <div class="news-meta">
+              <span class="news-source"><a href="renue.co.jp/posts/listing-ads-cost-cpc-budget-agency-fee-guide-2026">株式会社renue</a></span>
+            </div>
           </div>
         </li>
         <li class="news-item">
-          <span class="news-bullet">▸</span>
+          <div class="news-num">03</div>
           <div class="news-content">
-            <div class="news-title">CPA・CPC・CPM・ROASとは？広告指標の基礎知識 | 株式会社renue</div>
-            <div class="news-snippet">広告指標を理解する重要性 Web広告を運用する上で、CPA・CPC・CPM・ROASなどの指標の理解は不可欠です。これらの指標を正しく読めなければ、「広告費をかけたけど効果があったのかわからない」「どの広告を増やし、どれを止めるべきか判断できない」という状態に陥ります。 本記事では、広告 ...</div>
-            <div class="news-source"><a href="renue.co.jp/posts/ad-metrics-cpa-roas-guide">出典</a></div>
+            <div class="news-title">2026年版 X広告公式料金表・Cpm・Cpc・Cpeの最新単価とプラン比較</div>
+            <div class="news-snippet">X広告の最新公式料金表（2026年版）を基に、CPM・CPC・CPE単価や月額プラン、予算規模別おすすめプランを徹底解説します。</div>
+            <div class="news-meta">
+              <span class="news-source"><a href="app-tatsujin.com/x-advertising-pricing-2026-guide/">アプリの達人</a></span>
+            </div>
           </div>
         </li>
         <li class="news-item">
-          <span class="news-bullet">▸</span>
+          <div class="news-num">04</div>
           <div class="news-content">
-            <div class="news-title">【2025年最新版】クリック単価の相場・改善方法・KPI設計まで徹底解説｜広告効果を最大化する運用法 - Owned株式会社</div>
-            <div class="news-snippet">リスティング広告のクリック単価の相場はいくら？ 【業界別・媒体別に比較】 リスティング広告を始めるうえで気になるのが「1クリックにどれくらい費用がかかるのか」という点です。 クリック単価（CPC）は媒体や業界によって大きく異なります。</div>
-            <div class="news-source"><a href="owned.co.jp/column/ads/listingads-unitprice/">出典</a></div>
+            <div class="news-title">【2026年最新】Google広告の費用完全ガイド｜予算決定・CPC相場・代行費用まで徹底解説</div>
+            <div class="news-snippet">Google広告（Google Ads）の費用を2026年最新データで解説。月額予算の目安・クリック単価・運用代行費用の相場・広告タイプ別の費用まで、中小企業が広告予算を決めるために必要な情報をまとめました。</div>
+            <div class="news-meta">
+              <span class="news-source"><a href="gleamhub.net/media/0143-google-ads-cost-guide/">GH Media</a></span>
+            </div>
           </div>
         </li>
         <li class="news-item">
-          <span class="news-bullet">▸</span>
+          <div class="news-num">05</div>
           <div class="news-content">
-            <div class="news-title">Roasとは｜広告費用対効果の計算と損益分岐の見極め方 | Ec実務ラボ</div>
-            <div class="news-snippet">ROAS（広告費用対効果）とは、広告にかけた費用に対してどれだけの売上が発生したかを示す指標です。本記事では、ROASの計算方法や損益分岐点を見極める方法、ROASを改善するための施策について解説します。</div>
-            <div class="news-source"><a href="ecjitsumu.jp/glossary/roas/">出典</a></div>
+            <div class="news-title">Amazon広告と楽天RPP、どっちが儲かる？費用・効果・運用難易度を徹底比較【EC広告予算の最適配分 2026年版】</div>
+            <div class="news-snippet">Amazon広告と楽天RPPを費用・CPC・ROAS目安・運用難易度で徹底比較。月商別の推奨予算配分（100万〜3,000万円）、両モール運用の落とし穴、代理店活用の判断基準まで、EC広告で失敗しないための実践ガイドを解説します【2026年版】。</div>
+            <div class="news-meta">
+              <span class="news-source"><a href="funnel-inc.jp/blog/amazon/vs-rakuten-rpp">funnel-inc.jp</a></span>
+            </div>
+          </div>
+        </li>
+        <li class="news-item">
+          <div class="news-num">06</div>
+          <div class="news-content">
+            <div class="news-title">楽天RPP広告とAmazonスポンサープロダクト広告を徹底比較!同一商品での効果検証事例</div>
+            <div class="news-snippet">この記事は、これまでの支援実績が1,000社以上、広告運用実績年間10億円以上の弊社（Proteinum）が、楽天RPP広告とAmazonスポンサープロダクト広告の効果を同一商品・同一キーワードで比較検証した事例をもとに、それぞれの広告の特性と最適な運用方法を解説 ...</div>
+            <div class="news-meta">
+              <span class="news-source"><a href="proteinum.co.jp/blog/rakuten-amazon-roas-casestudy1/">プロテーナム</a></span>
+            </div>
+          </div>
+        </li>
+        <li class="news-item">
+          <div class="news-num">07</div>
+          <div class="news-content">
+            <div class="news-title">楽天とAmazonの検索広告を徹底比較し、売上効果を解明するレポート</div>
+            <div class="news-snippet">本日の情報収集中です</div>
+            <div class="news-meta">
+              <span class="news-source"><a href="#">サードニュース</a></span>
+            </div>
           </div>
         </li>
       </ul>
@@ -583,83 +731,332 @@
   </details>
 </section>
 
-<section id="logistics" class="section-card">
-  <div class="section-header"><span class="section-title">🚚 物流・フルフィルメント</span></div>
-  <details open>
-    <summary><span class="summary-label">ニュース一覧</span><span class="toggle-icon">▼</span></summary>
-    <div class="details-body">
-      <ul class="news-list">
-        </ul>
+<section id="logistics" class="section-card" data-cat="logistics">
+  <div class="section-header">
+    <div class="cat-icon">🚚</div>
+    <div class="section-title-wrap">
+      <div class="section-title">物流・フルフィルメント</div>
+      <div class="section-sub">最新 6件</div>
     </div>
-  </details>
-</section>
-
-<section id="consumer" class="section-card">
-  <div class="section-header"><span class="section-title">👥 消費者トレンド</span></div>
+    <span class="section-badge">6</span>
+  </div>
   <details open>
-    <summary><span class="summary-label">ニュース一覧</span><span class="toggle-icon">▼</span></summary>
+    <summary>
+      <span class="summary-label">ニュース一覧を見る</span>
+      <span class="toggle-icon">▼</span>
+    </summary>
     <div class="details-body">
       <ul class="news-list">
-        </ul>
-    </div>
-  </details>
-</section>
-
-<section id="legal" class="section-card">
-  <div class="section-header"><span class="section-title">⚖️ 法規制・業界ニュース</span></div>
-  <details open>
-    <summary><span class="summary-label">ニュース一覧</span><span class="toggle-icon">▼</span></summary>
-    <div class="details-body">
-      <ul class="news-list">
-        <!-- ニュースなし -->
+        <li class="news-item">
+          <div class="news-num">01</div>
+          <div class="news-content">
+            <div class="news-title">EC事業者の2026年度物流契約見直し完全チェックリスト｜運賃値上げ・法改正への実務対応</div>
+            <div class="news-snippet">ヤマト運輸・佐川急便の運賃値上げ、改正物流効率化法と取適法の施行。EC事業者が2026年度に実行すべき物流契約見直しの7項目チェックリストと発送代行活用ステップを解説。</div>
+            <div class="news-meta">
+              <span class="news-source"><a href="stockcrew.co.jp/insights/logistics-contract-review-guide-2026">stockcrew.co.jp</a></span>
+            </div>
+          </div>
+        </li>
+        <li class="news-item">
+          <div class="news-num">02</div>
+          <div class="news-content">
+            <div class="news-title">佐川急便が宅配に燃油サーチャージ検討!EC業界に起こる3つの衝撃と防衛策</div>
+            <div class="news-snippet">佐川急便が宅配にサーチャージ検討を開始したことが京都新聞の報道で判明しました。燃料高騰分を運賃に転嫁する動きは、物流2024年問題による人件費上昇と相まって、EC業界に大きな衝撃を与えます。本記事では、運賃変動費化による利益圧迫など3つの影響と、荷主企業が直ちに講じるべき ...</div>
+            <div class="news-meta">
+              <span class="news-source"><a href="logishift.net/2026/05/08/post-5430/">LogiShift（ロジシフト）</a></span>
+            </div>
+          </div>
+        </li>
+        <li class="news-item">
+          <div class="news-num">03</div>
+          <div class="news-content">
+            <div class="news-title">【2026年最新版】ヤマト・佐川・日本郵便の料金を徹底比較!ECの利益率を劇的に改善する「物流コスト早見表2026」を無料公開</div>
+            <div class="news-snippet">大手3社を徹底比較!今後の配送コストの見直しをしよう! 物流コスト早見表2026 EC運営をサポートする株式会社GOAT（本社:福岡県福岡市、代表 ...</div>
+            <div class="news-meta">
+              <span class="news-source"><a href="www.nishinippon.co.jp/item/1462677/">www.nishinippon.co.jp</a></span>
+            </div>
+          </div>
+        </li>
+        <li class="news-item">
+          <div class="news-num">04</div>
+          <div class="news-content">
+            <div class="news-title">【2026年最新版】ヤマト・佐川・日本郵便の料金を徹底比較!ECの利益率を劇的に改善する「物流コスト早見表2026」を無料公開</div>
+            <div class="news-snippet">代表コメント 「物流の「2024年問題」以降、配送料金の値上げはEC事業者にとって死活問題となっています。 しかし、多くの店舗様が「乗り換えの手間」や「料金表の複雑さ」を理由に、配送コストの見直しを後回しにしてしまっているのが現状です。</div>
+            <div class="news-meta">
+              <span class="news-source"><a href="www.mapion.co.jp/news/release/000000024.000133764-all/">www.mapion.co.jp</a></span>
+            </div>
+          </div>
+        </li>
+        <li class="news-item">
+          <div class="news-num">05</div>
+          <div class="news-content">
+            <div class="news-title">【2026最新】楽天スーパーロジスティクス(RSL)とは？FBAとの違いや料金について</div>
+            <div class="news-snippet">楽天スーパーロジスティクス (RSL)の概要 楽天スーパーロジスティクス (RSL) とは、楽天市場に出店中の店舗様に限り利用可能な物流アウトソーシングサービス です。楽天側が商品の入荷、管理、発送といった物流業務をワンストップで対応してくれるため、店舗業務の負荷軽減に繋がります ...</div>
+            <div class="news-meta">
+              <span class="news-source"><a href="finner.co.jp/media/ec20240301/">Finner株式会社</a></span>
+            </div>
+          </div>
+        </li>
+        <li class="news-item">
+          <div class="news-num">06</div>
+          <div class="news-content">
+            <div class="news-title">フルフィルメントとは？EC通販の5工程・費用・KPI・外注化を徹底解説｜2026年実務ガイド</div>
+            <div class="news-snippet">フルフィルメントとはEC通販の受注から出荷までを担う物流工程の総称です。定義・5工程・FBA/MCF/3PL比較・費用構造・WMS/OMS連携・繁忙期対策・KPI設定・商材別設計・2026年AI自動化トレンドまで、EC事業者向けに体系的に解説します。</div>
+            <div class="news-meta">
+              <span class="news-source"><a href="stockcrew.co.jp/insights/ec-fulfillment-guide">stockcrew.co.jp</a></span>
+            </div>
+          </div>
+        </li>
       </ul>
     </div>
   </details>
 </section>
 
-<section id="competitor" class="section-card">
-  <div class="section-header"><span class="section-title">🏪 他社EC運営情報</span></div>
+<section id="consumer" class="section-card" data-cat="consumer">
+  <div class="section-header">
+    <div class="cat-icon">👥</div>
+    <div class="section-title-wrap">
+      <div class="section-title">消費者トレンド</div>
+      <div class="section-sub">最新 6件</div>
+    </div>
+    <span class="section-badge">6</span>
+  </div>
   <details open>
-    <summary><span class="summary-label">ニュース一覧</span><span class="toggle-icon">▼</span></summary>
+    <summary>
+      <span class="summary-label">ニュース一覧を見る</span>
+      <span class="toggle-icon">▼</span>
+    </summary>
     <div class="details-body">
       <ul class="news-list">
-        <!-- ニュースなし -->
+        <li class="news-item">
+          <div class="news-num">01</div>
+          <div class="news-content">
+            <div class="news-title">日経トレンディ「上半期ヒット大賞＆下半期ブレイク予測」を発表</div>
+            <div class="news-snippet">株式会社日経BPは2026年5月2日、「日経トレンディ」2026年6月号で、2026年の「上半期ヒット大賞」および「下半期ブレイク予測」を発表しました。</div>
+            <div class="news-meta">
+              <span class="news-source"><a href="www.nikkeibp.co.jp/atcl/newsrelease/corp/20260502/">日経BP</a></span>
+            </div>
+          </div>
+        </li>
+        <li class="news-item">
+          <div class="news-num">02</div>
+          <div class="news-content">
+            <div class="news-title">【2026年ecトレンド予測】市場変化と売上を最大化する最新戦略を徹底解説</div>
+            <div class="news-snippet">2026年のEC業界において、次々と登場する新技術や消費行動の変化をどう自社戦略に落とし込むべきかお悩みではありませんか？本記事では、EC事業責任者やマーケティング担当者が抱える「次世代の投資判断」という課題を、最新の市場データと技術動向に基づき解決します。結論として、2026 ...</div>
+            <div class="news-meta">
+              <span class="news-source"><a href="ecpro.ai/original-ec/ec-trends/">Ecpro</a></span>
+            </div>
+          </div>
+        </li>
+        <li class="news-item">
+          <div class="news-num">03</div>
+          <div class="news-content">
+            <div class="news-title">26年のマーケ・消費はどうなる？ 予測キーワード＆記事まとめ</div>
+            <div class="news-snippet">そこでマーケティング専門メディア「日経クロストレンド」が、5つのテーマについて注目の予測キーワード・深掘り記事を紹介します。下記リンクからも、各テーマの記事を参照できます。このページは2025年12月から2026年1月にかけて随時更新します。</div>
+            <div class="news-meta">
+              <span class="news-source"><a href="xtrend.nikkei.com/info/18/00006/00369/">日経クロストレンド</a></span>
+            </div>
+          </div>
+        </li>
+        <li class="news-item">
+          <div class="news-num">04</div>
+          <div class="news-content">
+            <div class="news-title">【日経トレンディ2026年ヒット予測】を分析：各キーワードを自社商品に活かす方法を独自解説</div>
+            <div class="news-snippet">はじめに：2026年に起こる「消費の大転換」 2025年11月3日、日経トレンディが2026年のヒット予測ベスト30を発表しました。そこで浮かび上がったのは「苦労キャンセル界隈」などの新しい消費者心理のトレンドです。生成AIによる瞬時の翻訳</div>
+            <div class="news-meta">
+              <span class="news-source"><a href="marketing-analytics.site/nikkei-trendy-2026-hit-prediction/">勝手にマーケティング分析</a></span>
+            </div>
+          </div>
+        </li>
+        <li class="news-item">
+          <div class="news-num">05</div>
+          <div class="news-content">
+            <div class="news-title">TikTokで話題沸騰!2026年のバイラル商品12選とドロップシッピングで稼ぐための選び方ポイント</div>
+            <div class="news-snippet">2026年に売れるバイラル商品12選! TikTok・Instagramで話題のドロップシッピング注目アイテムまとめ EC市場のトレンドは目まぐるしく変わります。今SNSで爆発的に拡散されている商品をいち早く押さえることが、ドロップシッピングで稼ぐ最大のカギ。</div>
+            <div class="news-meta">
+              <span class="news-source"><a href="koguman.info/archives/7811">こぐまんウィキ</a></span>
+            </div>
+          </div>
+        </li>
+        <li class="news-item">
+          <div class="news-num">06</div>
+          <div class="news-content">
+            <div class="news-title">人気上位の商品：TikTokにおけるトレンド商品</div>
+            <div class="news-snippet">TikTokで人気上位の商品やバイラルヒットした商品をチェック。トレンド・商品関連動画・オーディエンスのインサイトを ...</div>
+            <div class="news-meta">
+              <span class="news-source"><a href="ads.tiktok.com/business/creativecenter/top-products/pc/ja">TikTok for Business</a></span>
+            </div>
+          </div>
+        </li>
       </ul>
     </div>
   </details>
 </section>
 
-<section id="cart" class="section-card">
-  <div class="section-header"><span class="section-title">🖥️ ECカートシステム</span></div>
+<section id="legal" class="section-card" data-cat="legal">
+  <div class="section-header">
+    <div class="cat-icon">⚖️</div>
+    <div class="section-title-wrap">
+      <div class="section-title">法規制・業界ニュース</div>
+      <div class="section-sub">最新 6件</div>
+    </div>
+    <span class="section-badge">6</span>
+  </div>
   <details open>
-    <summary><span class="summary-label">ニュース一覧</span><span class="toggle-icon">▼</span></summary>
+    <summary>
+      <span class="summary-label">ニュース一覧を見る</span>
+      <span class="toggle-icon">▼</span>
+    </summary>
     <div class="details-body">
       <ul class="news-list">
-        <!-- ニュースなし -->
+        <li class="news-item">
+          <div class="news-num">01</div>
+          <div class="news-content">
+            <div class="news-title">改正特商法・定期購入規制の運用実態2026｜業務停止命令の事例と次期改正検討会設置の最新動向</div>
+            <div class="news-snippet">2022年6月施行の改正特商法から3年。定期購入規制の現状と2025年度も続く行政処分の傾向、2026年1月設置の「デジタル取引・特定商取引法等検討会」が示す次期改正の方向性をサブスクEC事業者向けに解説。</div>
+            <div class="news-meta">
+              <span class="news-source"><a href="stockcrew.co.jp/insights/article_jiji_specified_commerce_law_2026-04-30">出典</a></span>
+            </div>
+          </div>
+        </li>
+        <li class="news-item">
+          <div class="news-num">02</div>
+          <div class="news-content">
+            <div class="news-title">景品表示法 - 消費者庁ウェブサイト</div>
+            <div class="news-snippet">景品表示法関連法令 景品表示法改正について 令和5年改正景品表示法に関する解説動画 景品表示法のパンフレット 景品表示法とは よくある質問コーナー 景品表示法関係公表資料 景品表示法関連報道発表資料 その他の景品表示法関連の公表資料 不当景品類及び不当表示防止法 (景品表示法 ...</div>
+            <div class="news-meta">
+              <span class="news-source"><a href="www.caa.go.jp/policies/policy/representation/fair_labeling/">出典</a></span>
+            </div>
+          </div>
+        </li>
+        <li class="news-item">
+          <div class="news-num">03</div>
+          <div class="news-content">
+            <div class="news-title">【2026年最新】景品表示法とは？違反事例とルールを分かりやすく解説 | アドミル（Admille）</div>
+            <div class="news-snippet">景品表示法（景表法）の基本ルールや不当表示（優良誤認・有利誤認・ステマ）、景品規制の限度額を初心者向けにわかりやすく解説。違反事例や課徴金制度、広告チェックを効率化するAIツールも紹介します。</div>
+            <div class="news-meta">
+              <span class="news-source"><a href="blog.admille.co.jp/370/">出典</a></span>
+            </div>
+          </div>
+        </li>
+        <li class="news-item">
+          <div class="news-num">04</div>
+          <div class="news-content">
+            <div class="news-title">【2026年最新】景品表示法改正とステマ規制｜口コミ代行はどこから違法になる？ | Resus社会保険労務士事務所</div>
+            <div class="news-snippet">【飲食店必見】口コミ代行は違法! ステマ規制・景品表示法違反を回避する正しいMEO対策【2025年最新】 【クリニック・歯科医院・病院向け】Googleマップの口コミ対策で集患力UP｜悪い評価に負けないMEO戦略とは？</div>
+            <div class="news-meta">
+              <span class="news-source"><a href="resus.jp/topics/4057/">出典</a></span>
+            </div>
+          </div>
+        </li>
+        <li class="news-item">
+          <div class="news-num">05</div>
+          <div class="news-content">
+            <div class="news-title">オリエンタルダイヤモンド、サーバーが暗号化される被害公表─氏名・住所・電話番号が流出した可能性</div>
+            <div class="news-snippet">株式会社オリエンタルダイヤモンドは2026年5月12日、本社ファイルサーバーがランサムウェア攻撃を受け、氏名・住所・電話番号が流出した可能性があると公表した。 被害確認は5月4日、侵入経路となったVPNは今後使用しない方針も表明している。</div>
+            <div class="news-meta">
+              <span class="news-source"><a href="innovatopia.jp/cyber-security/cyber-security-news/102941/">出典</a></span>
+            </div>
+          </div>
+        </li>
+        <li class="news-item">
+          <div class="news-num">06</div>
+          <div class="news-content">
+            <div class="news-title">【2026年】サイバー攻撃・情報漏洩の最新 事例|セキュリティニュースのセキュリティ対策Lab</div>
+            <div class="news-snippet">3.6 BEENOSの子会社運営 海外ECサービス「セカイモン」へ不正アクセス ─ 個人情報漏洩の恐れ 3.7 TENGA（テンガ）、米国向け窓口でサイバー攻撃か ─ 従業員アカウントへの不正アクセスで個人情報漏洩の恐れ</div>
+            <div class="news-meta">
+              <span class="news-source"><a href="rocket-boys.co.jp/security-measures-lab/cyberattacks-data-breaches-latest-cases-2026/">出典</a></span>
+            </div>
+          </div>
+        </li>
       </ul>
     </div>
   </details>
 </section>
 
-<section id="tools" class="section-card">
-  <div class="section-header"><span class="section-title">🔧 ECツール情報</span></div>
+<section id="competitor" class="section-card" data-cat="competitor">
+  <div class="section-header">
+    <div class="cat-icon">🏪</div>
+    <div class="section-title-wrap">
+      <div class="section-title">他社EC運営情報</div>
+      <div class="section-sub">最新 0件</div>
+    </div>
+    <span class="section-badge">0</span>
+  </div>
   <details open>
-    <summary><span class="summary-label">ニュース一覧</span><span class="toggle-icon">▼</span></summary>
+    <summary>
+      <span class="summary-label">ニュース一覧を見る</span>
+      <span class="toggle-icon">▼</span>
+    </summary>
     <div class="details-body">
       <ul class="news-list">
-        <!-- ニュースなし -->
+        <li>本日の情報収集中です</li>
       </ul>
     </div>
   </details>
 </section>
 
-<section id="marketing" class="section-card">
-  <div class="section-header"><span class="section-title">📣 マーケティング全般</span></div>
+<section id="cart" class="section-card" data-cat="cart">
+  <div class="section-header">
+    <div class="cat-icon">🖥️</div>
+    <div class="section-title-wrap">
+      <div class="section-title">ECカートシステム</div>
+      <div class="section-sub">最新 0件</div>
+    </div>
+    <span class="section-badge">0</span>
+  </div>
   <details open>
-    <summary><span class="summary-label">ニュース一覧</span><span class="toggle-icon">▼</span></summary>
+    <summary>
+      <span class="summary-label">ニュース一覧を見る</span>
+      <span class="toggle-icon">▼</span>
+    </summary>
     <div class="details-body">
       <ul class="news-list">
-        <!-- ニュースなし -->
+        <li>本日の情報収集中です</li>
+      </ul>
+    </div>
+  </details>
+</section>
+
+<section id="tools" class="section-card" data-cat="tools">
+  <div class="section-header">
+    <div class="cat-icon">🔧</div>
+    <div class="section-title-wrap">
+      <div class="section-title">ECツール情報</div>
+      <div class="section-sub">最新 0件</div>
+    </div>
+    <span class="section-badge">0</span>
+  </div>
+  <details open>
+    <summary>
+      <span class="summary-label">ニュース一覧を見る</span>
+      <span class="toggle-icon">▼</span>
+    </summary>
+    <div class="details-body">
+      <ul class="news-list">
+        <li>本日の情報収集中です</li>
+      </ul>
+    </div>
+  </details>
+</section>
+
+<section id="marketing" class="section-card" data-cat="marketing">
+  <div class="section-header">
+    <div class="cat-icon">📣</div>
+    <div class="section-title-wrap">
+      <div class="section-title">マーケティング全般</div>
+      <div class="section-sub">最新 0件</div>
+    </div>
+    <span class="section-badge">0</span>
+  </div>
+  <details open>
+    <summary>
+      <span class="summary-label">ニュース一覧を見る</span>
+      <span class="toggle-icon">▼</span>
+    </summary>
+    <div class="details-body">
+      <ul class="news-list">
+        <li>本日の情報収集中です</li>
       </ul>
     </div>
   </details>
@@ -667,8 +1064,8 @@
 </main>
 
 <footer class="footer">
-  <p>本ダッシュボードは自動生成です。情報の正確性は保証しません。</p>
-  <p>生成日時: 2026年05月15日 ｜ Powered by Gemini API + DuckDuckGo</p>
+  <div>本ダッシュボードはAIが自動生成しています。情報の正確性は保証しません。</div>
+  <div>更新日時: 2026年05月15日 ｜ Powered by Gemini API + DuckDuckGo</div>
 </footer>
 
 </body>
