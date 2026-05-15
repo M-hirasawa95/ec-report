@@ -598,7 +598,7 @@ def generate_summary_section(news: dict, date_jp: str) -> str:
 def generate_sections_batch(categories_batch: list, news: dict, date_jp: str) -> str:
     news_parts = []
     for cat in categories_batch:
-        ctx = build_news_context(cat["id"], news)
+        ctx = build_news_context(cat["id"], news, max_items=3)
         news_parts.append(
             f"\n=== {cat['icon']} {cat['title']} (id={cat['id']}, type={cat['type']}) ===\n{ctx}"
         )
@@ -699,41 +699,40 @@ def build_html_shell(date_str: str, body_content: str) -> str:
 </html>"""
 
 
+def safe_generate(label: str, fn, *args) -> str:
+    try:
+        result = fn(*args)
+        print(f"  ✅ {label} 完了")
+        return result
+    except Exception as e:
+        print(f"  ⚠️  {label} 失敗（スキップ）: {e}")
+        return ""
+
+
 def generate_html(date_str: str, news: dict) -> str:
-    _, _, _ = date_str.split("-")
     year, month, day = date_str.split("-")
     date_jp = f"{year}年{month}月{day}日"
     sections = []
 
     print("  🤖 ハイライト生成中...")
-    sections.append(generate_summary_section(news, date_jp))
+    sections.append(safe_generate("ハイライト", generate_summary_section, news, date_jp))
     time.sleep(20)
 
     print("  🤖 Batch1: 重要ニュース・IR...")
     batch1 = [c for c in CATEGORIES if c["id"] in ("breaking", "ir")]
-    sections.append(generate_sections_batch(batch1, news, date_jp))
+    sections.append(safe_generate("Batch1", generate_sections_batch, batch1, news, date_jp))
     time.sleep(20)
 
     print("  🤖 Batch2: プラットフォーム〜消費者...")
     batch2 = [c for c in CATEGORIES if c["id"] in ("platform", "ads", "logistics", "consumer")]
-    sections.append(generate_sections_batch(batch2, news, date_jp))
+    sections.append(safe_generate("Batch2", generate_sections_batch, batch2, news, date_jp))
     time.sleep(20)
 
-    print("  🤖 Batch3: 法規制・他社EC・カート...")
-    batch3 = [c for c in CATEGORIES if c["id"] in ("legal", "competitor", "cart")]
-    sections.append(generate_sections_batch(batch3, news, date_jp))
-    time.sleep(20)
+    print("  🤖 Batch3: 法規制〜マーケティング...")
+    batch3 = [c for c in CATEGORIES if c["id"] in ("legal", "competitor", "cart", "tools", "marketing")]
+    sections.append(safe_generate("Batch3", generate_sections_batch, batch3, news, date_jp))
 
-    print("  🤖 Batch4: ツール...")
-    batch4 = [c for c in CATEGORIES if c["id"] == "tools"]
-    sections.append(generate_sections_batch(batch4, news, date_jp))
-    time.sleep(20)
-
-    print("  🤖 Batch5: マーケティング全般...")
-    batch5 = [c for c in CATEGORIES if c["id"] == "marketing"]
-    sections.append(generate_sections_batch(batch5, news, date_jp))
-
-    return build_html_shell(date_str, "\n\n".join(sections))
+    return build_html_shell(date_str, "\n\n".join(s for s in sections if s))
 
 
 # ── 5. GitHub Push ─────────────────────────────────────────────
