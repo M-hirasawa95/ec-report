@@ -724,9 +724,14 @@ def generate_html(date_str: str, news: dict) -> str:
     sections.append(generate_sections_batch(batch3, news, date_jp))
     time.sleep(5)
 
-    print("  🤖 Batch4: ツール・マーケティング...")
-    batch4 = [c for c in CATEGORIES if c["id"] in ("tools", "marketing")]
+    print("  🤖 Batch4: ツール...")
+    batch4 = [c for c in CATEGORIES if c["id"] == "tools"]
     sections.append(generate_sections_batch(batch4, news, date_jp))
+    time.sleep(5)
+
+    print("  🤖 Batch5: マーケティング全般...")
+    batch5 = [c for c in CATEGORIES if c["id"] == "marketing"]
+    sections.append(generate_sections_batch(batch5, news, date_jp))
 
     return build_html_shell(date_str, "\n\n".join(sections))
 
