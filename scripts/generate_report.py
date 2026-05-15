@@ -513,7 +513,7 @@ def collect_all_news(date_str: str) -> dict:
 
 
 # ── 3. Gemini API ─────────────────────────────────────────────
-def call_gemini(prompt: str, retries: int = 3) -> str:
+def call_gemini(prompt: str, retries: int = 5) -> str:
     url = (
         f"https://generativelanguage.googleapis.com/v1beta/models/"
         f"{GEMINI_MODEL}:generateContent?key={GEMINI_API_KEY}"
@@ -535,7 +535,7 @@ def call_gemini(prompt: str, retries: int = 3) -> str:
             return data["candidates"][0]["content"]["parts"][0]["text"]
         except urllib.error.HTTPError as e:
             if e.code == 429 and attempt < retries - 1:
-                wait = 30 * (attempt + 1)
+                wait = 60 * (attempt + 1)  # 60s, 120s, 180s, 240s
                 print(f"  [WARN] レート制限 → {wait}秒待機...")
                 time.sleep(wait)
             else:
@@ -707,27 +707,27 @@ def generate_html(date_str: str, news: dict) -> str:
 
     print("  🤖 ハイライト生成中...")
     sections.append(generate_summary_section(news, date_jp))
-    time.sleep(5)
+    time.sleep(20)
 
     print("  🤖 Batch1: 重要ニュース・IR...")
     batch1 = [c for c in CATEGORIES if c["id"] in ("breaking", "ir")]
     sections.append(generate_sections_batch(batch1, news, date_jp))
-    time.sleep(5)
+    time.sleep(20)
 
     print("  🤖 Batch2: プラットフォーム〜消費者...")
     batch2 = [c for c in CATEGORIES if c["id"] in ("platform", "ads", "logistics", "consumer")]
     sections.append(generate_sections_batch(batch2, news, date_jp))
-    time.sleep(5)
+    time.sleep(20)
 
     print("  🤖 Batch3: 法規制・他社EC・カート...")
     batch3 = [c for c in CATEGORIES if c["id"] in ("legal", "competitor", "cart")]
     sections.append(generate_sections_batch(batch3, news, date_jp))
-    time.sleep(5)
+    time.sleep(20)
 
     print("  🤖 Batch4: ツール...")
     batch4 = [c for c in CATEGORIES if c["id"] == "tools"]
     sections.append(generate_sections_batch(batch4, news, date_jp))
-    time.sleep(5)
+    time.sleep(20)
 
     print("  🤖 Batch5: マーケティング全般...")
     batch5 = [c for c in CATEGORIES if c["id"] == "marketing"]
