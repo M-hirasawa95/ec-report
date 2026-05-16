@@ -807,7 +807,7 @@ def build_html_shell(date_str: str, body_content: str) -> str:
 
 <footer class="footer">
   <div>本ダッシュボードはAIが自動生成しています。情報の正確性は保証しません。</div>
-  <div>更新日時: {date_jp} ｜ Powered by Gemini API + DuckDuckGo</div>
+  <div>更新日時: {date_jp} ｜ Powered by Gemini API + Google News</div>
 </footer>
 
 </body>
@@ -932,7 +932,7 @@ def main():
     total = sum(len(v) for v in news.values())
     print(f"  → {total}件取得")
 
-    print("\n[3/5] HTML生成（Gemini・4分割）...")
+    print("\n[3/5] HTML生成（Gemini・JSON方式）...")
     html = generate_html(date_str, news)
     print(f"  → {len(html):,} bytes")
 
