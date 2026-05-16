@@ -478,12 +478,13 @@ def google_news_rss(query: str, max_results: int = 5) -> list[dict]:
             parts = raw.rsplit(" - ", 1)
             title = parts[0].strip() if len(parts) > 1 else raw
 
-            article_url = (link_m.group(1) if link_m else "").strip()
+            # 引用URLは実際のソースサイトURLを優先（Googleリダイレクトより読みやすい）
             source_url  = (source_m.group(1) if source_m else "").strip()
-            domain = re.sub(r"^https?://(www\.)?", "", source_url).split("/")[0] if source_url else "news.google.com"
+            article_url = (link_m.group(1) if link_m else "").strip()
+            cite_url = source_url if source_url else article_url
 
             if title:
-                results.append({"title": title, "url": article_url, "snippet": "", "_src": domain})
+                results.append({"title": title, "url": cite_url, "snippet": ""})
     except Exception as e:
         print(f"[WARN] Google News RSS失敗 ({query[:30]}): {e}")
     return results
@@ -601,8 +602,7 @@ def build_news_ctx(news: dict, cat_ids: list) -> str:
         for item in items:
             snip = item.get("snippet", "").strip()
             title = item.get("title", "")
-            src = item.get("_src", "")
-            desc = f": {snip[:120]}" if snip and snip != title else f" ({src})" if src else ""
+            desc = f": {snip[:120]}" if snip and snip != title else ""
             lines.append(f"- {title}{desc} [{item['url']}]")
     return "\n".join(lines)
 
