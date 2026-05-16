@@ -778,7 +778,7 @@ def collect_benchmark_news() -> list[dict]:
 
 
 # ── 3. Gemini API ─────────────────────────────────────────────
-def call_gemini(prompt: str, retries: int = 5) -> str:
+def call_gemini(prompt: str, retries: int = 5, timeout: int = 120) -> str:
     url = (
         f"https://generativelanguage.googleapis.com/v1beta/models/"
         f"{GEMINI_MODEL}:generateContent?key={GEMINI_API_KEY}"
@@ -795,7 +795,7 @@ def call_gemini(prompt: str, retries: int = 5) -> str:
                 headers={"Content-Type": "application/json"},
                 method="POST",
             )
-            with urllib.request.urlopen(req, timeout=120) as resp:
+            with urllib.request.urlopen(req, timeout=timeout) as resp:
                 data = json.loads(resp.read().decode())
             return data["candidates"][0]["content"]["parts"][0]["text"]
         except urllib.error.HTTPError as e:
@@ -893,37 +893,26 @@ def summarize_benchmark_json(bench_news: list, date_jp: str) -> dict:
             lines.append("- （最新ニュースなし）")
     news_ctx = "\n".join(lines)
 
-    company_fields = "\n    ".join(
-        f'{{"name":"{co["company"]}","recent_move":"動向50文字以内","threat":"high|medium|low","actions":["アクション40文字以内"]}}'
-        for co in BENCHMARK_COMPANIES
-    )
-
-    prompt = f"""あなたはEC業界アナリストで、株式会社サイバーレコード（EC運営代行・ECコンサルティング会社）の競合分析を行います。
-{date_jp}の競合他社動向データを分析し、以下のJSON形式で返してください。
+    prompt = f"""あなたはEC業界アナリストです。株式会社サイバーレコード（EC運営代行・コンサル会社）の競合分析を行います。
+競合他社ニュースデータを分析し、以下のJSON形式で返してください。
 
 {{
   "summary": "競合全体の動向サマリー（80文字以内）",
-  "top_actions": ["サイバーレコードが今すぐ取るべき対抗策（40文字以内）"],
+  "top_actions": ["サイバーレコードが今すぐ取るべき対抗策（40文字以内）×3件"],
   "companies": [
-    {company_fields}
+    {{"name": "会社名", "recent_move": "動向（50文字以内）", "threat": "high|medium|low", "actions": ["推奨アクション×2件（40文字以内）"]}}
   ]
 }}
 
 【ルール】
-- companies: 全社分を記載（ニュースなし企業も含む）
-- recent_move: 各社の最新動向・新サービス・価格変更・キャンペーン等を50文字以内で
-- threat: サイバーレコードへの競合脅威レベル（high/medium/low）
-  - high: 直接競合、新サービスがサイバーレコードの主力事業と重なる
-  - medium: 一部競合、ターゲット顧客層が重なる
-  - low: 間接競合、異なる市場セグメント
-- actions: 各社の動きに対してサイバーレコードが取るべき具体的アクション1〜2件（40文字以内）
-- top_actions: 全競合を踏まえ最優先の戦略アクション3件
+- companies: ニュースが取得できた企業のみ記載（全社不要）
+- threat: high=直接競合, medium=部分競合, low=間接競合
 - JSONのみ返す（```不要）
 
 【競合他社ニュースデータ】
 {news_ctx}"""
 
-    text = call_gemini(prompt)
+    text = call_gemini(prompt, timeout=180)
     text = re.sub(r"^```json?\n?", "", text.strip())
     text = re.sub(r"\n?```$", "", text.strip())
     try:
@@ -1203,7 +1192,7 @@ def generate_html(date_str: str, news: dict) -> str:
     batch1_ids = ["breaking", "ir", "platform", "ads", "logistics", "consumer"]
     print("  🤖 Batch1: ハイライト〜消費者（JSON）...")
     data1 = summarize_json(news, date_jp, batch1_ids, include_highlights=True)
-    time.sleep(20)
+    time.sleep(15)
 
     # Batch2: 後半6カテゴリ → JSON
     batch2_ids = ["legal", "competitor", "cart", "tools", "marketing", "retail"]
@@ -1221,11 +1210,17 @@ def generate_html(date_str: str, news: dict) -> str:
             return raw, []
         return [], []
 
-    # Batch3: 競合ベンチマーク → JSON
-    print("  🤖 Batch3: 競合ベンチマーク（JSON）...")
-    bench_news = collect_benchmark_news()
-    time.sleep(10)
-    bench_data = summarize_benchmark_json(bench_news, date_jp)
+    # Batch3: 競合ベンチマーク → JSON（失敗しても全体は続行）
+    bench_data = {}
+    try:
+        print("  🤖 Batch3: 競合ベンチマーク（JSON）...")
+        bench_news = collect_benchmark_news()
+        time.sleep(15)
+        bench_data = summarize_benchmark_json(bench_news, date_jp)
+    except Exception as e:
+        print(f"  [WARN] ベンチマーク失敗（スキップ）: {e}")
+        bench_news = []
+        bench_data = {}
 
     # KPI バー（収集統計）
     bench_count = len([c for c in bench_news if c["news"]])
