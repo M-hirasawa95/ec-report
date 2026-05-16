@@ -1144,9 +1144,9 @@ def build_html_shell(date_str: str, body_content: str) -> str:
 
 <nav class="category-nav">
   <div class="category-nav-inner">
+    <a href="#benchmark" class="nav-link" style="--cc:#7C3AED;--cb:#F5F3FF"><span class="nav-dot"></span>🏆 競合ベンチマーク</a>
     <a href="#summary" class="nav-link" style="--cc:#0EA5E9;--cb:#F0F9FF"><span class="nav-dot"></span>✨ ハイライト</a>
     {nav_links}
-    <a href="#benchmark" class="nav-link" style="--cc:#7C3AED;--cb:#F5F3FF"><span class="nav-dot"></span>🏆 競合ベンチマーク</a>
   </div>
 </nav>
 
@@ -1234,7 +1234,11 @@ def generate_html(date_str: str, news: dict) -> str:
 </div>'''
 
     # PythonでHTML組み立て（絶対に欠けない）
-    sections = [kpi_bar, render_summary(all_data.get("highlights", []), date_jp)]
+    bench_html = render_benchmark_section(bench_data)
+    sections = [kpi_bar]
+    if bench_html:
+        sections.append(bench_html)
+    sections.append(render_summary(all_data.get("highlights", []), date_jp))
     for cat in CATEGORIES:
         if cat["id"] == "ir":
             ir_raw = all_data.get("ir", {})
@@ -1243,11 +1247,6 @@ def generate_html(date_str: str, news: dict) -> str:
         else:
             items, actions = extract(cat["id"])
             sections.append(render_section(cat, items, actions))
-
-    # 競合ベンチマークセクション（末尾）
-    bench_html = render_benchmark_section(bench_data)
-    if bench_html:
-        sections.append(bench_html)
 
     return build_html_shell(date_str, "\n\n".join(sections))
 
