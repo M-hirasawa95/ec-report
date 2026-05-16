@@ -121,6 +121,30 @@ CATEGORIES = [
     },
 ]
 
+# ── 競合ベンチマーク対象企業（EC運営代行・ECコンサル・マーケ支援）────────
+BENCHMARK_COMPANIES = [
+    {"name": "いつも",                  "search": "いつも EC運営代行 コンサル 新サービス"},
+    {"name": "フルスピード",             "search": "フルスピード EC デジタルマーケティング 動向"},
+    {"name": "ソウルドアウト",           "search": "ソウルドアウト EC 広告 新サービス 発表"},
+    {"name": "ecbeing",                 "search": "ecbeing EC 新機能 リリース 価格"},
+    {"name": "シナブル",                "search": "シナブル EC CRM メール 新機能"},
+    {"name": "スクロール360",           "search": "スクロール360 EC 物流 フルフィルメント"},
+    {"name": "Hamee（ネクストエンジン）", "search": "Hamee ネクストエンジン EC 新機能"},
+    {"name": "フィードフォース",         "search": "フィードフォース EC フィード 新サービス"},
+    {"name": "ブレインパッド",           "search": "ブレインパッド EC データ分析 AI"},
+    {"name": "デジタルアイデンティティ", "search": "デジタルアイデンティティ EC マーケティング"},
+    {"name": "ロックオン",              "search": "ロックオン アドエビス EC マーケティング"},
+    {"name": "オーリーズ",              "search": "オーリーズ EC 広告運用 新サービス"},
+    {"name": "ファングリー",            "search": "ファングリー EC コンテンツ SEO"},
+    {"name": "ディーゼロ",             "search": "ディーゼロ EC Web 制作 運営"},
+    {"name": "電通デジタル",           "search": "電通デジタル EC コマース 支援"},
+    {"name": "博報堂（EC）",           "search": "博報堂 EC デジタルコマース 支援"},
+    {"name": "サイバーエージェント（EC）", "search": "サイバーエージェント EC コマース 支援"},
+    {"name": "ネットショップ支援室",    "search": "ネットショップ支援室 Shopify EC"},
+    {"name": "カスタメディア",         "search": "カスタメディア EC 運営代行"},
+    {"name": "ベイクルーズ（EC）",     "search": "ベイクルーズ EC 自社 運営 D2C"},
+]
+
 # ── CSS（Python固定定義）────────────────────────────────────────
 CSS = """
     /* ═══════════════════════════════════════════════════
@@ -477,6 +501,69 @@ CSS = """
       .ir-charts, .highlight-grid { grid-template-columns: 1fr; }
       .metric-grid { grid-template-columns: repeat(2,1fr); }
       .kpi-bar { grid-template-columns: 1fr 1fr; gap: 10px; }
+      .bench-grid { grid-template-columns: 1fr; }
+    }
+
+    /* ── 競合ベンチマーク ── */
+    .bench-summary {
+      background: var(--blue-l); border-left: 3px solid var(--blue);
+      border-radius: var(--r); padding: 16px 20px; margin-bottom: 24px;
+      font-size: 13.5px; color: var(--ink-2); line-height: 1.7;
+    }
+    .bench-summary-title {
+      font-size: 11px; font-weight: 700; letter-spacing: .08em;
+      text-transform: uppercase; color: var(--blue); margin-bottom: 8px;
+    }
+    .bench-top-actions {
+      margin-top: 14px; display: flex; flex-direction: column; gap: 6px;
+    }
+    .bench-top-action {
+      display: flex; align-items: flex-start; gap: 10px;
+      font-size: 13px; font-weight: 600; color: var(--ink);
+    }
+    .bench-top-action::before {
+      content: "→"; color: var(--blue); flex-shrink: 0; font-weight: 700;
+    }
+    .bench-grid {
+      display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px;
+    }
+    .bench-card {
+      background: var(--white); border: 1px solid var(--line);
+      border-radius: var(--r); padding: 18px 20px;
+      box-shadow: var(--sh-sm); transition: box-shadow .2s;
+    }
+    .bench-card:hover { box-shadow: var(--sh); }
+    .bench-card-header {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 10px;
+    }
+    .bench-company {
+      font-size: 13px; font-weight: 800; color: var(--ink); letter-spacing: -.01em;
+    }
+    .bench-threat {
+      font-size: 10px; font-weight: 700; letter-spacing: .06em;
+      padding: 3px 8px; border-radius: 99px;
+    }
+    .bench-threat.high   { background: #FEE2E2; color: #B91C1C; }
+    .bench-threat.medium { background: #FEF3C7; color: #92400E; }
+    .bench-threat.low    { background: #DCFCE7; color: #166534; }
+    .bench-move {
+      font-size: 12.5px; color: var(--ink-2); line-height: 1.6;
+      margin-bottom: 12px; padding-bottom: 12px; border-bottom: 1px solid var(--line);
+    }
+    .bench-actions-label {
+      font-size: 10px; font-weight: 700; letter-spacing: .07em;
+      text-transform: uppercase; color: var(--amber); margin-bottom: 7px;
+    }
+    .bench-action-list {
+      list-style: none; display: flex; flex-direction: column; gap: 5px;
+    }
+    .bench-action-item {
+      font-size: 12px; color: var(--ink); display: flex; gap: 8px;
+      align-items: flex-start; line-height: 1.5;
+    }
+    .bench-action-item::before {
+      content: "▸"; color: var(--amber); flex-shrink: 0; font-size: 10px; margin-top: 2px;
     }
 """
 
@@ -677,6 +764,19 @@ def collect_all_news(date_str: str) -> dict:
     return news
 
 
+def collect_benchmark_news() -> list[dict]:
+    """競合20社の直近ニュースを収集（各社2件）"""
+    results = []
+    for co in BENCHMARK_COMPANIES:
+        print(f"  🔍 [bench] {co['name']}...")
+        items = google_news_rss(co["search"], max_results=2)
+        if not items:
+            items = ddg_search(co["search"], max_results=2)
+        results.append({"company": co["name"], "news": items})
+        time.sleep(0.8)
+    return results
+
+
 # ── 3. Gemini API ─────────────────────────────────────────────
 def call_gemini(prompt: str, retries: int = 5) -> str:
     url = (
@@ -777,6 +877,62 @@ def summarize_json(news: dict, date_jp: str, cat_ids: list, include_highlights: 
             return json.loads(text.rstrip(",\n ") + "\n}")
         except Exception:
             print("  [WARN] JSONパース失敗")
+            return {}
+
+
+def summarize_benchmark_json(bench_news: list, date_jp: str) -> dict:
+    """競合ベンチマーク分析をGeminiに依頼"""
+    lines = []
+    for co in bench_news:
+        lines.append(f"\n### {co['company']}")
+        for item in co["news"]:
+            snip = item.get("snippet", "").strip()
+            desc = f": {snip[:120]}" if snip and snip != item.get("title","") else ""
+            lines.append(f"- {item.get('title','')}{desc}")
+        if not co["news"]:
+            lines.append("- （最新ニュースなし）")
+    news_ctx = "\n".join(lines)
+
+    company_fields = "\n    ".join(
+        f'{{"name":"{co["company"]}","recent_move":"動向50文字以内","threat":"high|medium|low","actions":["アクション40文字以内"]}}'
+        for co in BENCHMARK_COMPANIES
+    )
+
+    prompt = f"""あなたはEC業界アナリストで、株式会社サイバーレコード（EC運営代行・ECコンサルティング会社）の競合分析を行います。
+{date_jp}の競合他社動向データを分析し、以下のJSON形式で返してください。
+
+{{
+  "summary": "競合全体の動向サマリー（80文字以内）",
+  "top_actions": ["サイバーレコードが今すぐ取るべき対抗策（40文字以内）"],
+  "companies": [
+    {company_fields}
+  ]
+}}
+
+【ルール】
+- companies: 全社分を記載（ニュースなし企業も含む）
+- recent_move: 各社の最新動向・新サービス・価格変更・キャンペーン等を50文字以内で
+- threat: サイバーレコードへの競合脅威レベル（high/medium/low）
+  - high: 直接競合、新サービスがサイバーレコードの主力事業と重なる
+  - medium: 一部競合、ターゲット顧客層が重なる
+  - low: 間接競合、異なる市場セグメント
+- actions: 各社の動きに対してサイバーレコードが取るべき具体的アクション1〜2件（40文字以内）
+- top_actions: 全競合を踏まえ最優先の戦略アクション3件
+- JSONのみ返す（```不要）
+
+【競合他社ニュースデータ】
+{news_ctx}"""
+
+    text = call_gemini(prompt)
+    text = re.sub(r"^```json?\n?", "", text.strip())
+    text = re.sub(r"\n?```$", "", text.strip())
+    try:
+        return json.loads(text)
+    except Exception:
+        try:
+            return json.loads(text.rstrip(",\n ") + "\n}")
+        except Exception:
+            print("  [WARN] ベンチマークJSONパース失敗")
             return {}
 
 
@@ -897,6 +1053,63 @@ def render_section(cat: dict, items: list, actions: list = None) -> str:
 </section>'''
 
 
+def render_benchmark_section(bench_data: dict) -> str:
+    """競合ベンチマークセクションのHTMLを生成"""
+    if not bench_data:
+        return ""
+
+    summary = _esc(bench_data.get("summary", ""))
+    top_actions = bench_data.get("top_actions", [])
+    companies = bench_data.get("companies", [])
+    n = len(companies)
+
+    top_acts_html = "".join(
+        f'<div class="bench-top-action">{_esc(a)}</div>'
+        for a in top_actions[:3]
+    )
+    summary_html = f'''<div class="bench-summary">
+  <div class="bench-summary-title">競合全体サマリー</div>
+  {summary}
+  <div class="bench-top-actions">{top_acts_html}</div>
+</div>'''
+
+    cards_html = ""
+    for co in companies:
+        threat = co.get("threat", "medium")
+        threat_label = {"high": "⚠ 高脅威", "medium": "● 中脅威", "low": "○ 低脅威"}.get(threat, "● 中脅威")
+        actions_li = "".join(
+            f'<li class="bench-action-item">{_esc(a)}</li>'
+            for a in co.get("actions", [])[:2]
+        )
+        cards_html += f'''<div class="bench-card">
+  <div class="bench-card-header">
+    <div class="bench-company">{_esc(co.get("name",""))}</div>
+    <span class="bench-threat {threat}">{threat_label}</span>
+  </div>
+  <div class="bench-move">{_esc(co.get("recent_move","情報なし"))}</div>
+  <div class="bench-actions-label">推奨アクション</div>
+  <ul class="bench-action-list">{actions_li}</ul>
+</div>'''
+
+    return f'''<section id="benchmark" class="section-card" data-cat="benchmark">
+  <div class="section-header">
+    <div class="cat-icon">🏆</div>
+    <div class="section-title-wrap">
+      <div class="section-title">競合ベンチマーク</div>
+      <div class="section-sub">EC運営代行・コンサル {n}社の動向</div>
+    </div>
+    <span class="section-badge">{n}</span>
+  </div>
+  <details open>
+    <summary><span class="summary-label">競合各社の動向を見る</span><span class="toggle-icon">▼</span></summary>
+    <div class="details-body">
+      {summary_html}
+      <div class="bench-grid">{cards_html}</div>
+    </div>
+  </details>
+</section>'''
+
+
 def build_html_shell(date_str: str, body_content: str) -> str:
     year, month, day = date_str.split("-")
     date_jp = f"{year}年{month}月{day}日"
@@ -944,6 +1157,7 @@ def build_html_shell(date_str: str, body_content: str) -> str:
   <div class="category-nav-inner">
     <a href="#summary" class="nav-link" style="--cc:#0EA5E9;--cb:#F0F9FF"><span class="nav-dot"></span>✨ ハイライト</a>
     {nav_links}
+    <a href="#benchmark" class="nav-link" style="--cc:#7C3AED;--cb:#F5F3FF"><span class="nav-dot"></span>🏆 競合ベンチマーク</a>
   </div>
 </nav>
 
@@ -1017,6 +1231,23 @@ def generate_html(date_str: str, news: dict) -> str:
   <div class="kpi-card"><div class="kpi-icon amber">🔄</div><div class="kpi-body"><div class="kpi-value">毎朝</div><div class="kpi-label">8:00 JST 自動更新</div></div></div>
 </div>'''
 
+    # Batch3: 競合ベンチマーク → JSON
+    print("  🤖 Batch3: 競合ベンチマーク（JSON）...")
+    bench_news = collect_benchmark_news()
+    time.sleep(10)
+    bench_data = summarize_benchmark_json(bench_news, date_jp)
+
+    # KPI バー（収集統計）
+    bench_count = len([c for c in bench_news if c["news"]])
+    total_news = sum(len(v) for v in news.values())
+    cats_covered = len([v for v in news.values() if v])
+    kpi_bar = f'''<div class="kpi-bar">
+  <div class="kpi-card"><div class="kpi-icon blue">📰</div><div class="kpi-body"><div class="kpi-value">{total_news}</div><div class="kpi-label">収集ニュース数</div></div></div>
+  <div class="kpi-card"><div class="kpi-icon green">📂</div><div class="kpi-body"><div class="kpi-value">{cats_covered}</div><div class="kpi-label">カバー分野数</div></div></div>
+  <div class="kpi-card"><div class="kpi-icon purple">🏆</div><div class="kpi-body"><div class="kpi-value">{bench_count}</div><div class="kpi-label">競合ベンチマーク社数</div></div></div>
+  <div class="kpi-card"><div class="kpi-icon amber">🔄</div><div class="kpi-body"><div class="kpi-value">毎朝</div><div class="kpi-label">8:00 JST 自動更新</div></div></div>
+</div>'''
+
     # PythonでHTML組み立て（絶対に欠けない）
     sections = [kpi_bar, render_summary(all_data.get("highlights", []), date_jp)]
     for cat in CATEGORIES:
@@ -1027,6 +1258,11 @@ def generate_html(date_str: str, news: dict) -> str:
         else:
             items, actions = extract(cat["id"])
             sections.append(render_section(cat, items, actions))
+
+    # 競合ベンチマークセクション（末尾）
+    bench_html = render_benchmark_section(bench_data)
+    if bench_html:
+        sections.append(bench_html)
 
     return build_html_shell(date_str, "\n\n".join(sections))
 
@@ -1115,12 +1351,12 @@ def main():
     date_str = get_jst_date()
     print(f"  → {date_str}")
 
-    print("\n[2/5] ニュース収集（12カテゴリ）...")
+    print("\n[2/5] ニュース収集（12カテゴリ + 競合20社）...")
     news = collect_all_news(date_str)
     total = sum(len(v) for v in news.values())
     print(f"  → {total}件取得")
 
-    print("\n[3/5] HTML生成（Gemini・JSON方式）...")
+    print("\n[3/5] HTML生成（Gemini・JSON方式 + 競合ベンチマーク）...")
     html = generate_html(date_str, news)
     print(f"  → {len(html):,} bytes")
 
