@@ -111,6 +111,14 @@ CATEGORIES = [
             "SEO コンテンツ AI 生成AI マーケティング トレンド {year}",
         ],
     },
+    {
+        "id": "retail", "icon": "🏬", "title": "小売・OMO動向",
+        "type": "accordion", "color": "#0F766E", "bg": "#F0FDFA",
+        "queries": [
+            "小売 OMO オムニチャネル 実店舗 EC 連携 {yearmonth}",
+            "小売業 DX デジタル化 店舗 オンライン 統合 {year}",
+        ],
+    },
 ]
 
 # ── CSS（Python固定定義）────────────────────────────────────────
@@ -145,6 +153,7 @@ CSS = """
     [data-cat="cart"]       { --cc: #8B5CF6; --cb: #FAF5FF; }
     [data-cat="tools"]      { --cc: #16A34A; --cb: #F0FDF4; }
     [data-cat="marketing"]  { --cc: #EA580C; --cb: #FFF7ED; }
+    [data-cat="retail"]     { --cc: #0F766E; --cb: #F0FDFA; }
 
     /* ── ヘッダー ── */
     .header {
@@ -272,6 +281,33 @@ CSS = """
       background: var(--cb,#EFF6FF); color: var(--cc,#2563EB);
       padding: 2px 9px; border-radius: 5px;
       font-size: 10px; font-weight: 600;
+    }
+
+    /* ── アクション推奨 ── */
+    .action-block {
+      margin-top: 16px;
+      background: linear-gradient(135deg, color-mix(in srgb, var(--cb,#EFF6FF) 60%, white) 0%, white 100%);
+      border: 1px solid color-mix(in srgb, var(--cc,#2563EB) 20%, transparent);
+      border-left: 4px solid var(--cc,#2563EB);
+      border-radius: 10px; padding: 14px 18px;
+    }
+    .action-title {
+      font-size: 11px; font-weight: 800; letter-spacing: 1px;
+      color: var(--cc,#2563EB); margin-bottom: 10px;
+      text-transform: uppercase;
+    }
+    .action-list { list-style: none; }
+    .action-item {
+      display: flex; gap: 10px; align-items: flex-start;
+      padding: 5px 0; font-size: 12px; color: #1E293B; line-height: 1.55;
+    }
+    .action-item + .action-item { border-top: 1px dashed #E2E8F0; }
+    .action-bullet {
+      min-width: 20px; height: 20px; border-radius: 6px;
+      background: var(--cc,#2563EB); color: white;
+      font-size: 10px; font-weight: 800;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; margin-top: 1px;
     }
 
     /* ── アコーディオン ── */
@@ -615,14 +651,16 @@ def summarize_json(news: dict, date_jp: str, cat_ids: list, include_highlights: 
         ir_field = '''"ir": {
     "news": [{"title":"...","snippet":"...","url":"..."}],
     "metrics": [{"company":"楽天","value":"X.X兆円","growth":"+X.X%"}],
-    "chart": {"labels":["楽天","メルカリ","ZOZO","BASE","Amazon"],"revenue":[1000,200,300,50,5000],"growth_pct":[5,10,3,2,8]}
+    "chart": {"labels":["楽天","メルカリ","ZOZO","BASE","Amazon"],"revenue":[1000,200,300,50,5000],"growth_pct":[5,10,3,2,8]},
+    "actions": ["アクション（40文字以内）"]
   },'''
     other_fields = "\n  ".join(
-        f'"{cid}": [{{"title":"...","snippet":"70文字以内","url":"..."}}],'
+        f'"{cid}": {{"items":[{{"title":"...","snippet":"70文字以内","url":"..."}}],"actions":["アクション（40文字以内）"]}},'
         for cid in cat_ids if cid != "ir"
     )
 
-    prompt = f"""あなたはEC業界アナリストです。{date_jp}のニュースデータを分析し、以下のJSON形式で返してください。
+    prompt = f"""あなたはEC業界アナリストで、株式会社サイバーレコードのEC事業部向けにレポートを作成しています。
+{date_jp}のニュースデータを分析し、以下のJSON形式で返してください。
 
 {{
   {highlight_field}
@@ -631,9 +669,11 @@ def summarize_json(news: dict, date_jp: str, cat_ids: list, include_highlights: 
 }}
 
 【ルール】
-- 各カテゴリ最大4件、snippetは70文字以内で具体的に（記事内容が不明な場合はタイトルからEC文脈で補足説明を生成）
+- 各カテゴリ items: 最大4件、snippetは70文字以内で具体的に（記事内容が不明な場合はタイトルからEC文脈で補足説明を生成）
+- 各カテゴリ actions: サイバーレコードEC事業部が今週中に取るべき具体的アクションを2〜3件、各40文字以内
+  （例: 「楽天の新手数料改定を確認し費用シミュレーションを更新する」「TikTok広告のCPM上昇に備え予算配分を見直す」）
 - highlights（あれば）6〜8項目、各30文字以内
-- データがない場合は空配列[]
+- データがない場合はitemsを空配列[]、actionsも空配列[]
 - urlはニュースデータのURLをそのまま使用
 - JSONのみ返す（コードブロック記号```不要）
 
@@ -682,6 +722,16 @@ def render_news_items(items: list) -> str:
     return html + "</ul>"
 
 
+def render_actions(actions: list) -> str:
+    if not actions:
+        return ""
+    items_html = "".join(
+        f'<li class="action-item"><span class="action-bullet">{i}</span><span>{_esc(a)}</span></li>'
+        for i, a in enumerate(actions[:3], 1)
+    )
+    return f'<div class="action-block"><div class="action-title">⚡ サイバーレコードEC事業部 推奨アクション</div><ul class="action-list">{items_html}</ul></div>'
+
+
 def render_summary(highlights: list, date_jp: str) -> str:
     items_html = "".join(f'<div class="highlight-item">{_esc(h)}</div>' for h in highlights[:8])
     return f'''<section id="summary" class="section-card" data-cat="ir">
@@ -696,7 +746,7 @@ def render_summary(highlights: list, date_jp: str) -> str:
 </section>'''
 
 
-def render_ir(cat: dict, data: dict) -> str:
+def render_ir(cat: dict, data: dict, actions: list = None) -> str:
     news_items = data.get("news", []) if isinstance(data, dict) else []
     metrics = data.get("metrics", []) if isinstance(data, dict) else []
     chart = data.get("chart", {}) if isinstance(data, dict) else {}
@@ -729,13 +779,14 @@ def render_ir(cat: dict, data: dict) -> str:
     <div class="section-title-wrap"><div class="section-title">{cat["title"]}</div><div class="section-sub">主要EC企業の業績</div></div>
     <span class="section-badge">{n}</span>
   </div>
-  <div class="section-body">{metrics_html}{chart_html}{render_news_items(news_items)}</div>
+  <div class="section-body">{metrics_html}{chart_html}{render_news_items(news_items)}{render_actions(actions or [])}</div>
 </section>'''
 
 
-def render_section(cat: dict, items: list) -> str:
+def render_section(cat: dict, items: list, actions: list = None) -> str:
     cat_id, n = cat["id"], len(items)
     news_html = render_news_items(items)
+    actions_html = render_actions(actions or [])
     if cat["type"] == "breaking":
         return f'''<section id="{cat_id}" class="section-card" data-cat="{cat_id}">
   <div class="breaking-banner">🚨 BREAKING — 重要ニュース</div>
@@ -744,7 +795,7 @@ def render_section(cat: dict, items: list) -> str:
     <div class="section-title-wrap"><div class="section-title">{cat["title"]}</div><div class="section-sub">本日の注目トピック</div></div>
     <span class="section-badge">{n}</span>
   </div>
-  <div class="section-body">{news_html}</div>
+  <div class="section-body">{news_html}{actions_html}</div>
 </section>'''
     return f'''<section id="{cat_id}" class="section-card" data-cat="{cat_id}">
   <div class="section-header">
@@ -754,7 +805,7 @@ def render_section(cat: dict, items: list) -> str:
   </div>
   <details open>
     <summary><span class="summary-label">ニュース一覧を見る</span><span class="toggle-icon">▼</span></summary>
-    <div class="details-body">{news_html}</div>
+    <div class="details-body">{news_html}{actions_html}</div>
   </details>
 </section>'''
 
@@ -828,21 +879,32 @@ def generate_html(date_str: str, news: dict) -> str:
     data1 = summarize_json(news, date_jp, batch1_ids, include_highlights=True)
     time.sleep(20)
 
-    # Batch2: 後半5カテゴリ → JSON
-    batch2_ids = ["legal", "competitor", "cart", "tools", "marketing"]
-    print("  🤖 Batch2: 法規制〜マーケティング（JSON）...")
+    # Batch2: 後半6カテゴリ → JSON
+    batch2_ids = ["legal", "competitor", "cart", "tools", "marketing", "retail"]
+    print("  🤖 Batch2: 法規制〜小売（JSON）...")
     data2 = summarize_json(news, date_jp, batch2_ids)
 
     all_data = {**data1, **data2}
 
+    def extract(cat_id: str):
+        """カテゴリデータからitemsとactionsを取得（新旧両形式対応）"""
+        raw = all_data.get(cat_id, [])
+        if isinstance(raw, dict) and "items" in raw:
+            return raw.get("items", []), raw.get("actions", [])
+        if isinstance(raw, list):
+            return raw, []
+        return [], []
+
     # PythonでHTML組み立て（絶対に欠けない）
     sections = [render_summary(all_data.get("highlights", []), date_jp)]
     for cat in CATEGORIES:
-        raw = all_data.get(cat["id"], [])
         if cat["id"] == "ir":
-            sections.append(render_ir(cat, raw if isinstance(raw, dict) else {}))
+            ir_raw = all_data.get("ir", {})
+            ir_actions = ir_raw.get("actions", []) if isinstance(ir_raw, dict) else []
+            sections.append(render_ir(cat, ir_raw if isinstance(ir_raw, dict) else {}, ir_actions))
         else:
-            sections.append(render_section(cat, raw if isinstance(raw, list) else []))
+            items, actions = extract(cat["id"])
+            sections.append(render_section(cat, items, actions))
 
     return build_html_shell(date_str, "\n\n".join(sections))
 
@@ -931,7 +993,7 @@ def main():
     date_str = get_jst_date()
     print(f"  → {date_str}")
 
-    print("\n[2/5] ニュース収集（11カテゴリ）...")
+    print("\n[2/5] ニュース収集（12カテゴリ）...")
     news = collect_all_news(date_str)
     total = sum(len(v) for v in news.values())
     print(f"  → {total}件取得")
