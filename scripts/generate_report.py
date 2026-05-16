@@ -549,34 +549,89 @@ def clean_output(text: str) -> str:
     return text.strip()
 
 
-# ── 4. HTML生成 ───────────────────────────────────────────────
-def build_news_context(cat_id: str, news: dict, max_items: int = 6) -> str:
-    items = news.get(cat_id, [])[:max_items]
-    if not items:
-        return "（ニュースなし）"
+# ── 4. HTML生成（JSON方式：Gemini→JSON、Python→HTML）──────────
+def build_news_ctx(news: dict, cat_ids: list) -> str:
     lines = []
-    for item in items:
-        lines.append(f"- タイトル: {item['title']}")
-        lines.append(f"  内容: {item['snippet'][:200]}")
-        lines.append(f"  URL: {item['url']}")
+    for cat in CATEGORIES:
+        if cat["id"] not in cat_ids:
+            continue
+        items = news.get(cat["id"], [])[:4]
+        lines.append(f"\n### {cat['icon']} {cat['title']} (id={cat['id']})")
+        for item in items:
+            lines.append(f"- {item['title']}: {item['snippet'][:120]} [{item['url']}]")
     return "\n".join(lines)
 
 
-def generate_summary_section(news: dict, date_jp: str) -> str:
-    top_snippets = []
-    for cat in CATEGORIES:
-        items = news.get(cat["id"], [])
-        if items:
-            top_snippets.append(f"[{cat['title']}] {items[0]['snippet'][:80]}")
+def summarize_json(news: dict, date_jp: str, cat_ids: list, include_highlights: bool = False) -> dict:
+    news_ctx = build_news_ctx(news, cat_ids)
+    highlight_field = '"highlights": ["ハイライト項目（30文字以内）"],' if include_highlights else ""
+    ir_field = ''
+    if "ir" in cat_ids:
+        ir_field = '''"ir": {
+    "news": [{"title":"...","snippet":"...","url":"..."}],
+    "metrics": [{"company":"楽天","value":"X.X兆円","growth":"+X.X%"}],
+    "chart": {"labels":["楽天","メルカリ","ZOZO","BASE","Amazon"],"revenue":[1000,200,300,50,5000],"growth_pct":[5,10,3,2,8]}
+  },'''
+    other_fields = "\n  ".join(
+        f'"{cid}": [{{"title":"...","snippet":"70文字以内","url":"..."}}],'
+        for cid in cat_ids if cid != "ir"
+    )
 
-    prompt = f"""EC業界ダッシュボード {date_jp} の「本日のハイライト」セクションを生成してください。
+    prompt = f"""あなたはEC業界アナリストです。{date_jp}のニュースデータを分析し、以下のJSON形式で返してください。
 
-【ニュースサマリー】
-{chr(10).join(top_snippets)}
+{{
+  {highlight_field}
+  {ir_field}
+  {other_fields}
+}}
 
-以下の構造で出力してください（コードブロック記号```不要、<section>タグのみ）:
+【ルール】
+- 各カテゴリ最大4件、snippetは70文字以内で具体的に
+- highlights（あれば）6〜8項目、各30文字以内
+- データがない場合は空配列[]
+- JSONのみ返す（コードブロック記号```不要）
 
-<section id="summary" class="section-card" data-cat="ir">
+【ニュースデータ】
+{news_ctx}"""
+
+    text = call_gemini(prompt)
+    text = re.sub(r"^```json?\n?", "", text.strip())
+    text = re.sub(r"\n?```$", "", text.strip())
+    try:
+        return json.loads(text)
+    except Exception:
+        try:
+            return json.loads(text.rstrip(",\n ") + "\n}")
+        except Exception:
+            print("  [WARN] JSONパース失敗")
+            return {}
+
+
+def _esc(s: str) -> str:
+    return str(s).replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
+
+
+def render_news_items(items: list) -> str:
+    if not items:
+        return '<p style="color:#94A3B8;font-size:13px;padding:8px 0">本日のニュースを取得できませんでした。</p>'
+    html = '<ul class="news-list">'
+    for i, item in enumerate(items, 1):
+        url = item.get("url", "")
+        href = f"https://{url}" if url and not url.startswith("http") else url
+        domain = url.split("/")[0] if url else "出典"
+        html += f'''<li class="news-item">
+          <div class="news-num">{i:02d}</div>
+          <div class="news-content">
+            <div class="news-title">{_esc(item.get("title",""))}</div>
+            <div class="news-snippet">{_esc(item.get("snippet",""))}</div>
+            <div class="news-meta"><span class="news-source"><a href="{href}" target="_blank" rel="noopener">{_esc(domain)}</a></span></div>
+          </div></li>'''
+    return html + "</ul>"
+
+
+def render_summary(highlights: list, date_jp: str) -> str:
+    items_html = "".join(f'<div class="highlight-item">{_esc(h)}</div>' for h in highlights[:8])
+    return f'''<section id="summary" class="section-card" data-cat="ir">
   <div class="section-header">
     <div class="cat-icon">✨</div>
     <div class="section-title-wrap">
@@ -584,60 +639,71 @@ def generate_summary_section(news: dict, date_jp: str) -> str:
       <div class="section-sub">{date_jp} EC業界トピックス</div>
     </div>
   </div>
-  <div class="section-body">
-    <div class="highlight-grid">
-      <div class="highlight-item">ハイライト1</div>
-      （6〜8項目、各40文字以内、具体的に）
+  <div class="section-body"><div class="highlight-grid">{items_html}</div></div>
+</section>'''
+
+
+def render_ir(cat: dict, data: dict) -> str:
+    news_items = data.get("news", []) if isinstance(data, dict) else []
+    metrics = data.get("metrics", []) if isinstance(data, dict) else []
+    chart = data.get("chart", {}) if isinstance(data, dict) else {}
+    n = len(news_items)
+
+    metrics_html = ""
+    if metrics:
+        cards = ""
+        for m in metrics[:6]:
+            g = str(m.get("growth", ""))
+            tc = "trend-up" if "+" in g else ("trend-down" if "-" in g else "")
+            cards += f'<div class="metric-card"><div class="metric-value">{_esc(m.get("value","-"))}</div><div class="metric-label">{_esc(m.get("company",""))}</div><div class="metric-trend {tc}">{_esc(g)}</div></div>'
+        metrics_html = f'<div class="metric-grid">{cards}</div>'
+
+    labels = json.dumps(chart.get("labels", ["楽天","メルカリ","ZOZO","BASE","Amazon"]), ensure_ascii=False)
+    revenue = json.dumps(chart.get("revenue", []))
+    growth  = json.dumps(chart.get("growth_pct", []))
+    chart_html = f'''<div class="ir-charts">
+      <div class="chart-box"><canvas id="revenueChart"></canvas></div>
+      <div class="chart-box"><canvas id="growthChart"></canvas></div>
     </div>
+    <script>
+      new Chart(document.getElementById('revenueChart'),{{type:'bar',data:{{labels:{labels},datasets:[{{label:'売上高（参考・億円）',data:{revenue},backgroundColor:'#2563EB',borderRadius:6}}]}},options:{{responsive:true,maintainAspectRatio:false,plugins:{{legend:{{display:false}}}}}}}});
+      new Chart(document.getElementById('growthChart'),{{type:'bar',data:{{labels:{labels},datasets:[{{label:'成長率（参考・%）',data:{growth},backgroundColor:'#059669',borderRadius:6}}]}},options:{{responsive:true,maintainAspectRatio:false,plugins:{{legend:{{display:false}}}}}}}});
+    </script>'''
+
+    return f'''<section id="ir" class="section-card" data-cat="ir">
+  <div class="section-header">
+    <div class="cat-icon">{cat["icon"]}</div>
+    <div class="section-title-wrap"><div class="section-title">{cat["title"]}</div><div class="section-sub">主要EC企業の業績</div></div>
+    <span class="section-badge">{n}</span>
   </div>
-</section>
-"""
-    return clean_output(call_gemini(prompt))
+  <div class="section-body">{metrics_html}{chart_html}{render_news_items(news_items)}</div>
+</section>'''
 
 
-def generate_sections_batch(categories_batch: list, news: dict, date_jp: str) -> str:
-    news_parts = []
-    for cat in categories_batch:
-        ctx = build_news_context(cat["id"], news, max_items=3)
-        news_parts.append(
-            f"\n=== {cat['icon']} {cat['title']} (id={cat['id']}, type={cat['type']}) ===\n{ctx}"
-        )
-
-    sections_desc = "\n".join(
-        f"  - {cat['icon']} {cat['title']} / id={cat['id']} / type={cat['type']}"
-        for cat in categories_batch
-    )
-
-    ir_extra = ""
-    if any(cat["id"] == "ir" for cat in categories_batch):
-        ir_extra = """
-IRセクション追加指示:
-- metric-gridにEC主要企業（楽天/メルカリ/ZOZO/BASE/Amazon等）のmetric-cardを5〜6個配置
-- 数値はニュースデータから推測、不明は「-」
-- Chart.jsコードはscriptタグ内にまとめて記述
-- ir-tableで詳細テーブルも表示
-"""
-
-    prompt = f"""EC業界ダッシュボード {date_jp} のHTMLセクション群を生成してください。
-
-{HTML_CLASS_GUIDE}
-
-【生成するセクション（順番通り）】
-{sections_desc}
-{ir_extra}
-【収集ニュースデータ】
-{"".join(news_parts)}
-
-【出力ルール】
-- 各セクションを<section>タグで生成（<!DOCTYPE html>等は不要）
-- data-cat属性に必ずカテゴリIDを設定（例: data-cat="platform"）
-- ニュース項目のURLをそのまま<a href>に使用
-- 内容は具体的な日本語で記述（抽象的な表現は避ける）
-- ニュースがない場合は「本日の情報収集中です」と表示
-- コードブロック記号```は絶対に使わない
-- 最初の文字は必ず<section で始める
-"""
-    return clean_output(call_gemini(prompt))
+def render_section(cat: dict, items: list) -> str:
+    cat_id, n = cat["id"], len(items)
+    news_html = render_news_items(items)
+    if cat["type"] == "breaking":
+        return f'''<section id="{cat_id}" class="section-card" data-cat="{cat_id}">
+  <div class="breaking-banner">🚨 BREAKING — 重要ニュース</div>
+  <div class="section-header">
+    <div class="cat-icon">{cat["icon"]}</div>
+    <div class="section-title-wrap"><div class="section-title">{cat["title"]}</div><div class="section-sub">本日の注目トピック</div></div>
+    <span class="section-badge">{n}</span>
+  </div>
+  <div class="section-body">{news_html}</div>
+</section>'''
+    return f'''<section id="{cat_id}" class="section-card" data-cat="{cat_id}">
+  <div class="section-header">
+    <div class="cat-icon">{cat["icon"]}</div>
+    <div class="section-title-wrap"><div class="section-title">{cat["title"]}</div><div class="section-sub">最新 {n}件</div></div>
+    <span class="section-badge">{n}</span>
+  </div>
+  <details open>
+    <summary><span class="summary-label">ニュース一覧を見る</span><span class="toggle-icon">▼</span></summary>
+    <div class="details-body">{news_html}</div>
+  </details>
+</section>'''
 
 
 def build_html_shell(date_str: str, body_content: str) -> str:
@@ -699,40 +765,33 @@ def build_html_shell(date_str: str, body_content: str) -> str:
 </html>"""
 
 
-def safe_generate(label: str, fn, *args) -> str:
-    try:
-        result = fn(*args)
-        print(f"  ✅ {label} 完了")
-        return result
-    except Exception as e:
-        print(f"  ⚠️  {label} 失敗（スキップ）: {e}")
-        return ""
-
-
 def generate_html(date_str: str, news: dict) -> str:
     year, month, day = date_str.split("-")
     date_jp = f"{year}年{month}月{day}日"
-    sections = []
 
-    print("  🤖 ハイライト生成中...")
-    sections.append(safe_generate("ハイライト", generate_summary_section, news, date_jp))
+    # Batch1: ハイライト + 前半6カテゴリ → JSON
+    batch1_ids = ["breaking", "ir", "platform", "ads", "logistics", "consumer"]
+    print("  🤖 Batch1: ハイライト〜消費者（JSON）...")
+    data1 = summarize_json(news, date_jp, batch1_ids, include_highlights=True)
     time.sleep(20)
 
-    print("  🤖 Batch1: 重要ニュース・IR...")
-    batch1 = [c for c in CATEGORIES if c["id"] in ("breaking", "ir")]
-    sections.append(safe_generate("Batch1", generate_sections_batch, batch1, news, date_jp))
-    time.sleep(20)
+    # Batch2: 後半5カテゴリ → JSON
+    batch2_ids = ["legal", "competitor", "cart", "tools", "marketing"]
+    print("  🤖 Batch2: 法規制〜マーケティング（JSON）...")
+    data2 = summarize_json(news, date_jp, batch2_ids)
 
-    print("  🤖 Batch2: プラットフォーム〜消費者...")
-    batch2 = [c for c in CATEGORIES if c["id"] in ("platform", "ads", "logistics", "consumer")]
-    sections.append(safe_generate("Batch2", generate_sections_batch, batch2, news, date_jp))
-    time.sleep(20)
+    all_data = {**data1, **data2}
 
-    print("  🤖 Batch3: 法規制〜マーケティング...")
-    batch3 = [c for c in CATEGORIES if c["id"] in ("legal", "competitor", "cart", "tools", "marketing")]
-    sections.append(safe_generate("Batch3", generate_sections_batch, batch3, news, date_jp))
+    # PythonでHTML組み立て（絶対に欠けない）
+    sections = [render_summary(all_data.get("highlights", []), date_jp)]
+    for cat in CATEGORIES:
+        raw = all_data.get(cat["id"], [])
+        if cat["id"] == "ir":
+            sections.append(render_ir(cat, raw if isinstance(raw, dict) else {}))
+        else:
+            sections.append(render_section(cat, raw if isinstance(raw, list) else []))
 
-    return build_html_shell(date_str, "\n\n".join(s for s in sections if s))
+    return build_html_shell(date_str, "\n\n".join(sections))
 
 
 # ── 5. GitHub Push ─────────────────────────────────────────────
