@@ -457,7 +457,40 @@ def get_jst_date() -> str:
 
 
 # ── 2. ニュース収集 ────────────────────────────────────────────
+def google_news_rss(query: str, max_results: int = 5) -> list[dict]:
+    """Google News RSSから最新ニュース取得（レート制限なし・構造化データ）"""
+    results = []
+    try:
+        q = urllib.parse.quote_plus(query)
+        url = f"https://news.google.com/rss/search?q={q}&hl=ja&gl=JP&ceid=JP:ja"
+        req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
+        with urllib.request.urlopen(req, timeout=15) as resp:
+            xml = resp.read().decode("utf-8", errors="replace")
+
+        for item_xml in re.findall(r"<item>(.*?)</item>", xml, re.DOTALL)[:max_results]:
+            title_m  = re.search(r"<title>(.*?)</title>", item_xml)
+            link_m   = re.search(r"<link>(https?://[^<]+)</link>", item_xml)
+            source_m = re.search(r'<source[^>]+url="([^"]+)"', item_xml)
+
+            raw = re.sub(r"<!\[CDATA\[|\]\]>", "", title_m.group(1) if title_m else "").strip()
+            raw = re.sub(r"<[^>]+>", "", raw).strip()
+            # 「タイトル - 出典名」の形式から出典名を除去
+            parts = raw.rsplit(" - ", 1)
+            title = parts[0].strip() if len(parts) > 1 else raw
+
+            article_url = (link_m.group(1) if link_m else "").strip()
+            source_url  = (source_m.group(1) if source_m else "").strip()
+            domain = re.sub(r"^https?://(www\.)?", "", source_url).split("/")[0] if source_url else "news.google.com"
+
+            if title:
+                results.append({"title": title, "url": article_url, "snippet": "", "_src": domain})
+    except Exception as e:
+        print(f"[WARN] Google News RSS失敗 ({query[:30]}): {e}")
+    return results
+
+
 def ddg_search(query: str, max_results: int = 5) -> list[dict]:
+    """DuckDuckGo HTMLから検索結果取得（フォールバック用）"""
     results = []
     try:
         q = urllib.parse.quote_plus(query)
@@ -499,15 +532,23 @@ def collect_all_news(date_str: str) -> dict:
         for query_tmpl in cat["queries"]:
             query = query_tmpl.format(yearmonth=yearmonth, year=year_str)
             print(f"  🔍 [{cat_id}] {query[:50]}...")
-            results = ddg_search(query, max_results=4)
+            results = google_news_rss(query, max_results=4)
+            if not results:
+                print(f"    → RSS 0件、DuckDuckGoへ切替...")
+                results = ddg_search(query, max_results=4)
             news[cat_id].extend(results)
-            time.sleep(0.5)
+            time.sleep(1)
 
-        # 取得不足時のフォールバック（日時なし広域クエリ）
+        # 取得不足時のフォールバック
         if len(news[cat_id]) < 3:
-            fallback = re.sub(r"\{[^}]+\}", "", cat["queries"][0]).strip()
+            fallback_q = f"{cat['title']} EC {year_str}"
             print(f"  [FALLBACK] {cat_id}: 広域クエリ再試行...")
-            news[cat_id].extend(ddg_search(fallback, max_results=5))
+            extra = google_news_rss(fallback_q, max_results=5)
+            if not extra:
+                fallback = re.sub(r"\{[^}]+\}", "", cat["queries"][0]).strip()
+                extra = ddg_search(fallback, max_results=5)
+            news[cat_id].extend(extra)
+            time.sleep(1)
 
     return news
 
@@ -558,7 +599,11 @@ def build_news_ctx(news: dict, cat_ids: list) -> str:
         items = news.get(cat["id"], [])[:4]
         lines.append(f"\n### {cat['icon']} {cat['title']} (id={cat['id']})")
         for item in items:
-            lines.append(f"- {item['title']}: {item['snippet'][:120]} [{item['url']}]")
+            snip = item.get("snippet", "").strip()
+            title = item.get("title", "")
+            src = item.get("_src", "")
+            desc = f": {snip[:120]}" if snip and snip != title else f" ({src})" if src else ""
+            lines.append(f"- {title}{desc} [{item['url']}]")
     return "\n".join(lines)
 
 
@@ -586,9 +631,10 @@ def summarize_json(news: dict, date_jp: str, cat_ids: list, include_highlights: 
 }}
 
 【ルール】
-- 各カテゴリ最大4件、snippetは70文字以内で具体的に
+- 各カテゴリ最大4件、snippetは70文字以内で具体的に（記事内容が不明な場合はタイトルからEC文脈で補足説明を生成）
 - highlights（あれば）6〜8項目、各30文字以内
 - データがない場合は空配列[]
+- urlはニュースデータのURLをそのまま使用
 - JSONのみ返す（コードブロック記号```不要）
 
 【ニュースデータ】
@@ -618,7 +664,10 @@ def render_news_items(items: list) -> str:
     for i, item in enumerate(items, 1):
         url = item.get("url", "")
         href = f"https://{url}" if url and not url.startswith("http") else url
-        domain = url.split("/")[0] if url else "出典"
+        if url.startswith("http"):
+            domain = re.sub(r"^https?://(www\.)?", "", url).split("/")[0]
+        else:
+            domain = url.split("/")[0] if url else "出典"
         html += f'''<li class="news-item">
           <div class="news-num">{i:02d}</div>
           <div class="news-content">
@@ -758,7 +807,7 @@ def build_html_shell(date_str: str, body_content: str) -> str:
 
 <footer class="footer">
   <div>本ダッシュボードはAIが自動生成しています。情報の正確性は保証しません。</div>
-  <div>更新日時: {date_jp} ｜ Powered by Gemini API + DuckDuckGo</div>
+  <div>更新日時: {date_jp} ｜ Powered by Gemini API + Google News</div>
 </footer>
 
 </body>
@@ -883,7 +932,7 @@ def main():
     total = sum(len(v) for v in news.values())
     print(f"  → {total}件取得")
 
-    print("\n[3/5] HTML生成（Gemini・4分割）...")
+    print("\n[3/5] HTML生成（Gemini・JSON方式）...")
     html = generate_html(date_str, news)
     print(f"  → {len(html):,} bytes")
 
