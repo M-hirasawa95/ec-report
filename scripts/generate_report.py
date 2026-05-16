@@ -1221,16 +1221,6 @@ def generate_html(date_str: str, news: dict) -> str:
             return raw, []
         return [], []
 
-    # KPI バー（収集統計）
-    total_news = sum(len(v) for v in news.values())
-    cats_covered = len([v for v in news.values() if v])
-    kpi_bar = f'''<div class="kpi-bar">
-  <div class="kpi-card"><div class="kpi-icon blue">📰</div><div class="kpi-body"><div class="kpi-value">{total_news}</div><div class="kpi-label">収集ニュース数</div></div></div>
-  <div class="kpi-card"><div class="kpi-icon green">📂</div><div class="kpi-body"><div class="kpi-value">{cats_covered}</div><div class="kpi-label">カバー分野数</div></div></div>
-  <div class="kpi-card"><div class="kpi-icon purple">🤖</div><div class="kpi-body"><div class="kpi-value">AI</div><div class="kpi-label">Gemini自動分析</div></div></div>
-  <div class="kpi-card"><div class="kpi-icon amber">🔄</div><div class="kpi-body"><div class="kpi-value">毎朝</div><div class="kpi-label">8:00 JST 自動更新</div></div></div>
-</div>'''
-
     # Batch3: 競合ベンチマーク → JSON
     print("  🤖 Batch3: 競合ベンチマーク（JSON）...")
     bench_news = collect_benchmark_news()
