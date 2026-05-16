@@ -5,10 +5,18 @@ on:
     - cron: '0 23 * * *'  # 毎日23:00 UTC = 翌8:00 JST
   workflow_dispatch:       # 手動実行も可能
 
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
 jobs:
   generate-report:
     runs-on: ubuntu-latest
     timeout-minutes: 30
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
 
     steps:
       - name: Checkout repository
@@ -22,12 +30,30 @@ jobs:
       - name: Install dependencies
         run: pip install requests
 
-      - name: Generate and deploy report
+      - name: Generate report
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           GOOGLE_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           GH_PAT: ${{ secrets.GH_PAT }}
           CHATWORK_TOKEN: ${{ secrets.CHATWORK_TOKEN }}
           CHATWORK_ROOM_ID: ${{ secrets.CHATWORK_ROOM_ID }}
+        run: python scripts/generate_report.py
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+        with:
+          enablement: true
+
+      - name: Prepare site directory
         run: |
-          python scripts/generate_report.py
+          mkdir -p _site
+          cp index.html _site/
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: '_site'
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
