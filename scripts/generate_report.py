@@ -259,6 +259,8 @@ CSS = """
     }
     .news-content { flex: 1; min-width: 0; }
     .news-title { font-weight: 700; color: #0F172A; font-size: 13px; line-height: 1.5; margin-bottom: 4px; }
+    .news-title a { color: inherit; text-decoration: none; }
+    .news-title a:hover { color: #2563EB; text-decoration: underline; }
     .news-snippet { color: #64748B; font-size: 12px; line-height: 1.65; margin-bottom: 7px; }
     .news-meta { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
     .news-source {
@@ -478,13 +480,11 @@ def google_news_rss(query: str, max_results: int = 5) -> list[dict]:
             parts = raw.rsplit(" - ", 1)
             title = parts[0].strip() if len(parts) > 1 else raw
 
-            # 引用URLは実際のソースサイトURLを優先（Googleリダイレクトより読みやすい）
-            source_url  = (source_m.group(1) if source_m else "").strip()
             article_url = (link_m.group(1) if link_m else "").strip()
-            cite_url = source_url if source_url else article_url
+            source_url  = (source_m.group(1) if source_m else "").strip()
 
             if title:
-                results.append({"title": title, "url": cite_url, "snippet": ""})
+                results.append({"title": title, "url": article_url, "source_url": source_url, "snippet": ""})
     except Exception as e:
         print(f"[WARN] Google News RSS失敗 ({query[:30]}): {e}")
     return results
@@ -663,17 +663,21 @@ def render_news_items(items: list) -> str:
     html = '<ul class="news-list">'
     for i, item in enumerate(items, 1):
         url = item.get("url", "")
+        source_url = item.get("source_url", "")
         href = f"https://{url}" if url and not url.startswith("http") else url
-        if url.startswith("http"):
-            domain = re.sub(r"^https?://(www\.)?", "", url).split("/")[0]
+        display_url = source_url if source_url else url
+        if display_url.startswith("http"):
+            domain = re.sub(r"^https?://(www\.)?", "", display_url).split("/")[0]
         else:
-            domain = url.split("/")[0] if url else "出典"
+            domain = display_url.split("/")[0] if display_url else "出典"
+        title_html = (f'<a href="{href}" target="_blank" rel="noopener">{_esc(item.get("title",""))}</a>'
+                      if href else _esc(item.get("title", "")))
         html += f'''<li class="news-item">
           <div class="news-num">{i:02d}</div>
           <div class="news-content">
-            <div class="news-title">{_esc(item.get("title",""))}</div>
+            <div class="news-title">{title_html}</div>
             <div class="news-snippet">{_esc(item.get("snippet",""))}</div>
-            <div class="news-meta"><span class="news-source"><a href="{href}" target="_blank" rel="noopener">{_esc(domain)}</a></span></div>
+            <div class="news-meta"><span class="news-source">{_esc(domain)}</span></div>
           </div></li>'''
     return html + "</ul>"
 
