@@ -170,6 +170,9 @@ CSS = """
       --sh-sm: 0 1px 2px rgba(10,15,30,0.04);
       --sh:    0 2px 8px rgba(10,15,30,0.06), 0 12px 32px rgba(10,15,30,0.05);
       --sh-lg: 0 4px 16px rgba(10,15,30,0.08), 0 24px 56px rgba(10,15,30,0.08);
+      --r:    12px;
+      --r-sm: 6px;
+      --r-lg: 20px;
     }
 
     body {
@@ -489,7 +492,7 @@ CSS = """
     /* ════════════════════
        RESPONSIVE
     ════════════════════ */
-    @media (max-width: 900px) { .kpi-bar { grid-template-columns: repeat(2,1fr); } }
+    @media (max-width: 900px) { .kpi-bar { grid-template-columns: repeat(2,1fr); } .bench-grid { grid-template-columns: 1fr; } }
     @media (max-width: 768px) {
       .container { padding: 16px; }
       .header-inner { padding: 0 16px; }
@@ -675,7 +678,10 @@ def google_news_rss(query: str, max_results: int = 5) -> list[dict]:
     try:
         q = urllib.parse.quote_plus(query)
         url = f"https://news.google.com/rss/search?q={q}&hl=ja&gl=JP&ceid=JP:ja"
-        req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
+        req = urllib.request.Request(url, headers={
+            "User-Agent": "Mozilla/5.0 (X11; Linux x86_64)",
+            "Accept-Language": "ja,en;q=0.9",
+        })
         with urllib.request.urlopen(req, timeout=15) as resp:
             xml = resp.read().decode("utf-8", errors="replace")
 
@@ -797,14 +803,18 @@ def call_gemini(prompt: str, retries: int = 5, timeout: int = 120) -> str:
             )
             with urllib.request.urlopen(req, timeout=timeout) as resp:
                 data = json.loads(resp.read().decode())
-            return data["candidates"][0]["content"]["parts"][0]["text"]
+            candidates = data.get("candidates", [])
+            if not candidates:
+                raise RuntimeError(f"Gemini candidates空: {data}")
+            return candidates[0]["content"]["parts"][0]["text"]
         except urllib.error.HTTPError as e:
             if e.code == 429 and attempt < retries - 1:
-                wait = 60 * (attempt + 1)  # 60s, 120s, 180s, 240s
+                wait = min(60 * (attempt + 1), 120)  # 最大120秒
                 print(f"  [WARN] レート制限 → {wait}秒待機...")
                 time.sleep(wait)
             else:
                 raise
+    raise RuntimeError("Gemini API: 全リトライ失敗")
 
 
 def clean_output(text: str) -> str:
@@ -870,7 +880,7 @@ def summarize_json(news: dict, date_jp: str, cat_ids: list, include_highlights: 
 {news_ctx}"""
 
     text = call_gemini(prompt)
-    text = re.sub(r"^```json?\n?", "", text.strip())
+    text = re.sub(r"(?i)^```[a-z]*\n?", "", text.strip())
     text = re.sub(r"\n?```$", "", text.strip())
     try:
         return json.loads(text)
@@ -915,7 +925,7 @@ def summarize_benchmark_json(bench_news: list, date_jp: str) -> dict:
 {news_ctx}"""
 
     text = call_gemini(prompt, timeout=180)
-    text = re.sub(r"^```json?\n?", "", text.strip())
+    text = re.sub(r"(?i)^```[a-z]*\n?", "", text.strip())
     text = re.sub(r"\n?```$", "", text.strip())
     try:
         return json.loads(text)
@@ -944,7 +954,7 @@ def render_news_items(items: list) -> str:
             domain = re.sub(r"^https?://(www\.)?", "", display_url).split("/")[0]
         else:
             domain = display_url.split("/")[0] if display_url else "出典"
-        title_html = (f'<a href="{href}" target="_blank" rel="noopener">{_esc(item.get("title",""))}</a>'
+        title_html = (f'<a href="{_esc(href)}" target="_blank" rel="noopener">{_esc(item.get("title",""))}</a>'
                       if href else _esc(item.get("title", "")))
         html += f'''<li class="news-item">
           <div class="news-num">{i:02d}</div>
@@ -1213,6 +1223,7 @@ def generate_html(date_str: str, news: dict) -> str:
         return [], []
 
     # Batch3: 競合ベンチマーク → JSON（失敗しても全体は続行）
+    bench_news = []
     bench_data = {}
     try:
         print("  🤖 Batch3: 競合ベンチマーク（JSON）...")
@@ -1271,36 +1282,47 @@ def get_file_sha() -> str | None:
 
 
 def push_to_github(html: str, date_str: str) -> str:
-    sha = get_file_sha()
     content_b64 = base64.b64encode(html.encode()).decode()
-    payload = {
-        "message": f"Daily EC dashboard {date_str}",
-        "content": content_b64,
-        "branch": GH_BRANCH,
-    }
-    if sha:
-        payload["sha"] = sha
-
     url = f"https://api.github.com/repos/{GH_OWNER}/{GH_REPO}/contents/{GH_FILE}"
-    req = urllib.request.Request(
-        url,
-        data=json.dumps(payload).encode(),
-        headers={
-            "Authorization": f"token {GH_PAT}",
-            "Accept": "application/vnd.github.v3+json",
-            "Content-Type": "application/json",
-        },
-        method="PUT",
-    )
-    with urllib.request.urlopen(req, timeout=30) as resp:
-        data = json.loads(resp.read().decode())
-    return data["commit"]["sha"]
+    for attempt in range(3):
+        sha = get_file_sha()
+        payload = {
+            "message": f"Daily EC dashboard {date_str}",
+            "content": content_b64,
+            "branch": GH_BRANCH,
+        }
+        if sha:
+            payload["sha"] = sha
+        req = urllib.request.Request(
+            url,
+            data=json.dumps(payload).encode(),
+            headers={
+                "Authorization": f"Bearer {GH_PAT}",
+                "Accept": "application/vnd.github.v3+json",
+                "Content-Type": "application/json",
+            },
+            method="PUT",
+        )
+        try:
+            with urllib.request.urlopen(req, timeout=60) as resp:
+                data = json.loads(resp.read().decode())
+            return data["commit"]["sha"]
+        except urllib.error.HTTPError as e:
+            if e.code == 409 and attempt < 2:
+                print(f"  [WARN] GitHub Push 409競合 → SHA再取得してリトライ...")
+                time.sleep(3)
+            else:
+                raise
+    raise RuntimeError("GitHub Push: 全リトライ失敗")
 
 
 # ── 6. Chatwork通知（承認後に有効化）────────────────────────────
 def notify_chatwork(date_str: str, commit_sha: str):
     if not CHATWORK_ENABLED:
         print("  [SKIP] Chatwork通知は無効（CHATWORK_ENABLED=false）")
+        return None
+    if not CHATWORK_TOKEN or not CHATWORK_ROOM_ID:
+        print("  [SKIP] CHATWORK_TOKEN または CHATWORK_ROOM_ID が未設定")
         return None
     url_report = f"https://{GH_OWNER.lower()}.github.io/{GH_REPO}/"
     year, month, day = date_str.split("-")
@@ -1325,9 +1347,13 @@ def notify_chatwork(date_str: str, commit_sha: str):
         },
         method="POST",
     )
-    with urllib.request.urlopen(req, timeout=15) as resp:
-        result = json.loads(resp.read().decode())
-    return result.get("message_id")
+    try:
+        with urllib.request.urlopen(req, timeout=15) as resp:
+            result = json.loads(resp.read().decode())
+        return result.get("message_id")
+    except Exception as e:
+        print(f"  [WARN] Chatwork通知失敗（レポートは正常完了）: {e}")
+        return None
 
 
 # ── メイン ────────────────────────────────────────────────────
@@ -1350,8 +1376,12 @@ def main():
     print(f"  → {len(html):,} bytes")
 
     print("\n[4/5] GitHub push...")
-    commit_sha = push_to_github(html, date_str)
-    print(f"  → commit: {commit_sha[:12]}")
+    try:
+        commit_sha = push_to_github(html, date_str)
+        print(f"  → commit: {commit_sha[:12]}")
+    except Exception as e:
+        print(f"  [ERROR] GitHub Push失敗: {e}")
+        commit_sha = "000000"
 
     print("\n[5/5] Chatwork通知...")
     notify_chatwork(date_str, commit_sha)
