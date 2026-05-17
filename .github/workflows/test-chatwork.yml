@@ -1,7 +1,10 @@
 name: Test Chatwork Notification
 
 on:
-  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/test-chatwork.yml'
 
 jobs:
   test-notify:
