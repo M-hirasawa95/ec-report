@@ -10,7 +10,7 @@ jobs:
   test-notify:
     runs-on: ubuntu-latest
     steps:
-      - name: Send test to CHATWORK_ROOM_ID secret
+      - name: Send test to CHATWORK_ROOM_ID secret (2)
         env:
           CHATWORK_TOKEN: ${{ secrets.CHATWORK_TOKEN }}
           CHATWORK_ROOM_ID: ${{ secrets.CHATWORK_ROOM_ID }}
