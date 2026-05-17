@@ -31,6 +31,9 @@
       --sh-sm: 0 1px 2px rgba(10,15,30,0.04);
       --sh:    0 2px 8px rgba(10,15,30,0.06), 0 12px 32px rgba(10,15,30,0.05);
       --sh-lg: 0 4px 16px rgba(10,15,30,0.08), 0 24px 56px rgba(10,15,30,0.08);
+      --r:    12px;
+      --r-sm: 6px;
+      --r-lg: 20px;
     }
 
     body {
@@ -350,7 +353,7 @@
     /* ════════════════════
        RESPONSIVE
     ════════════════════ */
-    @media (max-width: 900px) { .kpi-bar { grid-template-columns: repeat(2,1fr); } }
+    @media (max-width: 900px) { .kpi-bar { grid-template-columns: repeat(2,1fr); } .bench-grid { grid-template-columns: 1fr; } }
     @media (max-width: 768px) {
       .container { padding: 16px; }
       .header-inner { padding: 0 16px; }
@@ -451,8 +454,8 @@
 
 <nav class="category-nav">
   <div class="category-nav-inner">
-    <a href="#summary" class="nav-link" style="--cc:#0EA5E9;--cb:#F0F9FF"><span class="nav-dot"></span>✨ ハイライト</a>
     <a href="#benchmark" class="nav-link" style="--cc:#7C3AED;--cb:#F5F3FF"><span class="nav-dot"></span>🏆 競合ベンチマーク</a>
+    <a href="#summary" class="nav-link" style="--cc:#0EA5E9;--cb:#F0F9FF"><span class="nav-dot"></span>✨ ハイライト</a>
     <a href="#breaking" class="nav-link" data-cat="breaking" style="--cc:#EF4444;--cb:#FFF5F5"><span class="nav-dot"></span>🚨 重要ニュース</a>
       <a href="#ir" class="nav-link" data-cat="ir" style="--cc:#2563EB;--cb:#EFF6FF"><span class="nav-dot"></span>📊 IR・決算情報</a>
       <a href="#platform" class="nav-link" data-cat="platform" style="--cc:#7C3AED;--cb:#F5F3FF"><span class="nav-dot"></span>🛒 プラットフォーム動向</a>
@@ -472,9 +475,175 @@
 <div class="kpi-bar">
   <div class="kpi-card"><div class="kpi-icon blue">📰</div><div class="kpi-body"><div class="kpi-value">95</div><div class="kpi-label">収集ニュース数</div></div></div>
   <div class="kpi-card"><div class="kpi-icon green">📂</div><div class="kpi-body"><div class="kpi-value">12</div><div class="kpi-label">カバー分野数</div></div></div>
-  <div class="kpi-card"><div class="kpi-icon purple">🏆</div><div class="kpi-body"><div class="kpi-value">0</div><div class="kpi-label">競合ベンチマーク社数</div></div></div>
+  <div class="kpi-card"><div class="kpi-icon purple">🏆</div><div class="kpi-body"><div class="kpi-value">20</div><div class="kpi-label">競合ベンチマーク社数</div></div></div>
   <div class="kpi-card"><div class="kpi-icon amber">🔄</div><div class="kpi-body"><div class="kpi-value">毎朝</div><div class="kpi-label">8:00 JST 自動更新</div></div></div>
 </div>
+
+<section id="benchmark" class="section-card" data-cat="benchmark">
+  <div class="section-header">
+    <div class="cat-icon">🏆</div>
+    <div class="section-title-wrap">
+      <div class="section-title">競合ベンチマーク</div>
+      <div class="section-sub">EC運営代行・コンサル 18社の動向</div>
+    </div>
+    <span class="section-badge">18</span>
+  </div>
+  <details open>
+    <summary><span class="summary-label">競合各社の動向を見る</span><span class="toggle-icon">▼</span></summary>
+    <div class="details-body">
+      <div class="bench-summary">
+  <div class="bench-summary-title">競合全体サマリー</div>
+  AI活用・越境EC・物流強化が加速、各社が差別化戦略を展開
+  <div class="bench-top-actions"><div class="bench-top-action">AI活用で業務効率化を提案</div><div class="bench-top-action">越境EC支援を強化する</div><div class="bench-top-action">物流代行サービスを拡充</div></div>
+</div>
+      <div class="bench-grid"><div class="bench-card">
+  <div class="bench-card-header">
+    <div class="bench-company">いつも</div>
+    <span class="bench-threat medium">● 中脅威</span>
+  </div>
+  <div class="bench-move">EC業界カオスマップ発表、自社サービスも拡販</div>
+  <div class="bench-actions-label">推奨アクション</div>
+  <ul class="bench-action-list"><li class="bench-action-item">カオスマップで自社優位性強調</li><li class="bench-action-item">新規サービス事例を公開</li></ul>
+</div><div class="bench-card">
+  <div class="bench-card-header">
+    <div class="bench-company">ソウルドアウト</div>
+    <span class="bench-threat medium">● 中脅威</span>
+  </div>
+  <div class="bench-move">リスキリング人材紹介、新規事業開発支援を強化</div>
+  <div class="bench-actions-label">推奨アクション</div>
+  <ul class="bench-action-list"><li class="bench-action-item">人材育成・事業開発支援を訴求</li><li class="bench-action-item">成功事例で専門性をアピール</li></ul>
+</div><div class="bench-card">
+  <div class="bench-card-header">
+    <div class="bench-company">ecbeing</div>
+    <span class="bench-threat high">⚠ 高脅威</span>
+  </div>
+  <div class="bench-move">AIデジタルスタッフ機能強化、越境BtoB EC構築実績</div>
+  <div class="bench-actions-label">推奨アクション</div>
+  <ul class="bench-action-list"><li class="bench-action-item">AI活用による業務効率化を提案</li><li class="bench-action-item">越境EC支援の実績を強調</li></ul>
+</div><div class="bench-card">
+  <div class="bench-card-header">
+    <div class="bench-company">シナブル</div>
+    <span class="bench-threat high">⚠ 高脅威</span>
+  </div>
+  <div class="bench-move">MAツールに定期継続率レポート機能追加、大手導入実績</div>
+  <div class="bench-actions-label">推奨アクション</div>
+  <ul class="bench-action-list"><li class="bench-action-item">データ分析による顧客定着率向上を訴求</li><li class="bench-action-item">大手導入事例で信頼性をアピール</li></ul>
+</div><div class="bench-card">
+  <div class="bench-card-header">
+    <div class="bench-company">スクロール360</div>
+    <span class="bench-threat medium">● 中脅威</span>
+  </div>
+  <div class="bench-move">EC物流拠点開設、大手物流拠点新設のニュースも</div>
+  <div class="bench-actions-label">推奨アクション</div>
+  <ul class="bench-action-list"><li class="bench-action-item">物流代行サービスを強化・訴求</li><li class="bench-action-item">D2C支援をアピール</li></ul>
+</div><div class="bench-card">
+  <div class="bench-card-header">
+    <div class="bench-company">Hamee（ネクストエンジン）</div>
+    <span class="bench-threat high">⚠ 高脅威</span>
+  </div>
+  <div class="bench-move">BASEとの連携、料金改定で利用促進図る</div>
+  <div class="bench-actions-label">推奨アクション</div>
+  <ul class="bench-action-list"><li class="bench-action-item">複数EC一元管理の利便性を強調</li><li class="bench-action-item">低価格プランでの利用を促進</li></ul>
+</div><div class="bench-card">
+  <div class="bench-card-header">
+    <div class="bench-company">フィードフォース</div>
+    <span class="bench-threat medium">● 中脅威</span>
+  </div>
+  <div class="bench-move">楽天との連携強化、EC関連サービス子会社化</div>
+  <div class="bench-actions-label">推奨アクション</div>
+  <ul class="bench-action-list"><li class="bench-action-item">楽天連携による集客力向上を訴求</li><li class="bench-action-item">M&amp;Aによるサービス拡充をアピール</li></ul>
+</div><div class="bench-card">
+  <div class="bench-card-header">
+    <div class="bench-company">ブレインパッド</div>
+    <span class="bench-threat medium">● 中脅威</span>
+  </div>
+  <div class="bench-move">DX事例紹介、AI時代のEC戦略を解説</div>
+  <div class="bench-actions-label">推奨アクション</div>
+  <ul class="bench-action-list"><li class="bench-action-item">AI活用によるDX支援を提案</li><li class="bench-action-item">EC戦略コンサルティングを強調</li></ul>
+</div><div class="bench-card">
+  <div class="bench-card-header">
+    <div class="bench-company">デジタルアイデンティティ</div>
+    <span class="bench-threat low">○ 低脅威</span>
+  </div>
+  <div class="bench-move">ID戦略、EC機能追加への言及</div>
+  <div class="bench-actions-label">推奨アクション</div>
+  <ul class="bench-action-list"><li class="bench-action-item">ID管理の重要性を訴求</li><li class="bench-action-item">EC機能追加のサポートをアピール</li></ul>
+</div><div class="bench-card">
+  <div class="bench-card-header">
+    <div class="bench-company">ロックオン</div>
+    <span class="bench-threat high">⚠ 高脅威</span>
+  </div>
+  <div class="bench-move">商号変更（イルグルムへ）、Salesforce連携強化</div>
+  <div class="bench-actions-label">推奨アクション</div>
+  <ul class="bench-action-list"><li class="bench-action-item">顧客データ分析基盤の強みを訴求</li><li class="bench-action-item">Salesforce連携による業務効率化を提案</li></ul>
+</div><div class="bench-card">
+  <div class="bench-card-header">
+    <div class="bench-company">オーリーズ</div>
+    <span class="bench-threat medium">● 中脅威</span>
+  </div>
+  <div class="bench-move">運用型広告コンサル、インハウス化支援</div>
+  <div class="bench-actions-label">推奨アクション</div>
+  <ul class="bench-action-list"><li class="bench-action-item">広告運用インハウス化のメリットを訴求</li><li class="bench-action-item">広告主と代理店の理想の関係性を提案</li></ul>
+</div><div class="bench-card">
+  <div class="bench-card-header">
+    <div class="bench-company">ファングリー</div>
+    <span class="bench-threat medium">● 中脅威</span>
+  </div>
+  <div class="bench-move">ECサイトSEO対策ガイド、コンテンツプロデュース</div>
+  <div class="bench-actions-label">推奨アクション</div>
+  <ul class="bench-action-list"><li class="bench-action-item">SEO対策による自然検索流入増を訴求</li><li class="bench-action-item">コンテンツマーケティング支援を強調</li></ul>
+</div><div class="bench-card">
+  <div class="bench-card-header">
+    <div class="bench-company">ディーゼロ</div>
+    <span class="bench-threat low">○ 低脅威</span>
+  </div>
+  <div class="bench-move">Web制作・企画・マーケティング、ブランド強化</div>
+  <div class="bench-actions-label">推奨アクション</div>
+  <ul class="bench-action-list"><li class="bench-action-item">Webサイト制作とマーケティングを統合提案</li><li class="bench-action-item">ブランド強化による売上向上を訴求</li></ul>
+</div><div class="bench-card">
+  <div class="bench-card-header">
+    <div class="bench-company">電通デジタル</div>
+    <span class="bench-threat medium">● 中脅威</span>
+  </div>
+  <div class="bench-move">AIエージェントによるメディアプランニング支援強化</div>
+  <div class="bench-actions-label">推奨アクション</div>
+  <ul class="bench-action-list"><li class="bench-action-item">AI活用によるメディアプランニングを提案</li><li class="bench-action-item">高度な広告運用支援をアピール</li></ul>
+</div><div class="bench-card">
+  <div class="bench-card-header">
+    <div class="bench-company">博報堂（EC）</div>
+    <span class="bench-threat high">⚠ 高脅威</span>
+  </div>
+  <div class="bench-move">生成AIでの購買体験最適化サービス提供開始</div>
+  <div class="bench-actions-label">推奨アクション</div>
+  <ul class="bench-action-list"><li class="bench-action-item">生成AIによる購買体験向上を訴求</li><li class="bench-action-item">データ分析とAI活用を強調</li></ul>
+</div><div class="bench-card">
+  <div class="bench-card-header">
+    <div class="bench-company">サイバーエージェント（EC）</div>
+    <span class="bench-threat high">⚠ 高脅威</span>
+  </div>
+  <div class="bench-move">TikTok Shop公式パートナー認定、コンサルティング支援</div>
+  <div class="bench-actions-label">推奨アクション</div>
+  <ul class="bench-action-list"><li class="bench-action-item">TikTok Shopでの販売支援を強化</li><li class="bench-action-item">中国市場への展開をサポート</li></ul>
+</div><div class="bench-card">
+  <div class="bench-card-header">
+    <div class="bench-company">ネットショップ支援室</div>
+    <span class="bench-threat high">⚠ 高脅威</span>
+  </div>
+  <div class="bench-move">スマレジEC刷新、TikTok Shop連携</div>
+  <div class="bench-actions-label">推奨アクション</div>
+  <ul class="bench-action-list"><li class="bench-action-item">複数チャネル連携による業務効率化を訴求</li><li class="bench-action-item">TikTok Shop連携による販路拡大を提案</li></ul>
+</div><div class="bench-card">
+  <div class="bench-card-header">
+    <div class="bench-company">ベイクルーズ（EC）</div>
+    <span class="bench-threat low">○ 低脅威</span>
+  </div>
+  <div class="bench-move">DX改革、オムニチャネル強化</div>
+  <div class="bench-actions-label">推奨アクション</div>
+  <ul class="bench-action-list"><li class="bench-action-item">DX推進によるEC売上向上をアピール</li><li class="bench-action-item">店舗とECの連携強化を訴求</li></ul>
+</div></div>
+    </div>
+  </details>
+</section>
 
 <section id="summary" class="section-card" data-cat="ir">
   <div class="section-header">
@@ -484,7 +653,7 @@
       <div class="section-sub">2026年05月17日 EC業界トピックス</div>
     </div>
   </div>
-  <div class="section-body"><div class="highlight-grid"><div class="highlight-item">サイバー攻撃被害、EC出荷停止</div><div class="highlight-item">越境ECの健全化と発展ウェビナー</div><div class="highlight-item">コメリEC売上約250億円</div><div class="highlight-item">EC発送用紙製包装資材新発売</div><div class="highlight-item">楽天、ZOZO、メルカリ比較</div><div class="highlight-item">AI関連キーワードがビジネス成長上位</div><div class="highlight-item">Z世代EC購買起点、TikTok経由も</div></div></div>
+  <div class="section-body"><div class="highlight-grid"><div class="highlight-item">楽天、2026年度決算短信・説明会資料公開</div><div class="highlight-item">ZOZO、26年3月期GMV過去最高6660億円</div><div class="highlight-item">サイバー攻撃被害17億円、セキュリティ対策急務</div><div class="highlight-item">越境ECの健全化・発展ウェビナー開催</div><div class="highlight-item">EC発送用紙製包装資材「ECバッグ」新発売</div><div class="highlight-item">AI、EC「発見の起点」として重要度増す</div><div class="highlight-item">顧客体験高度化と物流DXがEC成長の鍵</div></div></div>
 </section>
 
 <section id="breaking" class="section-card" data-cat="breaking">
@@ -497,28 +666,28 @@
   <div class="section-body"><ul class="news-list"><li class="news-item">
           <div class="news-num">01</div>
           <div class="news-content">
-            <div class="news-title"><a href="https://news.google.com/rss/articles/CBMiXEFVX3lxTFB0VHNjZDNWOV9rWUtZMTNKRWhlbW80YnRUVE9tME9wa3F0Q3U1NENVVkdZUThiZHZ0eHVadmM4bXFwWGdxcU8ycFdVUVkwRWR1cWw4SFJ5ZmRLY1Bs?oc=5" target="_blank" rel="noopener">サイバー攻撃で17億円の損失＋EC出荷停止の被害に学ぶECビジネスを守るセキュリティ対策と復旧体制構築法</a></div>
-            <div class="news-snippet">サイバー攻撃による甚大な被害事例から、ECビジネスを守るためのセキュリティ対策と復旧体制構築法を解説。</div>
+            <div class="news-title"><a href="https://news.google.com/rss/articles/CBMiXEFVX3lxTFB0VHNjZDNWOV9rWUtZMTNKRWhlbW80YnRUVE9tME9wa3F0Q3U1NENVVkdZUThiZHZ0eHVadmM4bXFwWGdxcU8ycFdVUVkwRWR1cWw4SFJ5ZmRLY1Bs?oc=5" target="_blank" rel="noopener">サイバー攻撃で17億円の損失＋EC出荷停止の被害に学ぶECビジネスを守るセキュリティ対策と復旧体制構築法【5/26リアルセミナー開催】</a></div>
+            <div class="news-snippet">サイバー攻撃による甚大な被害事例から、ECビジネスを守るセキュリティ対策と復旧体制構築法を学ぶセミナー。</div>
             <div class="news-meta"><span class="news-source">news.google.com</span></div>
           </div></li><li class="news-item">
           <div class="news-num">02</div>
           <div class="news-content">
-            <div class="news-title"><a href="https://news.google.com/rss/articles/CBMiU0FVX3lxTE5rRHlqNktweEdpZkRqeEtHTGFoRGtfVERDWUpJZWs5VTc1UWJRWDlqMnNPVmE0U1ZKY1hybWhXTl9Zd0JPal8zSmFOcW5ySWY4Z0pv?oc=5" target="_blank" rel="noopener">【共催ウェビナー開催のお知らせ】2026年 越境ECの「健全化と発展」</a></div>
-            <div class="news-snippet">変化する国際規律への適応と持続的なグローバル成長戦略をテーマに、越境ECの健全化と発展に関するウェビナー開催。</div>
+            <div class="news-title"><a href="https://news.google.com/rss/articles/CBMiU0FVX3lxTE5rRHlqNktweEdpZkRqeEtHTGFoRGtfVERDWUpJZWs5VTc1UWJRWDlqMnNPVmE0U1ZKY1hybWhXTl9Zd0JPal8zSmFOcW5ySWY4Z0pv?oc=5" target="_blank" rel="noopener">【共催ウェビナー開催のお知らせ】2026年 越境ECの「健全化と発展」 ～変化する国際規律への適応と持続的なグローバル成長戦略～ 6月23日（火）13:00よりオンライン開催</a></div>
+            <div class="news-snippet">越境ECの健全化と発展を目指すウェビナー。国際規律への適応とグローバル成長戦略について解説。</div>
             <div class="news-meta"><span class="news-source">news.google.com</span></div>
           </div></li><li class="news-item">
           <div class="news-num">03</div>
           <div class="news-content">
-            <div class="news-title"><a href="https://news.google.com/rss/articles/CBMitAFBVV95cUxNUG9zSHFxNWFnSjJoc0d1TlVSUU9NZmViSWdybjk3ZVhweE1JM1FkWGpIVmlaWklHYnlIY0k4UzZsZDlkTHYxSW92cHhCTl9CZExYQ2hqd0E5ZGg5M3BEam43aTkxejNDT1Fka3NkLTJJN2E3bkZjNTQteDZodU96YUhvQ19Pc0hEUkZ1eU1QdXEyNEtTTEJHcmNCeFBSYnU5VllpQTZhZkVYQXItVXpmYllBUTPSAbQBQVVfeXFMTVBvc0hxcTVhZ0oyaHNHdU5VUlFPTWZlYklncm45N2VYcHhNSTNRZFhqSFZpWlpJR2J5SGNJOFM2bGQ5ZEx2MUlvdnB4Qk5fQmRMWENoandBOWRoOTNwRGpuN2k5MXozQ09RZGtzZC0ySTdhN25GYzU0LXg2aHVPemFIb0NfT3NIRFJGdXlNUHVxMjRLU0xCR3JjQnhQUmJ1OVZZaUE2YWZFWEFyLVV6ZmJZQlEz?oc=5" target="_blank" rel="noopener">コメリの2026年3月期のEC売上は推定約250億円、EC化率6.8%</a></div>
-            <div class="news-snippet">コメリの2026年3月期EC売上は約250億円、EC化率は6.8%と推定。トライアルHD前社長がイングリウッド会長に就任。</div>
+            <div class="news-title"><a href="https://news.google.com/rss/articles/CBMitAFBVV95cUxNUG9zSHFxNWFnSjJoc0d1TlVSUU9NZmViSWdybjk3ZVhweE1JM1FkWGpIVmlaWklHYnlIY0k4UzZsZDlkTHYxSW92cHhCTl9CZExYQ2hqd0E5ZGg5M3BEam43aTkxejNDT1Fka3NkLTJJN2E3bkZjNTQteDZodU96YUhvQ19Pc0hEUkZ1eU1QdXEyNEtTTEJHcmNCeFBSYnU5VllpQTZhZkVYQXItVXpmYllCUTPSAbQBQVVfeXFMTVBvc0hxcTVhZ0oyaHNHdU5VUlFPTWZlYklncm45N2VYcHhNSTNRZFhqSFZpWlpJR2J5SGNJOFM2bGQ5ZEx2MUlvdnB4Qk5fQmRMWENoandBOWRoOTNwRGpuN2k5MXozQ09RZGtzZC0ySTdhN25GYzU0LXg2aHVPemFIb0NfT3NIRFJGdXlNUHVxMjRLU0xCR3JjQnhQUmJ1OVZZaUE2YWZFWEFyLVV6ZmJZQlEz?oc=5" target="_blank" rel="noopener">トライアルホールディングス前社長の亀田氏がイングリウッドの会長に就任／コメリの2026年3月期のEC売上は推定約250億円、EC化率6.8%【ネッ担アクセスランキング】</a></div>
+            <div class="news-snippet">コメリの2026年3月期EC売上は約250億円、EC化率6.8%。業界関係者の役職変更も。</div>
             <div class="news-meta"><span class="news-source">news.google.com</span></div>
           </div></li><li class="news-item">
           <div class="news-num">04</div>
           <div class="news-content">
             <div class="news-title"><a href="https://news.google.com/rss/articles/CBMiY0FVX3lxTE5Lb3ZYUk9qVXFwNThFM0lHcGhER2RDVkxOdFZTQVdOOHpCZ2JIc0tOZFROOUhYSUhobm9tNklNU2dHd3hLS3JoMDdRaVVjSmEyNE1ueWhycDkxTHNsbmYyMXBJTQ?oc=5" target="_blank" rel="noopener">ハート、EC発送用の紙製包装資材「ECバッグ」3種発売</a></div>
-            <div class="news-snippet">ハートがEC発送に適した紙製包装資材「ECバッグ」3種類を発売。環境配慮型資材として注目。</div>
+            <div class="news-snippet">ハートがEC発送に適した紙製包装資材「ECバッグ」3種を発売。環境配慮型商品。</div>
             <div class="news-meta"><span class="news-source">news.google.com</span></div>
-          </div></li></ul><div class="action-block"><div class="action-title">⚡ サイバーレコードEC事業部 推奨アクション</div><ul class="action-list"><li class="action-item"><span class="action-bullet">1</span><span>サイバー攻撃対策の現状と課題を再確認</span></li><li class="action-item"><span class="action-bullet">2</span><span>越境ECの最新動向とリスクを調査</span></li><li class="action-item"><span class="action-bullet">3</span><span>競合の物流・資材動向を注視</span></li></ul></div></div>
+          </div></li></ul><div class="action-block"><div class="action-title">⚡ サイバーレコードEC事業部 推奨アクション</div><ul class="action-list"><li class="action-item"><span class="action-bullet">1</span><span>サイバー攻撃対策セミナーの開催有無を確認する</span></li><li class="action-item"><span class="action-bullet">2</span><span>越境ECウェビナーの内容を把握し情報収集する</span></li><li class="action-item"><span class="action-bullet">3</span><span>EC発送用資材の新製品動向を注視する</span></li></ul></div></div>
 </section>
 
 <section id="ir" class="section-card" data-cat="ir">
@@ -527,38 +696,38 @@
     <div class="section-title-wrap"><div class="section-title">IR・決算情報</div><div class="section-sub">主要EC企業の業績</div></div>
     <span class="section-badge">4</span>
   </div>
-  <div class="section-body"><div class="metric-grid"><div class="metric-card"><div class="metric-value">2.2兆円</div><div class="metric-label">楽天グループ</div><div class="metric-trend trend-up">+4.8%</div></div><div class="metric-card"><div class="metric-value">2,300億円</div><div class="metric-label">メルカリ</div><div class="metric-trend trend-up">+10%</div></div><div class="metric-card"><div class="metric-value">1,900億円</div><div class="metric-label">ZOZO</div><div class="metric-trend trend-up">+3.5%</div></div><div class="metric-card"><div class="metric-value">2,200億円</div><div class="metric-label">BASE</div><div class="metric-trend trend-up">+8%</div></div><div class="metric-card"><div class="metric-value">3.5兆円</div><div class="metric-label">Amazon Japan</div><div class="metric-trend trend-up">+6%</div></div></div><div class="ir-charts">
+  <div class="section-body"><div class="metric-grid"><div class="metric-card"><div class="metric-value">2.1兆円</div><div class="metric-label">楽天グループ</div><div class="metric-trend trend-up">+5.2%</div></div><div class="metric-card"><div class="metric-value">2,100億円</div><div class="metric-label">メルカリ</div><div class="metric-trend trend-up">+12%</div></div></div><div class="ir-charts">
       <div class="chart-box"><canvas id="revenueChart"></canvas></div>
       <div class="chart-box"><canvas id="growthChart"></canvas></div>
     </div>
     <script>
-      new Chart(document.getElementById('revenueChart'),{type:'bar',data:{labels:["楽天", "メルカリ", "ZOZO", "BASE", "Amazon Japan"],datasets:[{label:'売上高（参考・億円）',data:[22000, 2300, 1900, 2200, 35000],backgroundColor:'#2563EB',borderRadius:6}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}}}});
-      new Chart(document.getElementById('growthChart'),{type:'bar',data:{labels:["楽天", "メルカリ", "ZOZO", "BASE", "Amazon Japan"],datasets:[{label:'成長率（参考・%）',data:[4.8, 10, 3.5, 8, 6],backgroundColor:'#059669',borderRadius:6}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}}}});
+      new Chart(document.getElementById('revenueChart'),{type:'bar',data:{labels:["楽天", "メルカリ", "ZOZO", "BASE", "Amazon Japan"],datasets:[{label:'売上高（参考・億円）',data:[21000, 2100, 6660, 200, 30000],backgroundColor:'#2563EB',borderRadius:6}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}}}});
+      new Chart(document.getElementById('growthChart'),{type:'bar',data:{labels:["楽天", "メルカリ", "ZOZO", "BASE", "Amazon Japan"],datasets:[{label:'成長率（参考・%）',data:[5, 12, 8.4, 2, 8],backgroundColor:'#059669',borderRadius:6}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}}}});
     </script><ul class="news-list"><li class="news-item">
           <div class="news-num">01</div>
           <div class="news-content">
             <div class="news-title"><a href="https://corp.rakuten.co.jp/investors/documents/results/" target="_blank" rel="noopener">2026年度決算短信・説明会資料｜楽天グループ株式会社</a></div>
-            <div class="news-snippet">楽天グループの2026年度決算短信・説明会資料。株主・投資家向けに楽天を深く理解してもらうための情報を提供。</div>
+            <div class="news-snippet">楽天グループの2026年度決算短信・説明会資料。株主・投資家向けに過去から直近までの情報を提供。</div>
             <div class="news-meta"><span class="news-source">corp.rakuten.co.jp</span></div>
           </div></li><li class="news-item">
           <div class="news-num">02</div>
           <div class="news-content">
             <div class="news-title"><a href="https://corp.zozo.com/ir-info/library/result-summary/" target="_blank" rel="noopener">直近の決算概況 - 株式会社zozo</a></div>
-            <div class="news-snippet">ZOZOTOWN・WEARなどを運営するZOZOの公式HP。会社概要、採用情報、IR、プレスリリースを掲載。</div>
+            <div class="news-snippet">ZOZOTOWN・WEAR運営のZOZO公式HP。会社概要、IR、プレスリリース情報を掲載。</div>
             <div class="news-meta"><span class="news-source">corp.zozo.com</span></div>
           </div></li><li class="news-item">
           <div class="news-num">03</div>
           <div class="news-content">
             <div class="news-title"><a href="https://finance.yahoo.co.jp/quote/4755.T/financials" target="_blank" rel="noopener">楽天グループ(株)【4755】：決算情報 - Yahoo!ファイナンス</a></div>
-            <div class="news-snippet">楽天グループ(株)の決算短信を生成AIで要約。株価、チャート、ニュースなど投資情報も提供。</div>
+            <div class="news-snippet">楽天グループ(株)【4755】の決算短信を生成AIで要約。株価、チャート等投資情報も掲載。</div>
             <div class="news-meta"><span class="news-source">finance.yahoo.co.jp</span></div>
           </div></li><li class="news-item">
           <div class="news-num">04</div>
           <div class="news-content">
-            <div class="news-title"><a href="https://note.com/ttec_cvc/n/n0496be296281" target="_blank" rel="noopener">日本のeコマース市場を牽引する楽天、ZOZO、メルカリの戦略と収益構造の比較｜東芝テックCVC</a></div>
-            <div class="news-snippet">楽天、ZOZO、メルカリの戦略と収益構造を比較。各社の強み、共通点、今後の市場展望を整理。</div>
-            <div class="news-meta"><span class="news-source">note.com</span></div>
-          </div></li></ul><div class="action-block"><div class="action-title">⚡ サイバーレコードEC事業部 推奨アクション</div><ul class="action-list"><li class="action-item"><span class="action-bullet">1</span><span>楽天・ZOZO・メルカリの最新決算内容を精査</span></li><li class="action-item"><span class="action-bullet">2</span><span>競合の収益構造と成長戦略を分析</span></li><li class="action-item"><span class="action-bullet">3</span><span>自社事業との比較分析と改善点抽出</span></li></ul></div></div>
+            <div class="news-title"><a href="https://www.wwdjapan.com/articles/2394815" target="_blank" rel="noopener">Zozoの26年3月期決算はgmvが8.4％増の6660億円 習志野に200億円を投じた最新の自動物流倉庫も - Wwdjapan</a></div>
+            <div class="news-snippet">ZOZO、2026年3月期通期決算はGMV8.4%増の6660億円。自動物流倉庫にも投資。</div>
+            <div class="news-meta"><span class="news-source">www.wwdjapan.com</span></div>
+          </div></li></ul><div class="action-block"><div class="action-title">⚡ サイバーレコードEC事業部 推奨アクション</div><ul class="action-list"><li class="action-item"><span class="action-bullet">1</span><span>楽天グループの最新決算資料を詳細に分析する</span></li><li class="action-item"><span class="action-bullet">2</span><span>ZOZOのGMV成長要因と物流戦略を調査する</span></li><li class="action-item"><span class="action-bullet">3</span><span>競合他社のIR情報を定期的にチェックする体制を構築する</span></li></ul></div></div>
 </section>
 
 <section id="platform" class="section-card" data-cat="platform">
@@ -572,28 +741,28 @@
     <div class="details-body"><ul class="news-list"><li class="news-item">
           <div class="news-num">01</div>
           <div class="news-content">
-            <div class="news-title"><a href="https://news.google.com/rss/articles/CBMiR0FVX3lxTE5qUUVpcnN5Vm1sNFJ1UzVqNXUtbjQyYV8wOG9EQUZmQko2UDJ0UHEyZk5MMHhGcEJObnNCQ1pncWJGeldwdThZ?oc=5" target="_blank" rel="noopener">【2026年5月最新】ワイモバイルのキャンペーンまとめ！</a></div>
-            <div class="news-snippet">ワイモバイルのお得なキャンペーン情報。乗り換えや端末購入に役立つ最新情報をまとめて紹介。</div>
+            <div class="news-title"><a href="https://news.google.com/rss/articles/CBMiPkFVX3lxTE1nSXFSZXpTVDN5U01iNS1HdTdvZU1WLXNQNnU3TXc5UjRTeTF4ckdpUkFfdXExWGczRi1kRUpB?oc=5" target="_blank" rel="noopener">240Hz対応のゲーミングモニターのおすすめ人気ランキング【2026年5月】</a></div>
+            <div class="news-snippet">2026年5月時点の240Hz対応ゲーミングモニター人気ランキング。最新モデル情報。</div>
             <div class="news-meta"><span class="news-source">news.google.com</span></div>
           </div></li><li class="news-item">
           <div class="news-num">02</div>
           <div class="news-content">
-            <div class="news-title"><a href="https://news.google.com/rss/articles/CBMiakFVX3lxTE5nd0EwMWUzRDVZeWdiNVhSYUY4Z3VBY0NUSzZxUjJ0WmVJRkNPWlVSOGlWR1ZackVPM3NMMnY0M2phcU1hdVpQemkxa1VNZkd5RUQ0cm1XWWM1QzJqZUV3a1VVWG0tYzZLVFE?oc=5" target="_blank" rel="noopener">新機能「商品マスター」〜商品登録機能をリリース〜 | 株式会社GoQSystem</a></div>
-            <div class="news-snippet">GoQSystemが新機能「商品マスター」をリリース。商品登録機能の強化で業務効率化を支援。</div>
+            <div class="news-title"><a href="https://news.google.com/rss/articles/CBMiPkFVX3lxTFB4emtiYjcxUjd4NEVURmxTMEFjaUdoSDQ5RkNlZEhBeEM1dmJYdFNwcTV2aEhYOUs4RmZWWGRB?oc=5" target="_blank" rel="noopener">コロナの暖房器具のおすすめ人気ランキング【2026年5月】</a></div>
+            <div class="news-snippet">2026年5月時点のコロナ製暖房器具人気ランキング。季節商品の動向。</div>
             <div class="news-meta"><span class="news-source">news.google.com</span></div>
           </div></li><li class="news-item">
           <div class="news-num">03</div>
           <div class="news-content">
-            <div class="news-title"><a href="https://news.google.com/rss/articles/CBMiiAFBVV95cUxPSXY1VnljYXBkV3A4MzZScW5tYnQ0VUxqSjlfbnpQRkNSV1M4MF9kaG5IZS1SUnV1QzZsbnN0dExMWk5uWmNOcl9Wby1sMURJSTl6UlZGLVJLaERJRkZaV2c1dWd2SVpmOWZHVFQycy1lNmdWWXB2cUhSdGpHekNTdThEVXgwVDJV?oc=5" target="_blank" rel="noopener">2026年3月 スマホキャリアの最新キャンペーンまとめ</a></div>
-            <div class="news-snippet">年度末のスマホキャリアの乗り換え・端末割引キャンペーン情報。お得に機種変更できるチャンス。</div>
+            <div class="news-title"><a href="https://news.google.com/rss/articles/CBMiakFVX3lxTE5nd0EwMWUzRDVZeWdiNVhSYUY4Z3VBY0NUSzZxUjJ0WmVJRkNPWlVSOGlWR1ZackVPM3NMMnY0M2phcU1hdVpQemkxa1VNZkd5RUQ0cm1XWWM1QzJqZUV3a1VVWG0tYzZLVFE?oc=5" target="_blank" rel="noopener">【クロスマ】新機能「商品マスター」 〜商品登録機能をリリース〜 | 株式会社GoQSystemのプレスリリース</a></div>
+            <div class="news-snippet">GoQSystemが新機能「商品マスター」をリリース。ECサイトの商品登録機能強化。</div>
             <div class="news-meta"><span class="news-source">news.google.com</span></div>
           </div></li><li class="news-item">
           <div class="news-num">04</div>
           <div class="news-content">
-            <div class="news-title"><a href="https://news.google.com/rss/articles/CBMiY0FVX3lxTE01czdjYTdWNF9lMmZ0YlZfdUhNN1RGbWkwRVhGSnF4NGMwMF9qMDlSeG1pMXhfMlRMNDZFcmNzQ2hRd21BQjVUQXl1UmJnYWNQNzVlQnBaOE1GZ1hNVzFyajJISQ?oc=5" target="_blank" rel="noopener">【2026年5月最新】ワイモバイル1円スマホは一括1円で購入可能！</a></div>
-            <div class="news-snippet">ワイモバイルの1円スマホキャンペーン情報。条件や期間、購入方法などを詳しく解説。</div>
+            <div class="news-title"><a href="https://news.google.com/rss/articles/CBMiiAFBVV95cUxPSXY1VnljYXBkV3A4MzZScW5tYnQ0VUxqSjlfbnpQRkNSV1M4MF9kaG5IZS1SUnV1QzZsbnN0dExMWk5uWmNOcl9Wby1sMURJSTl6UlZGLVJLaERJRkZaV2c1dWd2SVpmOWZHVFQycy1lNmdWWXB2cUhSdGpHekNTdThEVXgwVDJV?oc=5" target="_blank" rel="noopener">2026年3月 スマホキャリアの最新キャンペーンまとめ 年度末の乗り換え・端末割引（しょうこちゃん） - エキスパート</a></div>
+            <div class="news-snippet">2026年3月時点のスマホキャリアキャンペーンまとめ。年度末の乗り換え・端末割引情報。</div>
             <div class="news-meta"><span class="news-source">news.google.com</span></div>
-          </div></li></ul><div class="action-block"><div class="action-title">⚡ サイバーレコードEC事業部 推奨アクション</div><ul class="action-list"><li class="action-item"><span class="action-bullet">1</span><span>主要プラットフォームのキャンペーン動向を分析</span></li><li class="action-item"><span class="action-bullet">2</span><span>競合の機能追加・改善点を調査</span></li><li class="action-item"><span class="action-bullet">3</span><span>自社プラットフォームのUI/UX改善を検討</span></li></ul></div></div>
+          </div></li></ul><div class="action-block"><div class="action-title">⚡ サイバーレコードEC事業部 推奨アクション</div><ul class="action-list"><li class="action-item"><span class="action-bullet">1</span><span>GoQSystemの新機能「商品マスター」の活用可能性を検討する</span></li><li class="action-item"><span class="action-bullet">2</span><span>季節商品のランキング動向を分析し販売戦略に反映させる</span></li><li class="action-item"><span class="action-bullet">3</span><span>スマホキャリアのキャンペーン情報をECサイトで活用できないか検討する</span></li></ul></div></div>
   </details>
 </section>
 
@@ -608,28 +777,28 @@
     <div class="details-body"><ul class="news-list"><li class="news-item">
           <div class="news-num">01</div>
           <div class="news-content">
-            <div class="news-title"><a href="https://news.google.com/rss/articles/CBMiakFVX3lxTE5LWHhlMUpiRkJOdHdpVDdlZGhmWFU0eFM1S0pMQlRjWmJHckFIQVhXdldKTVg2b0VXRldNRjM3UHhPSHZjQmpiLXBwV1BnSDNoWXp4YmFJX2EtdkRqWWg0bjlHVS1pM0t3b3c?oc=5" target="_blank" rel="noopener">楽天RPP広告の運用をAIが分析・提案。「ECPRO」がAIデータ分析機能を新搭載</a></div>
-            <div class="news-snippet">「ECPRO」が楽天RPP広告のAIデータ分析機能を新搭載。運用改善と効果最大化を支援。</div>
+            <div class="news-title"><a href="https://news.google.com/rss/articles/CBMiakFVX3lxTE5LWHhlMUpiRkJOdHdpVDdlZGhmWFU0eFM1S0pMQlRjWmJHckFIQVhXdldKTVg2b0VXRldNRjM3UHhPSHZjQmpiLXBwV1BnSDNoWXA4YmFJX2EtdkRqWWg0bjlHVS1pM0t3b3c?oc=5" target="_blank" rel="noopener">楽天RPP広告の運用をAIが分析・提案。「ECPRO」がAIデータ分析機能を新搭載</a></div>
+            <div class="news-snippet">「ECPRO」が楽天RPP広告のAIデータ分析機能を新搭載。運用分析・提案を強化。</div>
             <div class="news-meta"><span class="news-source">news.google.com</span></div>
           </div></li><li class="news-item">
           <div class="news-num">02</div>
           <div class="news-content">
-            <div class="news-title"><a href="https://news.google.com/rss/articles/CBMiVkFVX3lxTE85eURhcGxrTGhJSHRJNW9wTWd2UFM5eXNibUtyZlozcUhMZzNrR1d5Q0NWVWF1dUQ0X3AwV1I3MVh4OXZrd3BtS2ZhMUktTkpxaUh3ZjZB?oc=5" target="_blank" rel="noopener">【韓国WEB広告 完全ガイド】NAVER・Kakaoのパートナーが攻略法から最新トレンドまでを徹底解説</a></div>
-            <div class="news-snippet">韓国WEB広告の攻略法と最新トレンドを解説。NAVER・Kakaoパートナーによる10ケースの運用事例も公開。</div>
+            <div class="news-title"><a href="https://news.google.com/rss/articles/CBMiVkFVX3lxTE85eURhcGxrTGhJSHRJNW9wTWd2UFM5eXNibUtyZlozcUhMZzNrR1d5Q0NWVWF1dUQ0X3AwV1I3MVh4OXZrd3BtS2ZhMUktTkpxaUh3ZjZB?oc=5" target="_blank" rel="noopener">【韓国WEB広告 完全ガイド】NAVER・Kakaoのパートナーが攻略法から最新トレンドまでを徹底解説【10ケースの運用事例も公開】</a></div>
+            <div class="news-snippet">韓国WEB広告の攻略法と最新トレンドを解説。NAVER・Kakaoパートナーによる運用事例も紹介。</div>
             <div class="news-meta"><span class="news-source">news.google.com</span></div>
           </div></li><li class="news-item">
           <div class="news-num">03</div>
           <div class="news-content">
             <div class="news-title"><a href="https://news.google.com/rss/articles/CBMiakFVX3lxTE9CTVktcHBMYmc3Z2F6OTdzY1l1TlhLMVFpaTEwSDc2eW9xYXdESjIyWDBLWGNldGRtUGVicWZtZWgwckszRi12VHJ3dmVCVGdCc0d0THJWLWx3dGtuaFFJdXdwZk9LOEZNWEE?oc=5" target="_blank" rel="noopener">楽天市場における運用型広告の効果最大化のための完全攻略ガイドを大公開</a></div>
-            <div class="news-snippet">楽天市場での運用型広告の効果を最大化するための完全攻略ガイド。具体的な施策とノウハウを解説。</div>
+            <div class="news-snippet">楽天市場での運用型広告の効果を最大化するための完全攻略ガイド。</div>
             <div class="news-meta"><span class="news-source">news.google.com</span></div>
           </div></li><li class="news-item">
           <div class="news-num">04</div>
           <div class="news-content">
-            <div class="news-title"><a href="https://news.google.com/rss/articles/CBMiakFVX3lxTFAwXzZkbmlERXhMdXZvUDFXb0d2RnNacXlTM1VoMnZHd3FJSUFrNVhKemdQbzhVeW1xdk1zMkQ3aUdjVVFpQTBiTVBoUUVGU0J2eUM2bElkRmotWlBiaW5fdnZJVGRLQVF3Smc?oc=5" target="_blank" rel="noopener">Amazon アカデミー 2026～AI×プロの知見で導き出す、下半期商戦の対策と打ち手8選～</a></div>
-            <div class="news-snippet">Amazonアカデミー2026開催。AIとプロの知見で下半期商戦の対策と打ち手を8選紹介。無料セミナーも。</div>
+            <div class="news-title"><a href="https://news.google.com/rss/articles/CBMiakFVX3lxTFAwXzZkbmlERXhMdXZvUDFXb0d2RnNacXlTM1VoMnZHd3FJSUFrNVhKemdQbzhVeW1xdk1zMkQ3aUdjVVFpQTBiTVBoUUVGU0J2eUM2bElkRmotWlBiaW5fdnZJVGRLQVF3Smc?oc=5" target="_blank" rel="noopener">Amazon アカデミー 2026～AI×プロの知見で導き出す、下半期商戦の対策と打ち手8選～ 5/21(木)無料セミナー開催</a></div>
+            <div class="news-snippet">Amazonアカデミー開催。AIとプロの知見で下半期商戦の対策と打ち手を解説。</div>
             <div class="news-meta"><span class="news-source">news.google.com</span></div>
-          </div></li></ul><div class="action-block"><div class="action-title">⚡ サイバーレコードEC事業部 推奨アクション</div><ul class="action-list"><li class="action-item"><span class="action-bullet">1</span><span>楽天RPP広告のAI活用事例を調査</span></li><li class="action-item"><span class="action-bullet">2</span><span>韓国市場のWEB広告トレンドを分析</span></li><li class="action-item"><span class="action-bullet">3</span><span>Amazon広告の最新セミナー内容を把握</span></li></ul></div></div>
+          </div></li></ul><div class="action-block"><div class="action-title">⚡ サイバーレコードEC事業部 推奨アクション</div><ul class="action-list"><li class="action-item"><span class="action-bullet">1</span><span>ECPROのAIデータ分析機能の導入を検討する</span></li><li class="action-item"><span class="action-bullet">2</span><span>韓国WEB広告の最新トレンドを調査し、テスト実施を検討する</span></li><li class="action-item"><span class="action-bullet">3</span><span>Amazonアカデミーのセミナー内容を参考に下半期商戦の準備を進める</span></li></ul></div></div>
   </details>
 </section>
 
@@ -645,27 +814,27 @@
           <div class="news-num">01</div>
           <div class="news-content">
             <div class="news-title"><a href="https://news.google.com/rss/articles/CBMiXEFVX3lxTE1zMDlHUVdVY2s1QlM0OGhrTDd6b3o4NGctcnJDczhGUFFPMFZrQnppNHNpVzRLNXZiWTM1N2xEZGpDVndFQWdyN2hLLW5salZjaHBFcFpmS01xRmRn?oc=5" target="_blank" rel="noopener">ヤマト運輸、日本郵便、佐川急便 2026年GW期間の「配送遅延の可能性」発表</a></div>
-            <div class="news-snippet">ヤマト運輸、日本郵便、佐川急便が2026年GW期間の配送遅延の可能性を発表。物流量増加による影響。</div>
+            <div class="news-snippet">ヤマト運輸、日本郵便、佐川急便が2026年GW期間の配送遅延の可能性を発表。</div>
             <div class="news-meta"><span class="news-source">news.google.com</span></div>
           </div></li><li class="news-item">
           <div class="news-num">02</div>
           <div class="news-content">
-            <div class="news-title"><a href="https://news.google.com/rss/articles/CBMiXEFVX3lxTFBtVWdiQWlZMVFLcUJjLWx1VkNzLTUxWW1lMTJJUjY5N3pNTDQ2bzV2cklLYUZ1OEtsZVp0dFRidm5hTlpub0tKWjlDUkluajI1c09OS3FVUUpFMmU5?oc=5" target="_blank" rel="noopener">ヤマト運輸の「国際宅急便」、関税等諸費用の後日精算手数料を改定</a></div>
-            <div class="news-snippet">ヤマト運輸の国際宅急便で、関税等諸費用の後日精算手数料が改定。1件あたり税込2574円→3190円に。</div>
+            <div class="news-title"><a href="https://news.google.com/rss/articles/CBMiXEFVX3lxTFBtVWdiQWlZMVFLcUJjLWx1VkNzLTUxWW1lMTJJUjY5N3pNTDQ2bzV2cklLYUZ1OEtsZVp0dFRidm5hTlpub0tKWjlDUkluajI1c09OS3FVUUpFMmU5?oc=5" target="_blank" rel="noopener">ヤマト運輸の「国際宅急便」、関税等諸費用の後日精算手数料を改定。1件あたり税込2574円→3190円に</a></div>
+            <div class="news-snippet">ヤマト運輸の国際宅急便で、関税等諸費用の後日精算手数料が改定され、3190円に。</div>
             <div class="news-meta"><span class="news-source">news.google.com</span></div>
           </div></li><li class="news-item">
           <div class="news-num">03</div>
           <div class="news-content">
             <div class="news-title"><a href="https://news.google.com/rss/articles/CBMiXEFVX3lxTE5aUV9STlE4ZS1ONDY2djZUNVJCQjJZQnFFaHA3NjNENWlkVVZ6N3FQUmlmeGluQmNhNVI5TTI1aEhLOVJLUWlERTNaVE1JS2FjVkVDNjF2a1ZzTElW?oc=5" target="_blank" rel="noopener">ヤマト運輸、2026年GW期間「国際宅急便」「WWX」配送遅れの可能性</a></div>
-            <div class="news-snippet">ヤマト運輸は2026年GW期間、国際宅急便とWWXで配送遅延の可能性を発表。国際物流への影響。</div>
+            <div class="news-snippet">ヤマト運輸は2026年GW期間、「国際宅急便」および「WWX」で配送遅延の可能性を発表。</div>
             <div class="news-meta"><span class="news-source">news.google.com</span></div>
           </div></li><li class="news-item">
           <div class="news-num">04</div>
           <div class="news-content">
             <div class="news-title"><a href="https://news.google.com/rss/articles/CBMiXEFVX3lxTFA0UVpQVmRQbFBUUVZKYy1obmFOc2Y2VXRFVmxoVlZQZFJZWUNHSHotTk1LZVVpczVUUUNMLUlQVjlHN0dsUnc1ZGt6UWlFVF9GejQwcVBNZFR0VHhL?oc=5" target="_blank" rel="noopener">ヤマト運輸、2026年2月1日より「WWX」の運賃・各種手数料を改定</a></div>
-            <div class="news-snippet">ヤマト運輸は2026年2月1日より、宅急便の「WWX」の運賃および各種手数料を改定。</div>
+            <div class="news-snippet">ヤマト運輸は2026年2月1日より、「WWX」の運賃・各種手数料を改定。</div>
             <div class="news-meta"><span class="news-source">news.google.com</span></div>
-          </div></li></ul><div class="action-block"><div class="action-title">⚡ サイバーレコードEC事業部 推奨アクション</div><ul class="action-list"><li class="action-item"><span class="action-bullet">1</span><span>GW期間の配送遅延リスクを顧客に周知</span></li><li class="action-item"><span class="action-bullet">2</span><span>国際物流における手数料改定の影響を分析</span></li><li class="action-item"><span class="action-bullet">3</span><span>代替配送手段やパートナーシップを検討</span></li></ul></div></div>
+          </div></li></ul><div class="action-block"><div class="action-title">⚡ サイバーレコードEC事業部 推奨アクション</div><ul class="action-list"><li class="action-item"><span class="action-bullet">1</span><span>GW期間の配送遅延リスクを考慮した顧客への事前告知を準備する</span></li><li class="action-item"><span class="action-bullet">2</span><span>国際宅急便の手数料改定によるコスト影響を試算する</span></li><li class="action-item"><span class="action-bullet">3</span><span>WWXの運賃改定を踏まえ、配送コストの見直しを行う</span></li></ul></div></div>
   </details>
 </section>
 
@@ -680,28 +849,28 @@
     <div class="details-body"><ul class="news-list"><li class="news-item">
           <div class="news-num">01</div>
           <div class="news-content">
-            <div class="news-title"><a href="https://news.google.com/rss/articles/CBMiakFVX3lxTFA5YXFpeVo2YnFnblpZVXdxWVo0OVVHaXl1WUlhX0VJNzRMNThwb0xxXzVUNGV3N1pFdXZfVF9fVkRaWm9IUkJsX2RJZ1Q2cnFzUnh4RWJfeG5sN1JvbG41OXFiNmg2VUJ3QXc?oc=5" target="_blank" rel="noopener">日経クロストレンド「今後伸びるビジネス」2026年上半期ランキングを発表。AI関連キーワードがスコア上位</a></div>
-            <div class="news-snippet">日経クロストレンドが「今後伸びるビジネス」ランキングを発表。AI関連が上位を占め、期待から実装フェーズへ。</div>
+            <div class="news-title"><a href="https://news.google.com/rss/articles/CBMiakFVX3lxTFA5YXFpeVo2YnFnblpZVXdxWVo0OVVHaXl1WUlhX0VJNzRMNThwb0xxXzVUNGV3N1pFdXZfVF9fVkRaWm9IUkJsX2RJZ1Q2cnFzUnh4RWJfeG5sN1JvbG41OXFiNmg2VUJ3QXc?oc=5" target="_blank" rel="noopener">日経クロストレンド「今後伸びるビジネス」2026年上半期ランキングを発表。「AI（人工知能）」関連キーワードがスコア上位を占有。期待から実装フェーズへ</a></div>
+            <div class="news-snippet">日経クロストレンド発表の「今後伸びるビジネス」ランキングでAI関連が上位。期待から実装フェーズへ移行。</div>
             <div class="news-meta"><span class="news-source">news.google.com</span></div>
           </div></li><li class="news-item">
           <div class="news-num">02</div>
           <div class="news-content">
             <div class="news-title"><a href="https://news.google.com/rss/articles/CBMiZkFVX3lxTFBldk4zbHl3cjRjMDJMTkp6NXotSDdPcDMzYzFFUTVBcFNzRjRqSWJHS0syNk9HSWFlS1kyVmlQek5mUFhGRnc1T19aOExoNEV2WFN4WDUtcXpBeGtvWWRhXy1JRFhZZw?oc=5" target="_blank" rel="noopener">独自調査「伸びるビジネス分野」最新版 AI躍進、ワーケーション再浮上</a></div>
-            <div class="news-snippet">独自調査でAIがビジネス分野で躍進。ワーケーションも再浮上し、新たなトレンドを示唆。</div>
+            <div class="news-snippet">独自調査による「伸びるビジネス分野」最新版。AIが躍進し、ワーケーションも再浮上。</div>
             <div class="news-meta"><span class="news-source">news.google.com</span></div>
           </div></li><li class="news-item">
           <div class="news-num">03</div>
           <div class="news-content">
-            <div class="news-title"><a href="https://news.google.com/rss/articles/CBMiVEFVX3lxTFBud2dyWGcxVzAwTEpCRnU3bTc4RDFQSEN3NjJOUmp2bTh5dDNDdDhYZ1o3MXozb3gwWkR5Zk1NdVoxNWl2VjF2cE9USS1YODVkLVRLaw?oc=5" target="_blank" rel="noopener">EC成長のカギを握る「顧客体験の高度化」と「物流DX」</a></div>
-            <div class="news-snippet">EC成長の鍵は顧客体験の高度化と物流DX。両面からのアプローチが重要であることを示唆。</div>
+            <div class="news-title"><a href="https://news.google.com/rss/articles/CBMiXEFVX3lxTE54OGRuM0RNcXV2MjA5VEFaSE1hVURicWd1YzlOeHhRSFdKZzE5NWM2Umh6R0E0OVFFOUJIS2drcG9fVl9KbnVGcjVSMzZhY3IxNFM3VE13NXgzc3hQ?oc=5" target="_blank" rel="noopener">LLM経由の成約率は他チャネルの1.5倍。AIは「購入代行」ではなく「発見の起点」へ</a></div>
+            <div class="news-snippet">LLM経由の成約率が他チャネルの1.5倍。AIは購入代行でなく「発見の起点」として機能。</div>
             <div class="news-meta"><span class="news-source">news.google.com</span></div>
           </div></li><li class="news-item">
           <div class="news-num">04</div>
           <div class="news-content">
-            <div class="news-title"><a href="https://news.google.com/rss/articles/CBMiXEFVX3lxTE1WdUNqMEh3U0JJbVhTS19qaTBzVzNBOVFsVGVSVW8xZzR1d0FtUXB0aWxoLWM3cE14MlFCODZFWUhUYjZ3UkZJOE9WS0x1LWY0cWhmakNUOE5zMG5N?oc=5" target="_blank" rel="noopener">Z世代年齢別の購買起点、ECは25〜29歳で47％。TikTok経由は15〜19歳が27％</a></div>
-            <div class="news-snippet">Z世代の購買起点調査。ECは25-29歳で47%、TikTok経由は15-19歳で27%。実店舗は25-29歳で60%。</div>
+            <div class="news-title"><a href="https://news.google.com/rss/articles/CBMiVEFVX3lxTFBud2dyWGcxVzAwTEpCRnU3bTc4RDFQSEN3NjJOUmp2bTh5dDNDdDhYZ1o3MXozb3gwWkR5Zk1NdVoxNWl2VjF2cE9USS1YODVkLVRLaw?oc=5" target="_blank" rel="noopener">EC成長のカギを握る「顧客体験の高度化」と「物流DX」</a></div>
+            <div class="news-snippet">EC成長の鍵は「顧客体験の高度化」と「物流DX」の推進。</div>
             <div class="news-meta"><span class="news-source">news.google.com</span></div>
-          </div></li></ul><div class="action-block"><div class="action-title">⚡ サイバーレコードEC事業部 推奨アクション</div><ul class="action-list"><li class="action-item"><span class="action-bullet">1</span><span>AI関連技術のECへの応用可能性を調査</span></li><li class="action-item"><span class="action-bullet">2</span><span>顧客体験向上のための施策を検討</span></li><li class="action-item"><span class="action-bullet">3</span><span>Z世代の購買行動とチャネル別傾向を分析</span></li></ul></div></div>
+          </div></li></ul><div class="action-block"><div class="action-title">⚡ サイバーレコードEC事業部 推奨アクション</div><ul class="action-list"><li class="action-item"><span class="action-bullet">1</span><span>AIを活用した商品発見・レコメンド機能の強化を検討する</span></li><li class="action-item"><span class="action-bullet">2</span><span>顧客体験向上施策として、パーソナライズされたコミュニケーションを強化する</span></li><li class="action-item"><span class="action-bullet">3</span><span>物流DXの最新動向を調査し、効率化の余地を探る</span></li></ul></div></div>
   </details>
 </section>
 
@@ -717,27 +886,27 @@
           <div class="news-num">01</div>
           <div class="news-content">
             <div class="news-title"><a href="https://news.google.com/rss/articles/CBMiVkFVX3lxTE4tOEt2S2pSQ2w0aHRwU284eFl5NU1vcWNLQ3ZDR19KR0pDYVR6UnpmMWlvaTVYWXhsaHpFNEJqc3ZRSjZzNjdnNElCUmlOcDFUZXE0LW9R?oc=5" target="_blank" rel="noopener">定期購入の「ダークパターン」で業務停止命令も！EC事業者が見落とす特定商取引法違反と最終確認画面の落とし穴</a></div>
-            <div class="news-snippet">特定商取引法違反におけるダークパターン、特に最終確認画面の落とし穴に注意。EC事業者は業務停止命令のリスクを認識すべき。</div>
+            <div class="news-snippet">定期購入の「ダークパターン」は特定商取引法違反の可能性。EC事業者は注意が必要。</div>
             <div class="news-meta"><span class="news-source">news.google.com</span></div>
           </div></li><li class="news-item">
           <div class="news-num">02</div>
           <div class="news-content">
             <div class="news-title"><a href="https://news.google.com/rss/articles/CBMiVEFVX3lxTE1CX21kM3FkcW42NjBmcXlmbEhmcW5oY0V4c0lGY002S2pKRDBvRnNvQWlud3c2X0kwaGR4emJPbjRqbEJFeGcxd1dpNl9EWmx0ajRveg?oc=5" target="_blank" rel="noopener">【ニュースの深層】□□１９５ ／「ＥＣで被害」が回答の４９％に（2026年4月16日号）</a></div>
-            <div class="news-snippet">EC利用者の49%が被害経験あり。消費者庁の調査結果から、ECにおける消費者被害の実態と対策の必要性が示唆される。</div>
+            <div class="news-snippet">EC利用者の49%が被害経験あり。消費者保護の観点から対策が急務。</div>
             <div class="news-meta"><span class="news-source">news.google.com</span></div>
           </div></li><li class="news-item">
           <div class="news-num">03</div>
           <div class="news-content">
             <div class="news-title"><a href="https://news.google.com/rss/articles/CBMiUkFVX3lxTE0yY1JXYm9wZjVqUkFEUGFlSHJkZE1LZ19xNGRLVW1NdDV5QkM5NEtGeDlJOU95U1pRTHBNM0NSNjZreU1WN3k3UzcyN2F1WFRZZWc?oc=5" target="_blank" rel="noopener">広告に掲載ない商品の「アップセル」「クロスセル」、通販広告に必要な事項あれば通信販売に、表示がない場合は電話勧誘販売に | 【通販・EC関連の法改正】景品表示法・消費者契約法・特定商取引法の見直し動向</a></div>
-            <div class="news-snippet">通販広告におけるアップセル・クロスセルの表示義務。通信販売・電話勧誘販売の区分と、景表法・消契法・特商法の見直し動向に注意。</div>
+            <div class="news-snippet">通販広告のアップセル・クロスセル表示に関する法改正。通信販売・電話勧誘販売の区分に注意。</div>
             <div class="news-meta"><span class="news-source">news.google.com</span></div>
           </div></li><li class="news-item">
           <div class="news-num">04</div>
           <div class="news-content">
             <div class="news-title"><a href="https://news.google.com/rss/articles/CBMiUEFVX3lxTE92cnVwRlZDdGtNM2g0UlR3c3pQb0lfaEJKSmc5ZmM5NzFOcnk2bURObS1YeXcwVFM2b2tCYnBuaUpONGhHOTJkMnFfakp2S1Rn?oc=5" target="_blank" rel="noopener">消費者庁がアフィリエイト広告の規制強化へ、「景表法の適用」など一定の結論を年内に公表</a></div>
-            <div class="news-snippet">消費者庁がアフィリエイト広告の規制を強化。景品表示法の適用に関する結論を年内に公表予定で、EC事業者への影響が注目される。</div>
+            <div class="news-snippet">消費者庁はアフィリエイト広告の規制強化へ。景品表示法適用など年内に結論公表。</div>
             <div class="news-meta"><span class="news-source">news.google.com</span></div>
-          </div></li></ul><div class="action-block"><div class="action-title">⚡ サイバーレコードEC事業部 推奨アクション</div><ul class="action-list"><li class="action-item"><span class="action-bullet">1</span><span>特定商取引法違反のダークパターン事例を再確認する</span></li><li class="action-item"><span class="action-bullet">2</span><span>アフィリエイト広告の景表法適用に関する最新動向を注視する</span></li><li class="action-item"><span class="action-bullet">3</span><span>最終確認画面の表示方法を見直し、法規制遵守を徹底する</span></li></ul></div></div>
+          </div></li></ul><div class="action-block"><div class="action-title">⚡ サイバーレコードEC事業部 推奨アクション</div><ul class="action-list"><li class="action-item"><span class="action-bullet">1</span><span>特定商取引法違反リスク確認と対策強化</span></li><li class="action-item"><span class="action-bullet">2</span><span>EC被害に関する消費者庁動向を注視</span></li><li class="action-item"><span class="action-bullet">3</span><span>アフィリエイト広告規制強化への対応準備</span></li></ul></div></div>
   </details>
 </section>
 
@@ -753,27 +922,27 @@
           <div class="news-num">01</div>
           <div class="news-content">
             <div class="news-title"><a href="https://news.google.com/rss/articles/CBMiVkFVX3lxTE5YbmVNOEdEelNqV29iZEI3S3JtenRKVUc3ZHlBMXlMYkFmcXVUbEx4NTltaVBUYjlFNG5adkhLVHZDeGZobTEtYk9zMVphQm5IZWw2azh3?oc=5" target="_blank" rel="noopener">注目を集めた物販・ECのトピックは？2026年３月公開コンテンツのアクセスランキング！</a></div>
-            <div class="news-snippet">2026年3月に公開されたEC関連コンテンツのアクセスランキング。物販・EC分野で注目されたトピックからトレンドを把握。</div>
+            <div class="news-snippet">2026年3月のEC関連コンテンツアクセスランキング。注目のトピックを把握。</div>
             <div class="news-meta"><span class="news-source">news.google.com</span></div>
           </div></li><li class="news-item">
           <div class="news-num">02</div>
           <div class="news-content">
             <div class="news-title"><a href="https://news.google.com/rss/articles/CBMiakFVX3lxTE5WUm1GNnFrNnpaQ3FoLTZna0ZnYnl0OVg4dXNVb21IOUxZVjVtYUV1UDlXbjV0VFVWNTdkenFWTjVrdm9XOXpnUVJ4bHloOWN3OVBfR195UHlqeWlYRTAzSmEydVdScl94R3c?oc=5" target="_blank" rel="noopener">【開催中止】【3月27日（金）お台場開催】D2C事業者必見！EC支援企業トップリーダー4社が語る、2026年版・最新EC施策 完全攻略法を徹底解説！</a></div>
-            <div class="news-snippet">D2C事業者向けのEC施策解説セミナー。2026年版の最新施策や攻略法について、EC支援企業トップリーダーが解説予定（開催中止）。</div>
+            <div class="news-snippet">D2C事業者向け最新EC施策の解説。競合動向の参考にする。</div>
             <div class="news-meta"><span class="news-source">news.google.com</span></div>
           </div></li><li class="news-item">
           <div class="news-num">03</div>
           <div class="news-content">
-            <div class="news-title"><a href="https://news.google.com/rss/articles/CBMiVkFVX3lxTE5JVkZUQXNzVE5nUTlITnBHeG4wRU0yWk1CbkZ4dTR3WVNpM2h5Wk9iUmxDeXQwYlA0cjBHYjkxMGpobTZGTlRzMzQ4c29wUVE0NmNnMW13?oc=5" target="_blank" rel="noopener">【専門家が分析】AIで加速する「1人1ブランド」時代 EC事業者が見るべき変化とは</a></div>
-            <div class="news-snippet">AI活用により加速する「1人1ブランド」時代。EC事業者が注視すべき変化と、それに伴う戦略について専門家が分析。</div>
+            <div class="news-title"><a href="https://news.google.com/rss/articles/CBMiXEFVX3lxTFA5dlJBODFJbl93NlRXXzBWb19CaThoMDRsMS1mVW1ISFhKZG9MOEZ3ODI1ZG9NYVpaVDBUUHplX3VQbWlpY0dScUk2WGlaeTAxOFBPSHpNQkFjMHQx?oc=5" target="_blank" rel="noopener">EC売上最大5.3倍＋5週連続CV2.5倍。ミストサプリ「IN MIST」が仕掛けた喫煙所プロモーションとは</a></div>
+            <div class="news-snippet">喫煙所プロモーションでEC売上・CVRを大幅向上させた事例。ユニークな施策の参考。</div>
             <div class="news-meta"><span class="news-source">news.google.com</span></div>
           </div></li><li class="news-item">
           <div class="news-num">04</div>
           <div class="news-content">
-            <div class="news-title"><a href="https://news.google.com/rss/articles/CBMiUkFVX3lxTE1ycmJXek43TVBQRjFmQ1VzaHVCcWkxbmZHUG1JVDlLbEZWTmI0Mm9CQVd4eHpjTVpVOW1UeWpyVWoyVmtFaFRzUzhzNGxfeWdKRHc?oc=5" target="_blank" rel="noopener">14か月で累計売上30億円超え。 韓国のネイルブランド「ohora」の急成長を支えたEC戦略とは</a></div>
-            <div class="news-snippet">韓国ネイルブランド「ohora」が14ヶ月で累計売上30億円超え。急成長を支えたEC戦略のポイントを分析。</div>
+            <div class="news-title"><a href="https://news.google.com/rss/articles/CBMiVkFVX3lxTE5JVkZUQXNzVE5nUTlITnBHeG4wRU0yWk1CbkZ4dTR3WVNpM2h5Wk9iUmxDeXQwYlA0cjBHYjkxMGpobTZGTlRzMzQ4c29wUVE0NmNnMW13?oc=5" target="_blank" rel="noopener">【専門家が分析】AIで加速する「1人1ブランド」時代 EC事業者が見るべき変化とは</a></div>
+            <div class="news-snippet">AI活用による「1人1ブランド」時代のEC変化を分析。競合の戦略を理解。</div>
             <div class="news-meta"><span class="news-source">news.google.com</span></div>
-          </div></li></ul><div class="action-block"><div class="action-title">⚡ サイバーレコードEC事業部 推奨アクション</div><ul class="action-list"><li class="action-item"><span class="action-bullet">1</span><span>競合のAI活用・D2C戦略を調査し自社戦略に反映する</span></li><li class="action-item"><span class="action-bullet">2</span><span>ohoraの成功要因を分析し、差別化戦略を検討する</span></li><li class="action-item"><span class="action-bullet">3</span><span>最新EC施策のトレンドを把握し、サービス改善に繋げる</span></li></ul></div></div>
+          </div></li></ul><div class="action-block"><div class="action-title">⚡ サイバーレコードEC事業部 推奨アクション</div><ul class="action-list"><li class="action-item"><span class="action-bullet">1</span><span>競合の最新EC施策・成功事例を分析</span></li><li class="action-item"><span class="action-bullet">2</span><span>「1人1ブランド」時代への戦略検討</span></li><li class="action-item"><span class="action-bullet">3</span><span>ユニークなプロモーション事例を調査</span></li></ul></div></div>
   </details>
 </section>
 
@@ -789,27 +958,27 @@
           <div class="news-num">01</div>
           <div class="news-content">
             <div class="news-title"><a href="https://base.dolcevivace.com/column/3046.html" target="_blank" rel="noopener">BASE・Shopify・カラーミー・STORESを徹底比較【2026年版】</a></div>
-            <div class="news-snippet">2026年5月最新情報に基づき、BASE, Shopify, カラーミー, STORESを比較。料金プラン、機能、移行タイミングを解説。</div>
+            <div class="news-snippet">BASE、Shopify、カラーミー、STORESの2026年最新比較。料金、機能、テーマを解説。</div>
             <div class="news-meta"><span class="news-source">base.dolcevivace.com</span></div>
           </div></li><li class="news-item">
           <div class="news-num">02</div>
           <div class="news-content">
             <div class="news-title"><a href="https://shopi-lab.com/shopify-information/5589/" target="_blank" rel="noopener">《2026年》Shopify、BASE、カラーミーショップを比較｜月額費用・決済方法・機能・導入企業を解説</a></div>
-            <div class="news-snippet">Shopify, BASE, カラーミーショップを比較。基本情報、デザイン、機能、決済方法、導入企業例を解説。</div>
+            <div class="news-snippet">Shopify、BASE、カラーミーショップを月額費用、決済、機能で比較。導入事例も参照。</div>
             <div class="news-meta"><span class="news-source">shopi-lab.com</span></div>
           </div></li><li class="news-item">
           <div class="news-num">03</div>
           <div class="news-content">
             <div class="news-title"><a href="https://tool-compass.com/netshop-compare/" target="_blank" rel="noopener">ネットショップ 開設 比較【2026年版】Shopify・BASE・makeshop・カラーミーショップを正直に比較</a></div>
-            <div class="news-snippet">2026年版、Shopify, BASE, makeshop, カラーミーショップを料金、手数料、機能、使いやすさで比較。中小企業・個人向け。</div>
+            <div class="news-snippet">Shopify、BASE、makeshop、カラーミーショップの開設ツール比較。料金・手数料・機能。</div>
             <div class="news-meta"><span class="news-source">tool-compass.com</span></div>
           </div></li><li class="news-item">
           <div class="news-num">04</div>
           <div class="news-content">
             <div class="news-title"><a href="https://assisty.me/articles/233/" target="_blank" rel="noopener">ECサイト構築サービス比較【2026年】Shopify・BASE・STORES・カラーミー | Assisty</a></div>
-            <div class="news-snippet">2026年最新、Shopify, BASE, STORES, カラーミーを手数料、機能、デザインで比較。メリット・デメリットを解説。</div>
+            <div class="news-snippet">Shopify、BASE、STORES、カラーミーの2026年最新比較。手数料・機能・デザイン。</div>
             <div class="news-meta"><span class="news-source">assisty.me</span></div>
-          </div></li></ul><div class="action-block"><div class="action-title">⚡ サイバーレコードEC事業部 推奨アクション</div><ul class="action-list"><li class="action-item"><span class="action-bullet">1</span><span>各カートシステムの最新料金プランと機能改定を確認する</span></li><li class="action-item"><span class="action-bullet">2</span><span>自社ECサイトの規模に最適なカートシステムを再評価する</span></li><li class="action-item"><span class="action-bullet">3</span><span>他社カートシステムから乗り換えを検討する際のメリット・デメリットを整理する</span></li></ul></div></div>
+          </div></li></ul><div class="action-block"><div class="action-title">⚡ サイバーレコードEC事業部 推奨アクション</div><ul class="action-list"><li class="action-item"><span class="action-bullet">1</span><span>主要ECカートの最新比較情報を確認</span></li><li class="action-item"><span class="action-bullet">2</span><span>自社カートの費用対効果を再評価</span></li><li class="action-item"><span class="action-bullet">3</span><span>機能・デザイン面での改善点を探る</span></li></ul></div></div>
   </details>
 </section>
 
@@ -825,27 +994,27 @@
           <div class="news-num">01</div>
           <div class="news-content">
             <div class="news-title"><a href="https://news.google.com/rss/articles/CBMiakFVX3lxTFBZREZDYldlTktYTEJCemx6NUItRGpXSVlacDNLMUE3UENWOE11bVN2a0NzdER1SE00VG9LcElFa25oQUdoQXVMV0Fxbncwa21SelA1OGgxekR5NXc2aTdObjBXSW9mdk9fX3c?oc=5" target="_blank" rel="noopener">LINEマーケティングツール『Lステップ』、ハイパーオートメーションツール『Yoom』と連携開始</a></div>
-            <div class="news-snippet">LINEマーケティングツール「Lステップ」が「Yoom」と連携。業務自動化・効率化の可能性が拡大。</div>
+            <div class="news-snippet">LステップとYoomの連携で、より高度な自動化が可能に。</div>
             <div class="news-meta"><span class="news-source">news.google.com</span></div>
           </div></li><li class="news-item">
           <div class="news-num">02</div>
           <div class="news-content">
             <div class="news-title"><a href="https://news.google.com/rss/articles/CBMiXEFVX3lxTE9kUjZVaUFwTC1pel9PZ0MtdEFNM2gyTm00YzVKSG83UDM2dHlXY1pRNERzN0I2dEVBRDFyb0Rxbzc4RHlPVzJ1ZHJDWmtoNTF1Y0dFbXl2eC1XZExN?oc=5" target="_blank" rel="noopener">フューチャーショップの新サービス、EC事業者向けCRM・メールマーケティング基盤「future Scenario Cast」とは</a></div>
-            <div class="news-snippet">フューチャーショップがEC事業者向けCRM・メールマーケティング基盤「future Scenario Cast」を提供開始。</div>
+            <div class="news-snippet">EC事業者向けCRM・メールマーケティング基盤「future Scenario Cast」が登場。</div>
             <div class="news-meta"><span class="news-source">news.google.com</span></div>
           </div></li><li class="news-item">
           <div class="news-num">03</div>
           <div class="news-content">
             <div class="news-title"><a href="https://news.google.com/rss/articles/CBMiakFVX3lxTE01Zjl2UFBvNl9LRWhUZ0VJM0t3bzdaeUZhdWpVM0paYkxxbjdzdVJERTVxZ2sxdVFOSXczYnVHU1lRdWF1QXNpSlhSWk1fMmg1eXpHeFlKODZNVVVWZzBHdklobGRDVENaOHc?oc=5" target="_blank" rel="noopener">「Synergy!」が「ITreview Grid Award 2026 Spring」の「CRMツール部門」と「メールマーケティングツール部門」において、最高位の「Leader」を受賞</a></div>
-            <div class="news-snippet">CRM・メールマーケティングツール「Synergy!」がITreview Grid Award 2026 Springで「Leader」を受賞。ツールの信頼性が向上。</div>
+            <div class="news-snippet">CRM・メールマーケティングツール「Synergy!」がITreviewで最高位受賞。</div>
             <div class="news-meta"><span class="news-source">news.google.com</span></div>
           </div></li><li class="news-item">
           <div class="news-num">04</div>
           <div class="news-content">
-            <div class="news-title"><a href="https://news.google.com/rss/articles/CBMiZEFVX3lxTE9OenRIZk90al8tMktQV1hjZS0zMzhKdHV6cVFaYlYwWFhhTURYZ3VpSm9Hc1pfNENHd3Y5OUhxZFZNTXhzOERXa2E4b2VXWEk0dzhRRTI1S2dyOG1TMVpYb2N6YzY?oc=5" target="_blank" rel="noopener">フューチャーショップ、2026年4月よりCRM・メールマーケティング基盤を提供</a></div>
-            <div class="news-snippet">フューチャーショップが2026年4月よりEC事業者向けにCRM・メールマーケティング基盤を提供開始。顧客エンゲージメント強化を支援。</div>
+            <div class="news-title"><a href="https://news.google.com/rss/articles/CBMiakFVX3lxTFAyUmNPYlFNaXFtSGFSQ3VyVTJ6X0Z0ZW5tX2U4aWJzOF9oMWtUTGFvc0VhUWJVUVFJdFNIZEREb3lMVFo5Ykd4NW8yN3B3d2wzMTh5cEVfVXh4amplZHlNTkFibGFwZ2xKN1E?oc=5" target="_blank" rel="noopener">一斉配信のその先へ。「届く」を極めた17年連続シェアNo.1シリーズから、次世代プラットフォーム「MailPublisher Next」を提供開始</a></div>
+            <div class="news-snippet">メール配信ツール「MailPublisher Next」が提供開始。到達率向上に期待。</div>
             <div class="news-meta"><span class="news-source">news.google.com</span></div>
-          </div></li></ul><div class="action-block"><div class="action-title">⚡ サイバーレコードEC事業部 推奨アクション</div><ul class="action-list"><li class="action-item"><span class="action-bullet">1</span><span>LステップとYoomの連携による業務効率化の可能性を探る</span></li><li class="action-item"><span class="action-bullet">2</span><span>future Scenario Castの機能と料金体系を調査する</span></li><li class="action-item"><span class="action-bullet">3</span><span>CRM・メールマーケティングツールの最新動向を把握する</span></li></ul></div></div>
+          </div></li></ul><div class="action-block"><div class="action-title">⚡ サイバーレコードEC事業部 推奨アクション</div><ul class="action-list"><li class="action-item"><span class="action-bullet">1</span><span>CRM・MAツールの最新動向を把握</span></li><li class="action-item"><span class="action-bullet">2</span><span>LINE連携ツールの活用可能性を検討</span></li><li class="action-item"><span class="action-bullet">3</span><span>メール配信ツールの到達率向上策を調査</span></li></ul></div></div>
   </details>
 </section>
 
@@ -861,27 +1030,27 @@
           <div class="news-num">01</div>
           <div class="news-content">
             <div class="news-title"><a href="https://news.google.com/rss/articles/CBMiakFVX3lxTFAxTmpfNWp2YkR5NXRNVHNBWU40T0U3cTFTZWVHTXpOdnBqS2UwV1ZleGkyUlVHZF9ITmZ2eUEyMU5Ec3JMcEpBTjhXUkpqWXJPOGJVNTNWZDV6c2NYUTE2MWpaSnU0MEVpZ0E?oc=5" target="_blank" rel="noopener">月額5万円から使える「SNS広告のAI OS」──「チータAI」を正式リリース</a></div>
-            <div class="news-snippet">SNS広告運用を支援するAI OS「チータAI」が正式リリース。月額5万円から利用可能で、広告効果の最大化を目指す。</div>
+            <div class="news-snippet">SNS広告向けAIツール「チータAI」がリリース。低コストでAI活用可能。</div>
             <div class="news-meta"><span class="news-source">news.google.com</span></div>
           </div></li><li class="news-item">
           <div class="news-num">02</div>
           <div class="news-content">
             <div class="news-title"><a href="https://news.google.com/rss/articles/CBMiW0FVX3lxTFBwSnhiR1U3OFFOeWxDdzJ4VUJmU2RQMVMtMWhrWC0zRTRXRTMzdnE4X3BLUjJ2ZmdUTmM2bzdwTWlQOEJZMnQ1TWdWQXVHVVJyMmltVkZoR3lFSVE?oc=5" target="_blank" rel="noopener">3月コアアップデート分析にみる、Google検索「一次ソース」「公式」優遇の傾向【SEOまとめ】</a></div>
-            <div class="news-snippet">Googleの3月コアアップデート分析から、検索結果で「一次ソース」「公式」情報が優遇される傾向が判明。SEO戦略の見直しが必要。</div>
+            <div class="news-snippet">Googleコアアップデートで「一次ソース」「公式」情報が優遇される傾向。</div>
             <div class="news-meta"><span class="news-source">news.google.com</span></div>
           </div></li><li class="news-item">
           <div class="news-num">03</div>
           <div class="news-content">
             <div class="news-title"><a href="https://news.google.com/rss/articles/CBMiYEFVX3lxTE8tNTRMT0M2ZVRDUFU3S2VrYmdfT3dKSDJMTWdTb0FmZ180UGlXMlhMVFJkc0diNDE2ckxsRjZmQzBKVG16RFhWa1FLSXNmMVpTZWZxa2hmSXdvUVlNNzFSdg?oc=5" target="_blank" rel="noopener">2025年｜日本・世界のSNS利用者数ランキングまとめ！SNS別のマーケティング成功事例も解説</a></div>
-            <div class="news-snippet">2025年の日本・世界のSNS利用者数ランキングと、SNS別マーケティング成功事例を解説。最新のSNSトレンドを把握。</div>
+            <div class="news-snippet">2025年のSNS利用者数ランキングと成功事例。SNS戦略の見直しに。</div>
             <div class="news-meta"><span class="news-source">news.google.com</span></div>
           </div></li><li class="news-item">
           <div class="news-num">04</div>
           <div class="news-content">
             <div class="news-title"><a href="https://news.google.com/rss/articles/CBMiW0FVX3lxTE9hNVBxS2dRakh4anE3SGFZOUItaENVS0Z5MHN5cnJzUDBoQ0E5SG83NWVjMFVLTGtvSWpEX21wbV8tXzVzaUdHMnRQdllwd29DSW55SUZKZS1VdlE?oc=5" target="_blank" rel="noopener">2026年に予想されるGoogleアルゴリズムの更新は？ SEO専門家が答える13のQ&amp;amp;A（後編）</a></div>
-            <div class="news-snippet">2026年に予想されるGoogleアルゴリズム更新について、SEO専門家がQ&amp;A形式で解説。最新のSEO対策を理解。</div>
+            <div class="news-snippet">2026年のGoogleアルゴリズム更新予想。SEO戦略のアップデートに。</div>
             <div class="news-meta"><span class="news-source">news.google.com</span></div>
-          </div></li></ul><div class="action-block"><div class="action-title">⚡ サイバーレコードEC事業部 推奨アクション</div><ul class="action-list"><li class="action-item"><span class="action-bullet">1</span><span>チータAIの機能と効果を検証し、SNS広告運用の最適化を検討する</span></li><li class="action-item"><span class="action-bullet">2</span><span>Googleコアアップデートの影響を分析し、SEO戦略を見直す</span></li><li class="action-item"><span class="action-bullet">3</span><span>最新のSNSトレンドとアルゴリズム更新情報をキャッチアップする</span></li></ul></div></div>
+          </div></li></ul><div class="action-block"><div class="action-title">⚡ サイバーレコードEC事業部 推奨アクション</div><ul class="action-list"><li class="action-item"><span class="action-bullet">1</span><span>SNS広告AIツールの導入検討</span></li><li class="action-item"><span class="action-bullet">2</span><span>Googleアルゴリズム変動への対応策</span></li><li class="action-item"><span class="action-bullet">3</span><span>SNS利用者動向と成功事例を分析</span></li></ul></div></div>
   </details>
 </section>
 
@@ -897,27 +1066,27 @@
           <div class="news-num">01</div>
           <div class="news-content">
             <div class="news-title"><a href="https://news.google.com/rss/articles/CBMiakFVX3lxTE5qMllMMjEwQkgzSENyblhUZ2FMaURURXF3V2VtWGtLQTNORkRORlozLXFxdmxNTW14a0lwRFRHeGZfM3hOUjh2ZTZoalRlOGFuZnVRcDRvZVFjS3dzNkMxclBZbmpJLUdMQlE?oc=5" target="_blank" rel="noopener">店舗とECのデータを統合参照して店頭接客を進化させるオムニチャネル顧客カルテORANGE-CXを提供開始</a></div>
-            <div class="news-snippet">店舗とECデータを統合するオムニチャネル顧客カルテ「ORANGE-CX」提供開始。店頭接客の進化に貢献。</div>
+            <div class="news-snippet">店舗とECデータ統合で店頭接客を強化する顧客カルテORANGE-CXを提供開始。</div>
             <div class="news-meta"><span class="news-source">news.google.com</span></div>
           </div></li><li class="news-item">
           <div class="news-num">02</div>
           <div class="news-content">
             <div class="news-title"><a href="https://news.google.com/rss/articles/CBMiVkFVX3lxTE9hQ3VJbXpSRG9aRWNQMTEwQ1o5d0dKeGxTaGxTQlFpMnB0clRPRFpicW5OOEloYWxZS2s0VF9JUjJRUDV5aW14SV92bW01eE1FZ3RhTUp3?oc=5" target="_blank" rel="noopener">ecbeingがメグリ株式会社をグループ化、ECとアプリ技術の統合でOMO顧客体験を強化</a></div>
-            <div class="news-snippet">ecbeingがメグリをグループ化。ECとアプリ技術を統合し、OMO顧客体験の強化を目指す。</div>
+            <div class="news-snippet">ecbeingがメグリをグループ化し、ECとアプリ統合でOMO体験を強化。</div>
             <div class="news-meta"><span class="news-source">news.google.com</span></div>
           </div></li><li class="news-item">
           <div class="news-num">03</div>
           <div class="news-content">
             <div class="news-title"><a href="https://news.google.com/rss/articles/CBMiUkFVX3lxTE94ejhpVVhZb3k1TmtqRWQ3Y3ZnNWZsYmVTb09PRnhJVWxCRUU2S2htVzNBaWhENUJjWFMxSUN2UUxxR3A1aURNZUUxVnpTTGxYSFE?oc=5" target="_blank" rel="noopener">創業95年パリミキのEC2ケタ成長の裏側＋実店舗を核とするOMO構築のプロセスを解説【11/6＋7開催】</a></div>
-            <div class="news-snippet">パリミキのEC2桁成長と、実店舗を核としたOMO構築プロセスを解説。成功事例から学ぶ。</div>
+            <div class="news-snippet">パリミキのEC2桁成長とOMO構築プロセスを解説。実店舗活用の参考。</div>
             <div class="news-meta"><span class="news-source">news.google.com</span></div>
           </div></li><li class="news-item">
           <div class="news-num">04</div>
           <div class="news-content">
             <div class="news-title"><a href="https://news.google.com/rss/articles/CBMiWkFVX3lxTE95VUE3QWthR1g1Q0gtT0tSQkI2OEMwVTdjZk1ZcTRUc1FNQmlzVjFINm9aN1l0cFRmY3VUeTM3RG52QnA1MUEwbmVzZ1paWlBMM1FxZmIzdURFQQ?oc=5" target="_blank" rel="noopener">ECと実店舗を横断する「ハイブリッド消費者」5割以上が購買体験に不満 博報堂調査</a></div>
-            <div class="news-snippet">博報堂調査によると、ECと実店舗を横断する「ハイブリッド消費者」の5割以上が購買体験に不満。OMO戦略の改善が急務。</div>
+            <div class="news-snippet">ハイブリッド消費者の5割以上が購買体験に不満。博報堂調査で判明。</div>
             <div class="news-meta"><span class="news-source">news.google.com</span></div>
-          </div></li></ul><div class="action-block"><div class="action-title">⚡ サイバーレコードEC事業部 推奨アクション</div><ul class="action-list"><li class="action-item"><span class="action-bullet">1</span><span>ORANGE-CXのようなOMOソリューション導入の検討</span></li><li class="action-item"><span class="action-bullet">2</span><span>ハイブリッド消費者の不満点を分析し、購買体験を改善する</span></li><li class="action-item"><span class="action-bullet">3</span><span>実店舗とECの連携強化によるOMO戦略を推進する</span></li></ul></div></div>
+          </div></li></ul><div class="action-block"><div class="action-title">⚡ サイバーレコードEC事業部 推奨アクション</div><ul class="action-list"><li class="action-item"><span class="action-bullet">1</span><span>OMO戦略におけるデータ統合の重要性を再認識</span></li><li class="action-item"><span class="action-bullet">2</span><span>ハイブリッド消費者の不満解消策を検討</span></li><li class="action-item"><span class="action-bullet">3</span><span>他社OMO事例から自社への応用を模索</span></li></ul></div></div>
   </details>
 </section>
 </main>
