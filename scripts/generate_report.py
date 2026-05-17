@@ -1156,8 +1156,8 @@ def build_html_shell(date_str: str, body_content: str) -> str:
 
 <nav class="category-nav">
   <div class="category-nav-inner">
-    <a href="#summary" class="nav-link" style="--cc:#0EA5E9;--cb:#F0F9FF"><span class="nav-dot"></span>✨ ハイライト</a>
     <a href="#benchmark" class="nav-link" style="--cc:#7C3AED;--cb:#F5F3FF"><span class="nav-dot"></span>🏆 競合ベンチマーク</a>
+    <a href="#summary" class="nav-link" style="--cc:#0EA5E9;--cb:#F0F9FF"><span class="nav-dot"></span>✨ ハイライト</a>
     {nav_links}
   </div>
 </nav>
@@ -1248,9 +1248,10 @@ def generate_html(date_str: str, news: dict) -> str:
 
     # PythonでHTML組み立て（絶対に欠けない）
     bench_html = render_benchmark_section(bench_data)
-    sections = [kpi_bar, render_summary(all_data.get("highlights", []), date_jp)]
+    sections = [kpi_bar]
     if bench_html:
         sections.append(bench_html)
+    sections.append(render_summary(all_data.get("highlights", []), date_jp))
     for cat in CATEGORIES:
         if cat["id"] == "ir":
             ir_raw = all_data.get("ir", {})
