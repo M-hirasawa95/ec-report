@@ -1304,10 +1304,14 @@ def notify_chatwork(date_str: str, commit_sha: str):
     year, month, day = date_str.split("-")
     msg = (
         f"[toall]\n"
-        f"【EC業界ダッシュボード {year}年{month}月{day}日版】を公開しました。\n\n"
+        f"📊【EC業界ダッシュボード {year}年{month}月{day}日版】を公開しました！\n\n"
+        f"🔥 本日のトピック\n"
+        f"・重要ニュース・IR・プラットフォーム動向など12カテゴリを自動収集\n"
+        f"・🏆 競合ベンチマーク（EC運営代行・コンサル20社の動向）\n"
+        f"・⚡ サイバーレコードEC事業部 推奨アクション付き\n\n"
         f"▼ ダッシュボードはこちら\n{url_report}\n\n"
-        f"commit: {commit_sha[:7]}\n"
-        f"本ダッシュボードは自動生成です。"
+        f"🤖 Gemini AI + Google News RSS で毎朝8:00 JST 自動更新\n"
+        f"株式会社サイバーレコード EC事業部"
     )
     url = f"https://api.chatwork.com/v2/rooms/{CHATWORK_ROOM_ID}/messages"
     data = urllib.parse.urlencode({"body": msg}).encode()
