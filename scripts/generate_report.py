@@ -836,9 +836,9 @@ def summarize_json(news: dict, date_jp: str, cat_ids: list, include_highlights: 
     ir_field = ''
     if "ir" in cat_ids:
         ir_field = '''"ir": {
-    "news": [{"title":"...","snippet":"...","url":"..."}],
-    "metrics": [{"company":"楽天","value":"X.X兆円","growth":"+X.X%"}],
-    "chart": {"labels":["楽天","メルカリ","ZOZO","BASE","Amazon"],"revenue":[1000,200,300,50,5000],"growth_pct":[5,10,3,2,8]},
+    "news": [{"title":"ニュースタイトル","snippet":"内容70文字以内","url":"https://..."}],
+    "metrics": [{"company":"楽天グループ","value":"2.1兆円","growth":"+5.2%"},{"company":"メルカリ","value":"2,100億円","growth":"+12%"}],
+    "chart": {"labels":["楽天","メルカリ","ZOZO","BASE","Amazon Japan"],"revenue":[21000,2100,1900,200,30000],"growth_pct":[5,12,3,2,8]},
     "actions": ["アクション（40文字以内）"]
   },'''
     other_fields = "\n  ".join(
@@ -860,6 +860,8 @@ def summarize_json(news: dict, date_jp: str, cat_ids: list, include_highlights: 
 - 各カテゴリ actions: サイバーレコードEC事業部が今週中に取るべき具体的アクションを2〜3件、各40文字以内
   （例: 「楽天の新手数料改定を確認し費用シミュレーションを更新する」「TikTok広告のCPM上昇に備え予算配分を見直す」）
 - highlights（あれば）6〜8項目、各30文字以内
+- ir.metrics: 各社の実際の売上・成長率を知識から補完して必ず具体的な数値で記載（「X.X兆円」などプレースホルダー禁止）
+- ir.chart: revenue は億円単位の実数値、growth_pct は実数値（%記号なし）
 - データがない場合はitemsを空配列[]、actionsも空配列[]
 - urlはニュースデータのURLをそのまま使用
 - JSONのみ返す（コードブロック記号```不要）
