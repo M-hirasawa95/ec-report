@@ -41,7 +41,7 @@ jobs:
           GH_PAT: ${{ secrets.GH_PAT }}
           CHATWORK_TOKEN: ${{ secrets.CHATWORK_TOKEN }}
           CHATWORK_ROOM_ID: ${{ secrets.CHATWORK_ROOM_ID }}
-          CHATWORK_ENABLED: "false"
+          CHATWORK_ENABLED: "true"
         run: python scripts/generate_report.py
 
       - name: Setup Pages
