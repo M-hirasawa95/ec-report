@@ -19,7 +19,7 @@ GH_OWNER  = "M-hirasawa95"
 GH_REPO   = "ec-report"
 GH_FILE   = "index.html"
 GH_BRANCH = "main"
-GEMINI_MODEL = "gemini-2.5-flash-lite"
+GEMINI_MODEL = "gemini-2.5-flash-lite"  # v2
 
 # ── カテゴリ定義 ─────────────────────────────────────────────────
 CATEGORIES = [
