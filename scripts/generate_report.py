@@ -27,123 +27,100 @@ CATEGORIES = [
         "id": "breaking", "icon": "🚨", "title": "重要ニュース",
         "type": "breaking", "color": "#EF4444", "bg": "#FFF5F5",
         "queries": [
-            "EC eコマース 重要ニュース 最新 {yearmonth}",
-            "Amazon 楽天 メルカリ ZOZO 重大発表 最新 {year}",
+            "EC eコマース 規制 改正 重要発表 手数料変更 {yearmonth}",
+            "Amazon 楽天市場 Yahoo ショッピング ポリシー変更 規約 {yearmonth}",
         ],
     },
     {
         "id": "ir", "icon": "📊", "title": "IR・決算情報",
         "type": "ir", "color": "#2563EB", "bg": "#EFF6FF",
         "queries": [
-            "楽天グループ Amazon メルカリ ZOZO BASE 決算 業績 売上 {year}",
-            "EC企業 IR 決算発表 資金調達 株価 {yearmonth}",
+            "楽天グループ メルカリ ZOZO BASE futureshop 決算 売上高 営業利益 {year}",
+            "Amazon Japan EC企業 IR 資金調達 上場 黒字転換 業績 {yearmonth}",
         ],
     },
     {
         "id": "platform", "icon": "🛒", "title": "プラットフォーム動向",
         "type": "accordion", "color": "#7C3AED", "bg": "#F5F3FF",
         "queries": [
-            "Amazon 楽天市場 Yahoo 手数料 規約変更 新機能 {yearmonth}",
-            "ECモール セール キャンペーン スーパーSALE {yearmonth}",
+            "楽天市場 Amazon Yahoo ショッピング 手数料 出店料 新機能 変更 {yearmonth}",
+            "TikTok Shop ライブコマース 楽天 スーパーSALE Amazon セール 施策 {yearmonth}",
         ],
     },
     {
         "id": "ads", "icon": "📢", "title": "広告・マーケティング費用",
         "type": "accordion", "color": "#D97706", "bg": "#FFFBEB",
         "queries": [
-            "EC広告 ROAS CPC CPM 相場 最新 {year}",
-            "Amazon広告 楽天広告 スポンサー 運用 事例 {yearmonth}",
+            "Amazon スポンサープロダクト 楽天 RPP 広告 CPC 単価 相場 変動 {yearmonth}",
+            "Meta Google Instagram TikTok 広告費 CPM ROAS 運用 最新 {yearmonth}",
         ],
     },
     {
         "id": "logistics", "icon": "🚚", "title": "物流・フルフィルメント",
         "type": "accordion", "color": "#059669", "bg": "#ECFDF5",
         "queries": [
-            "EC 物流 配送 送料改定 ヤマト運輸 佐川急便 {yearmonth}",
-            "FBA 楽天物流 3PL フルフィルメント 最新 {year}",
+            "ヤマト運輸 佐川急便 日本郵便 EC配送 送料 値上げ 料金改定 {yearmonth}",
+            "Amazon FBA 楽天物流 EC 3PL フルフィルメント 倉庫 新サービス {yearmonth}",
         ],
     },
     {
         "id": "consumer", "icon": "👥", "title": "消費者トレンド",
         "type": "accordion", "color": "#EC4899", "bg": "#FDF2F8",
         "queries": [
-            "消費者 購買トレンド EC ランキング 人気 {yearmonth}",
-            "TikTok バイラル 話題 商品 トレンド {yearmonth}",
+            "EC 消費者 購買行動 調査 データ レポート 利用実態 {yearmonth}",
+            "TikTok Instagram SNS 購買 バイラル 話題商品 トレンド {yearmonth}",
         ],
     },
     {
         "id": "legal", "icon": "⚖️", "title": "法規制・業界ニュース",
         "type": "accordion", "color": "#6366F1", "bg": "#EEF2FF",
         "queries": [
-            "EC 景表法 特商法 規制 法改正 {year}",
-            "個人情報 セキュリティ EC 不正アクセス {yearmonth}",
+            "景品表示法 特定商取引法 EC ダークパターン 規制強化 改正 行政処分 {year}",
+            "EC セキュリティ 不正アクセス 個人情報漏洩 フィッシング 対策 {yearmonth}",
         ],
     },
     {
         "id": "competitor", "icon": "🏪", "title": "他社EC運営情報",
         "type": "accordion", "color": "#0891B2", "bg": "#ECFEFF",
         "queries": [
-            "EC 運営 成功事例 D2C ブランド 施策 {year}",
-            "越境EC Temu Shein 日本 海外展開 {yearmonth}",
+            "D2C ブランド EC 新規参入 撤退 事業縮小 戦略転換 {yearmonth}",
+            "Temu Shein 越境EC 日本 参入 影響 対策 国内EC {yearmonth}",
         ],
     },
     {
         "id": "cart", "icon": "🖥️", "title": "ECカートシステム",
         "type": "accordion", "color": "#8B5CF6", "bg": "#FAF5FF",
         "queries": [
-            "Shopify MakeShop カラーミー BASE STORES futureshop 新機能 {yearmonth}",
-            "ECカート 乗り換え 比較 費用 {year}",
+            "Shopify futureshop MakeShop カラーミー BASE STORES 新機能 料金 アップデート {yearmonth}",
+            "ECカート 移行 乗り換え 導入事例 大手 Shopify Plus {yearmonth}",
         ],
     },
     {
         "id": "tools", "icon": "🔧", "title": "ECツール情報",
         "type": "accordion", "color": "#16A34A", "bg": "#F0FDF4",
         "queries": [
-            "EC ツール 新サービス MA CRM メール配信 リリース {yearmonth}",
-            "EC 在庫管理 分析 価格監視 AI 自動化 {year}",
+            "EC AI ツール 新リリース 機能追加 MA CRM レコメンド 価格改定 {yearmonth}",
+            "EC 在庫管理 受注管理 分析 SaaS スタートアップ 新サービス {yearmonth}",
         ],
     },
     {
         "id": "marketing", "icon": "📣", "title": "マーケティング全般",
         "type": "accordion", "color": "#EA580C", "bg": "#FFF7ED",
         "queries": [
-            "Google Meta LINE TikTok 広告 マーケティング アップデート {yearmonth}",
-            "SEO コンテンツ AI 生成AI マーケティング トレンド {year}",
+            "Google 検索 アルゴリズム SEO EC コンテンツ アップデート 影響 {yearmonth}",
+            "アフィリエイト インフルエンサー ステマ 規制 EC 広告 最新 {yearmonth}",
         ],
     },
     {
         "id": "retail", "icon": "🏬", "title": "小売・OMO動向",
         "type": "accordion", "color": "#0F766E", "bg": "#F0FDFA",
         "queries": [
-            "小売 OMO オムニチャネル 実店舗 EC 連携 {yearmonth}",
-            "小売業 DX デジタル化 店舗 オンライン 統合 {year}",
+            "OMO 実店舗 EC 連携 オムニチャネル 新施策 成功事例 {yearmonth}",
+            "小売 DX 無人店舗 セルフレジ EC 統合 デジタル化 {yearmonth}",
         ],
     },
 ]
 
-# ── 競合ベンチマーク対象企業（EC運営代行・ECコンサル・マーケ支援）────────
-BENCHMARK_COMPANIES = [
-    {"name": "いつも",                  "search": "いつも EC運営代行 コンサル 新サービス"},
-    {"name": "フルスピード",             "search": "フルスピード EC デジタルマーケティング 動向"},
-    {"name": "ソウルドアウト",           "search": "ソウルドアウト EC 広告 新サービス 発表"},
-    {"name": "ecbeing",                 "search": "ecbeing EC 新機能 リリース 価格"},
-    {"name": "シナブル",                "search": "シナブル EC CRM メール 新機能"},
-    {"name": "スクロール360",           "search": "スクロール360 EC 物流 フルフィルメント"},
-    {"name": "Hamee（ネクストエンジン）", "search": "Hamee ネクストエンジン EC 新機能"},
-    {"name": "フィードフォース",         "search": "フィードフォース EC フィード 新サービス"},
-    {"name": "ブレインパッド",           "search": "ブレインパッド EC データ分析 AI"},
-    {"name": "デジタルアイデンティティ", "search": "デジタルアイデンティティ EC マーケティング"},
-    {"name": "ロックオン",              "search": "ロックオン アドエビス EC マーケティング"},
-    {"name": "オーリーズ",              "search": "オーリーズ EC 広告運用 新サービス"},
-    {"name": "ファングリー",            "search": "ファングリー EC コンテンツ SEO"},
-    {"name": "ディーゼロ",             "search": "ディーゼロ EC Web 制作 運営"},
-    {"name": "電通デジタル",           "search": "電通デジタル EC コマース 支援"},
-    {"name": "博報堂（EC）",           "search": "博報堂 EC デジタルコマース 支援"},
-    {"name": "サイバーエージェント（EC）", "search": "サイバーエージェント EC コマース 支援"},
-    {"name": "ネットショップ支援室",    "search": "ネットショップ支援室 Shopify EC"},
-    {"name": "カスタメディア",         "search": "カスタメディア EC 運営代行"},
-    {"name": "ベイクルーズ（EC）",     "search": "ベイクルーズ EC 自社 運営 D2C"},
-]
 
 # ── CSS（Python固定定義）────────────────────────────────────────
 CSS = """
@@ -416,7 +393,7 @@ CSS = """
     /* ════════════════════
        HIGHLIGHTS
     ════════════════════ */
-    .highlight-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .highlight-grid { display: none; }
     .highlight-item {
       padding: 14px 16px;
       border-left: 3px solid var(--blue);
@@ -492,7 +469,7 @@ CSS = """
     /* ════════════════════
        RESPONSIVE
     ════════════════════ */
-    @media (max-width: 900px) { .kpi-bar { grid-template-columns: repeat(2,1fr); } .bench-grid { grid-template-columns: 1fr; } }
+    @media (max-width: 900px) { .kpi-bar { grid-template-columns: repeat(2,1fr); } }
     @media (max-width: 768px) {
       .container { padding: 16px; }
       .header-inner { padding: 0 16px; }
@@ -501,73 +478,11 @@ CSS = """
       .section-header { padding: 18px 20px 16px; }
       .section-body, .details-body { padding: 4px 20px 20px; }
       details summary { padding: 12px 20px; }
-      .ir-charts, .highlight-grid { grid-template-columns: 1fr; }
+      .ir-charts { grid-template-columns: 1fr; }
       .metric-grid { grid-template-columns: repeat(2,1fr); }
       .kpi-bar { grid-template-columns: 1fr 1fr; gap: 10px; }
-      .bench-grid { grid-template-columns: 1fr; }
     }
 
-    /* ── 競合ベンチマーク ── */
-    .bench-summary {
-      background: var(--blue-l); border-left: 3px solid var(--blue);
-      border-radius: var(--r); padding: 16px 20px; margin-bottom: 24px;
-      font-size: 13.5px; color: var(--ink-2); line-height: 1.7;
-    }
-    .bench-summary-title {
-      font-size: 11px; font-weight: 700; letter-spacing: .08em;
-      text-transform: uppercase; color: var(--blue); margin-bottom: 8px;
-    }
-    .bench-top-actions {
-      margin-top: 14px; display: flex; flex-direction: column; gap: 6px;
-    }
-    .bench-top-action {
-      display: flex; align-items: flex-start; gap: 10px;
-      font-size: 13px; font-weight: 600; color: var(--ink);
-    }
-    .bench-top-action::before {
-      content: "→"; color: var(--blue); flex-shrink: 0; font-weight: 700;
-    }
-    .bench-grid {
-      display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px;
-    }
-    .bench-card {
-      background: var(--white); border: 1px solid var(--line);
-      border-radius: var(--r); padding: 18px 20px;
-      box-shadow: var(--sh-sm); transition: box-shadow .2s;
-    }
-    .bench-card:hover { box-shadow: var(--sh); }
-    .bench-card-header {
-      display: flex; align-items: center; justify-content: space-between;
-      margin-bottom: 10px;
-    }
-    .bench-company {
-      font-size: 13px; font-weight: 800; color: var(--ink); letter-spacing: -.01em;
-    }
-    .bench-threat {
-      font-size: 10px; font-weight: 700; letter-spacing: .06em;
-      padding: 3px 8px; border-radius: 99px;
-    }
-    .bench-threat.high   { background: #FEE2E2; color: #B91C1C; }
-    .bench-threat.medium { background: #FEF3C7; color: #92400E; }
-    .bench-threat.low    { background: #DCFCE7; color: #166534; }
-    .bench-move {
-      font-size: 12.5px; color: var(--ink-2); line-height: 1.6;
-      margin-bottom: 12px; padding-bottom: 12px; border-bottom: 1px solid var(--line);
-    }
-    .bench-actions-label {
-      font-size: 10px; font-weight: 700; letter-spacing: .07em;
-      text-transform: uppercase; color: var(--amber); margin-bottom: 7px;
-    }
-    .bench-action-list {
-      list-style: none; display: flex; flex-direction: column; gap: 5px;
-    }
-    .bench-action-item {
-      font-size: 12px; color: var(--ink); display: flex; gap: 8px;
-      align-items: flex-start; line-height: 1.5;
-    }
-    .bench-action-item::before {
-      content: "▸"; color: var(--amber); flex-shrink: 0; font-size: 10px; margin-top: 2px;
-    }
 """
 
 HTML_CLASS_GUIDE = """
@@ -749,38 +664,26 @@ def collect_all_news(date_str: str) -> dict:
         for query_tmpl in cat["queries"]:
             query = query_tmpl.format(yearmonth=yearmonth, year=year_str)
             print(f"  🔍 [{cat_id}] {query[:50]}...")
-            results = google_news_rss(query, max_results=4)
+            results = google_news_rss(query, max_results=6)
             if not results:
                 print(f"    → RSS 0件、DuckDuckGoへ切替...")
-                results = ddg_search(query, max_results=4)
+                results = ddg_search(query, max_results=6)
             news[cat_id].extend(results)
             time.sleep(1)
 
         # 取得不足時のフォールバック
-        if len(news[cat_id]) < 3:
+        if len(news[cat_id]) < 4:
             fallback_q = f"{cat['title']} EC {year_str}"
             print(f"  [FALLBACK] {cat_id}: 広域クエリ再試行...")
-            extra = google_news_rss(fallback_q, max_results=5)
+            extra = google_news_rss(fallback_q, max_results=6)
             if not extra:
                 fallback = re.sub(r"\{[^}]+\}", "", cat["queries"][0]).strip()
-                extra = ddg_search(fallback, max_results=5)
+                extra = ddg_search(fallback, max_results=6)
             news[cat_id].extend(extra)
             time.sleep(1)
 
     return news
 
-
-def collect_benchmark_news() -> list[dict]:
-    """競合20社の直近ニュースを収集（各社2件）"""
-    results = []
-    for co in BENCHMARK_COMPANIES:
-        print(f"  🔍 [bench] {co['name']}...")
-        items = google_news_rss(co["search"], max_results=2)
-        if not items:
-            items = ddg_search(co["search"], max_results=2)
-        results.append({"company": co["name"], "news": items})
-        time.sleep(0.8)
-    return results
 
 
 # ── 3. Gemini API ─────────────────────────────────────────────
@@ -840,9 +743,8 @@ def build_news_ctx(news: dict, cat_ids: list) -> str:
     return "\n".join(lines)
 
 
-def summarize_json(news: dict, date_jp: str, cat_ids: list, include_highlights: bool = False) -> dict:
+def summarize_json(news: dict, date_jp: str, cat_ids: list) -> dict:
     news_ctx = build_news_ctx(news, cat_ids)
-    highlight_field = '"highlights": ["ハイライト項目（30文字以内）"],' if include_highlights else ""
     ir_field = ''
     if "ir" in cat_ids:
         ir_field = '''"ir": {
@@ -856,21 +758,26 @@ def summarize_json(news: dict, date_jp: str, cat_ids: list, include_highlights: 
         for cid in cat_ids if cid != "ir"
     )
 
-    prompt = f"""あなたはEC業界アナリストで、株式会社サイバーレコードのEC事業部向けにレポートを作成しています。
-{date_jp}のニュースデータを分析し、以下のJSON形式で返してください。
+    prompt = f"""あなたはEC業界の専門アナリストです。株式会社サイバーレコード（EC運営代行・コンサル）のEC事業部向けに、{date_jp}の重要ニュースを厳選してレポートを作成してください。
+
+以下のJSON形式で返してください。
 
 {{
-  {highlight_field}
   {ir_field}
   {other_fields}
 }}
 
-【ルール】
-- 各カテゴリ items: 最大4件、snippetは70文字以内で具体的に（記事内容が不明な場合はタイトルからEC文脈で補足説明を生成）
-- 各カテゴリ actions: サイバーレコードEC事業部が今週中に取るべき具体的アクションを2〜3件、各40文字以内
-  （例: 「楽天の新手数料改定を確認し費用シミュレーションを更新する」「TikTok広告のCPM上昇に備え予算配分を見直す」）
-- highlights（あれば）6〜8項目、各30文字以内
-- ir.metrics: 各社の実際の売上・成長率を知識から補完して必ず具体的な数値で記載（「X.X兆円」などプレースホルダー禁止）
+【厳選基準（重要）】
+- プレスリリース・広告・セミナー告知・採用情報は除外する
+- 具体的な数値（金額・率・件数）や固有名詞を含む記事を優先
+- EC事業者の意思決定に影響するニュースのみ選ぶ（手数料変更・規制・新機能・競合動向など）
+- 同じトピックの重複記事は1件にまとめる
+
+【出力ルール】
+- 各カテゴリ items: 最大4件。snippetは「何が変わるか・何が起きたか」を70文字以内で具体的に記載
+- 各カテゴリ actions: サイバーレコードEC事業部が今週中に取るべき具体的アクション2〜3件、各40文字以内
+  （例：「楽天の手数料改定内容を確認し顧客への影響試算を完了する」）
+- ir.metrics: 各社の実際の売上・成長率を知識から補完して必ず具体的数値で記載（「X.X兆円」などプレースホルダー禁止）
 - ir.chart: revenue は億円単位の実数値、growth_pct は実数値（%記号なし）
 - データがない場合はitemsを空配列[]、actionsも空配列[]
 - urlはニュースデータのURLをそのまま使用
@@ -891,50 +798,6 @@ def summarize_json(news: dict, date_jp: str, cat_ids: list, include_highlights: 
             print("  [WARN] JSONパース失敗")
             return {}
 
-
-def summarize_benchmark_json(bench_news: list, date_jp: str) -> dict:
-    """競合ベンチマーク分析をGeminiに依頼"""
-    lines = []
-    for co in bench_news:
-        lines.append(f"\n### {co['company']}")
-        for item in co["news"]:
-            snip = item.get("snippet", "").strip()
-            desc = f": {snip[:120]}" if snip and snip != item.get("title","") else ""
-            lines.append(f"- {item.get('title','')}{desc}")
-        if not co["news"]:
-            lines.append("- （最新ニュースなし）")
-    news_ctx = "\n".join(lines)
-
-    prompt = f"""あなたはEC業界アナリストです。株式会社サイバーレコード（EC運営代行・コンサル会社）の競合分析を行います。
-競合他社ニュースデータを分析し、以下のJSON形式で返してください。
-
-{{
-  "summary": "競合全体の動向サマリー（80文字以内）",
-  "top_actions": ["サイバーレコードが今すぐ取るべき対抗策（40文字以内）×3件"],
-  "companies": [
-    {{"name": "会社名", "recent_move": "動向（50文字以内）", "threat": "high|medium|low", "actions": ["推奨アクション×2件（40文字以内）"]}}
-  ]
-}}
-
-【ルール】
-- companies: ニュースが取得できた企業のみ記載（全社不要）
-- threat: high=直接競合, medium=部分競合, low=間接競合
-- JSONのみ返す（```不要）
-
-【競合他社ニュースデータ】
-{news_ctx}"""
-
-    text = call_gemini(prompt, timeout=180)
-    text = re.sub(r"(?i)^```[a-z]*\n?", "", text.strip())
-    text = re.sub(r"\n?```$", "", text.strip())
-    try:
-        return json.loads(text)
-    except Exception:
-        try:
-            return json.loads(text.rstrip(",\n ") + "\n}")
-        except Exception:
-            print("  [WARN] ベンチマークJSONパース失敗")
-            return {}
 
 
 def _esc(s: str) -> str:
@@ -975,19 +838,6 @@ def render_actions(actions: list) -> str:
     )
     return f'<div class="action-block"><div class="action-title">⚡ サイバーレコードEC事業部 推奨アクション</div><ul class="action-list">{items_html}</ul></div>'
 
-
-def render_summary(highlights: list, date_jp: str) -> str:
-    items_html = "".join(f'<div class="highlight-item">{_esc(h)}</div>' for h in highlights[:8])
-    return f'''<section id="summary" class="section-card" data-cat="ir">
-  <div class="section-header">
-    <div class="cat-icon">✨</div>
-    <div class="section-title-wrap">
-      <div class="section-title">本日のハイライト</div>
-      <div class="section-sub">{date_jp} EC業界トピックス</div>
-    </div>
-  </div>
-  <div class="section-body"><div class="highlight-grid">{items_html}</div></div>
-</section>'''
 
 
 def render_ir(cat: dict, data: dict, actions: list = None) -> str:
@@ -1054,62 +904,6 @@ def render_section(cat: dict, items: list, actions: list = None) -> str:
 </section>'''
 
 
-def render_benchmark_section(bench_data: dict) -> str:
-    """競合ベンチマークセクションのHTMLを生成"""
-    if not bench_data:
-        return ""
-
-    summary = _esc(bench_data.get("summary", ""))
-    top_actions = bench_data.get("top_actions", [])
-    companies = bench_data.get("companies", [])
-    n = len(companies)
-
-    top_acts_html = "".join(
-        f'<div class="bench-top-action">{_esc(a)}</div>'
-        for a in top_actions[:3]
-    )
-    summary_html = f'''<div class="bench-summary">
-  <div class="bench-summary-title">競合全体サマリー</div>
-  {summary}
-  <div class="bench-top-actions">{top_acts_html}</div>
-</div>'''
-
-    cards_html = ""
-    for co in companies:
-        threat = co.get("threat", "medium")
-        threat_label = {"high": "⚠ 高脅威", "medium": "● 中脅威", "low": "○ 低脅威"}.get(threat, "● 中脅威")
-        actions_li = "".join(
-            f'<li class="bench-action-item">{_esc(a)}</li>'
-            for a in co.get("actions", [])[:2]
-        )
-        cards_html += f'''<div class="bench-card">
-  <div class="bench-card-header">
-    <div class="bench-company">{_esc(co.get("name",""))}</div>
-    <span class="bench-threat {threat}">{threat_label}</span>
-  </div>
-  <div class="bench-move">{_esc(co.get("recent_move","情報なし"))}</div>
-  <div class="bench-actions-label">推奨アクション</div>
-  <ul class="bench-action-list">{actions_li}</ul>
-</div>'''
-
-    return f'''<section id="benchmark" class="section-card" data-cat="benchmark">
-  <div class="section-header">
-    <div class="cat-icon">🏆</div>
-    <div class="section-title-wrap">
-      <div class="section-title">競合ベンチマーク</div>
-      <div class="section-sub">EC運営代行・コンサル {n}社の動向</div>
-    </div>
-    <span class="section-badge">{n}</span>
-  </div>
-  <details open>
-    <summary><span class="summary-label">競合各社の動向を見る</span><span class="toggle-icon">▼</span></summary>
-    <div class="details-body">
-      {summary_html}
-      <div class="bench-grid">{cards_html}</div>
-    </div>
-  </details>
-</section>'''
-
 
 def build_html_shell(date_str: str, body_content: str) -> str:
     year, month, day = date_str.split("-")
@@ -1156,8 +950,6 @@ def build_html_shell(date_str: str, body_content: str) -> str:
 
 <nav class="category-nav">
   <div class="category-nav-inner">
-    <a href="#benchmark" class="nav-link" style="--cc:#7C3AED;--cb:#F5F3FF"><span class="nav-dot"></span>🏆 競合ベンチマーク</a>
-    <a href="#summary" class="nav-link" style="--cc:#0EA5E9;--cb:#F0F9FF"><span class="nav-dot"></span>✨ ハイライト</a>
     {nav_links}
   </div>
 </nav>
@@ -1200,10 +992,10 @@ def generate_html(date_str: str, news: dict) -> str:
     year, month, day = date_str.split("-")
     date_jp = f"{year}年{month}月{day}日"
 
-    # Batch1: ハイライト + 前半6カテゴリ → JSON
+    # Batch1: 前半6カテゴリ → JSON
     batch1_ids = ["breaking", "ir", "platform", "ads", "logistics", "consumer"]
-    print("  🤖 Batch1: ハイライト〜消費者（JSON）...")
-    data1 = summarize_json(news, date_jp, batch1_ids, include_highlights=True)
+    print("  🤖 Batch1: 重要ニュース〜消費者（JSON）...")
+    data1 = summarize_json(news, date_jp, batch1_ids)
     time.sleep(15)
 
     # Batch2: 後半6カテゴリ → JSON
@@ -1214,7 +1006,6 @@ def generate_html(date_str: str, news: dict) -> str:
     all_data = {**data1, **data2}
 
     def extract(cat_id: str):
-        """カテゴリデータからitemsとactionsを取得（新旧両形式対応）"""
         raw = all_data.get(cat_id, [])
         if isinstance(raw, dict) and "items" in raw:
             return raw.get("items", []), raw.get("actions", [])
@@ -1222,36 +1013,18 @@ def generate_html(date_str: str, news: dict) -> str:
             return raw, []
         return [], []
 
-    # Batch3: 競合ベンチマーク → JSON（失敗しても全体は続行）
-    bench_news = []
-    bench_data = {}
-    try:
-        print("  🤖 Batch3: 競合ベンチマーク（JSON）...")
-        bench_news = collect_benchmark_news()
-        time.sleep(15)
-        bench_data = summarize_benchmark_json(bench_news, date_jp)
-    except Exception as e:
-        print(f"  [WARN] ベンチマーク失敗（スキップ）: {e}")
-        bench_news = []
-        bench_data = {}
-
     # KPI バー（収集統計）
-    bench_count = len([c for c in bench_news if c["news"]])
     total_news = sum(len(v) for v in news.values())
     cats_covered = len([v for v in news.values() if v])
     kpi_bar = f'''<div class="kpi-bar">
   <div class="kpi-card"><div class="kpi-icon blue">📰</div><div class="kpi-body"><div class="kpi-value">{total_news}</div><div class="kpi-label">収集ニュース数</div></div></div>
   <div class="kpi-card"><div class="kpi-icon green">📂</div><div class="kpi-body"><div class="kpi-value">{cats_covered}</div><div class="kpi-label">カバー分野数</div></div></div>
-  <div class="kpi-card"><div class="kpi-icon purple">🏆</div><div class="kpi-body"><div class="kpi-value">{bench_count}</div><div class="kpi-label">競合ベンチマーク社数</div></div></div>
-  <div class="kpi-card"><div class="kpi-icon amber">🔄</div><div class="kpi-body"><div class="kpi-value">毎朝</div><div class="kpi-label">8:00 JST 自動更新</div></div></div>
+  <div class="kpi-card"><div class="kpi-icon amber">⚡</div><div class="kpi-body"><div class="kpi-value">12</div><div class="kpi-label">カテゴリ数</div></div></div>
+  <div class="kpi-card"><div class="kpi-icon purple">🔄</div><div class="kpi-body"><div class="kpi-value">毎朝</div><div class="kpi-label">8:00 JST 自動更新</div></div></div>
 </div>'''
 
-    # PythonでHTML組み立て（絶対に欠けない）
-    bench_html = render_benchmark_section(bench_data)
+    # HTML組み立て
     sections = [kpi_bar]
-    if bench_html:
-        sections.append(bench_html)
-    sections.append(render_summary(all_data.get("highlights", []), date_jp))
     for cat in CATEGORIES:
         if cat["id"] == "ir":
             ir_raw = all_data.get("ir", {})
@@ -1367,12 +1140,12 @@ def main():
     date_str = get_jst_date()
     print(f"  → {date_str}")
 
-    print("\n[2/5] ニュース収集（12カテゴリ + 競合20社）...")
+    print("\n[2/5] ニュース収集（12カテゴリ）...")
     news = collect_all_news(date_str)
     total = sum(len(v) for v in news.values())
     print(f"  → {total}件取得")
 
-    print("\n[3/5] HTML生成（Gemini・JSON方式 + 競合ベンチマーク）...")
+    print("\n[3/5] HTML生成（Gemini・JSON方式）...")
     html = generate_html(date_str, news)
     print(f"  → {len(html):,} bytes")
 

@@ -4,6 +4,10 @@ on:
   schedule:
     - cron: '0 23 * * *'  # 毎日23:00 UTC = 翌8:00 JST
   workflow_dispatch:       # 手動実行も可能
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/generate_report.py'
 
 permissions:
   contents: write
@@ -36,7 +40,7 @@ jobs:
           GH_PAT: ${{ secrets.GH_PAT }}
           CHATWORK_TOKEN: ${{ secrets.CHATWORK_TOKEN }}
           CHATWORK_ROOM_ID: ${{ secrets.CHATWORK_ROOM_ID }}
-          CHATWORK_ENABLED: "true"
+          CHATWORK_ENABLED: "false"
         run: python scripts/generate_report.py
 
       - name: Setup Pages
