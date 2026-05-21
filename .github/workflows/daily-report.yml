@@ -2,8 +2,10 @@ name: Daily EC Report
 
 on:
   schedule:
-    - cron: '0 23 * * *'  # 毎日23:00 UTC = 翌8:00 JST
-  workflow_dispatch:       # 手動実行も可能
+    - cron: '0 23 * * *'   # 第1: 23:00 UTC = 08:00 JST
+    - cron: '0 1 * * *'    # 第2: 01:00 UTC = 10:00 JST（遅延バックアップ）
+    - cron: '0 3 * * *'    # 第3: 03:00 UTC = 12:00 JST（最終バックアップ）
+  workflow_dispatch:        # 外部cron・手動実行用
 
 permissions:
   contents: write

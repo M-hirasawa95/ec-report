@@ -1108,7 +1108,7 @@ def notify_chatwork(date_str: str, commit_sha: str):
         f"・🏆 競合ベンチマーク（EC運営代行・コンサル20社の動向）\n"
         f"・⚡ サイバーレコードEC事業部 推奨アクション付き\n\n"
         f"▼ ダッシュボードはこちら\n{url_report}\n\n"
-        f"🤖 Gemini AI + Google News RSS で毎朝8:00 JST 自動更新\n"
+        f"🤖 Gemini AI + Google News RSS で毎日自動更新\n"
         f"株式会社サイバーレコード EC事業部"
     )
     url = f"https://api.chatwork.com/v2/rooms/{CHATWORK_ROOM_ID}/messages"
@@ -1130,6 +1130,23 @@ def notify_chatwork(date_str: str, commit_sha: str):
         return None
 
 
+def report_already_generated(date_str: str) -> bool:
+    """当日レポートが既にGitHubに存在するか確認（重複実行防止）"""
+    try:
+        url = f"https://api.github.com/repos/{GH_OWNER}/{GH_REPO}/contents/{GH_FILE}?ref={GH_BRANCH}"
+        req = urllib.request.Request(url, headers={
+            "Authorization": f"token {GH_PAT}",
+            "Accept": "application/vnd.github.v3+json",
+        })
+        with urllib.request.urlopen(req, timeout=10) as resp:
+            data = json.loads(resp.read().decode())
+        content = base64.b64decode(data["content"]).decode("utf-8", errors="replace")
+        year, month, day = date_str.split("-")
+        return f"{year}年{month}月{day}日" in content
+    except Exception:
+        return False
+
+
 # ── メイン ────────────────────────────────────────────────────
 def main():
     print("=" * 60)
@@ -1139,6 +1156,11 @@ def main():
     print("\n[1/5] JST日付取得...")
     date_str = get_jst_date()
     print(f"  → {date_str}")
+
+    print("\n[確認] 当日レポートの重複確認...")
+    if report_already_generated(date_str):
+        print(f"  → {date_str}のレポートは既に生成済みです。スキップします。")
+        return
 
     print("\n[2/5] ニュース収集（12カテゴリ）...")
     news = collect_all_news(date_str)
