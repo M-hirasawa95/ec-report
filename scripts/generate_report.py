@@ -1301,7 +1301,10 @@ def main():
     print(f"  → {date_str}")
 
     print("\n[確認] 当日レポートの重複確認...")
-    if report_already_generated(date_str):
+    event_name = os.environ.get("GITHUB_EVENT_NAME", "")
+    if event_name == "workflow_dispatch":
+        print(f"  → 手動実行（workflow_dispatch）のため重複チェックをスキップして強制再生成します。")
+    elif report_already_generated(date_str):
         print(f"  → {date_str}のレポートは既に生成済みです。スキップします。")
         return
 
