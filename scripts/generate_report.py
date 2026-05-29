@@ -6,7 +6,8 @@ Gemini REST API（SDKなし）+ GitHub Pages
 """
 
 import os, json, base64, urllib.request, urllib.error, urllib.parse, time, re
-from datetime import datetime
+from datetime import datetime, timedelta, timezone
+from email.utils import parsedate_to_datetime
 
 # ── 環境変数 ────────────────────────────────────────────────────
 GEMINI_API_KEY   = os.environ.get("GEMINI_API_KEY", "")
@@ -20,6 +21,8 @@ GH_REPO   = "ec-report"
 GH_FILE   = "index.html"
 GH_BRANCH = "main"
 GEMINI_MODEL = "gemini-2.5-flash-lite"  # v2
+
+_JST = timezone(timedelta(hours=9))
 
 # ── カテゴリ定義 ─────────────────────────────────────────────────
 CATEGORIES = [
@@ -483,6 +486,29 @@ CSS = """
       .kpi-bar { grid-template-columns: 1fr 1fr; gap: 10px; }
     }
 
+    /* ════════════════════
+       過去記事表示
+    ════════════════════ */
+    .old-news-banner {
+      display: flex; align-items: center; gap: 8px;
+      background: #FFFBEB; border: 1px solid #F59E0B;
+      border-radius: 8px; padding: 9px 16px;
+      font-size: 12px; color: #92400E; font-weight: 500;
+      margin: 12px 28px 0;
+    }
+    .old-badge {
+      display: inline-flex; align-items: center;
+      font-size: 10px; font-weight: 700;
+      background: #FEF3C7; color: #92400E;
+      border: 1px solid #FCD34D;
+      border-radius: 4px; padding: 1px 7px;
+      margin-left: 7px; vertical-align: middle;
+      white-space: nowrap; flex-shrink: 0;
+    }
+    .news-item--old .news-num { color: #D1D5DB; }
+    .news-item--old .news-title a { color: #6B7280; }
+    .news-item--old .news-title a:hover { color: var(--blue); }
+
 """
 
 HTML_CLASS_GUIDE = """
@@ -587,9 +613,14 @@ def get_jst_date() -> str:
 
 
 # ── 2. ニュース収集 ────────────────────────────────────────────
-def google_news_rss(query: str, max_results: int = 5) -> list[dict]:
-    """Google News RSSから最新ニュース取得（レート制限なし・構造化データ）"""
+def google_news_rss(query: str, max_results: int = 5, date_filter: bool = True) -> list[dict]:
+    """Google News RSSから最新ニュース取得。
+    date_filter=True のとき当日・前日以外の記事をスキップ（JST基準）。
+    """
     results = []
+    today     = datetime.now(_JST).date()
+    yesterday = today - timedelta(days=1)
+
     try:
         q = urllib.parse.quote_plus(query)
         url = f"https://news.google.com/rss/search?q={q}&hl=ja&gl=JP&ceid=JP:ja"
@@ -600,10 +631,16 @@ def google_news_rss(query: str, max_results: int = 5) -> list[dict]:
         with urllib.request.urlopen(req, timeout=15) as resp:
             xml = resp.read().decode("utf-8", errors="replace")
 
-        for item_xml in re.findall(r"<item>(.*?)</item>", xml, re.DOTALL)[:max_results]:
-            title_m  = re.search(r"<title>(.*?)</title>", item_xml)
-            link_m   = re.search(r"<link>(https?://[^<]+)</link>", item_xml)
-            source_m = re.search(r'<source[^>]+url="([^"]+)"', item_xml)
+        # フィルタで弾かれる分を見越して多めに取得
+        candidates = re.findall(r"<item>(.*?)</item>", xml, re.DOTALL)[:max_results * 4]
+        for item_xml in candidates:
+            if len(results) >= max_results:
+                break
+
+            title_m   = re.search(r"<title>(.*?)</title>", item_xml)
+            link_m    = re.search(r"<link>(https?://[^<]+)</link>", item_xml)
+            source_m  = re.search(r'<source[^>]+url="([^"]+)"', item_xml)
+            pubdate_m = re.search(r"<pubDate>(.*?)</pubDate>", item_xml)
 
             raw = re.sub(r"<!\[CDATA\[|\]\]>", "", title_m.group(1) if title_m else "").strip()
             raw = re.sub(r"<[^>]+>", "", raw).strip()
@@ -614,8 +651,30 @@ def google_news_rss(query: str, max_results: int = 5) -> list[dict]:
             article_url = (link_m.group(1) if link_m else "").strip()
             source_url  = (source_m.group(1) if source_m else "").strip()
 
+            # pubDate パース
+            pub_date_str = None
+            pub_date_obj = None
+            if pubdate_m:
+                try:
+                    pub_dt = parsedate_to_datetime(pubdate_m.group(1).strip())
+                    pub_date_obj = pub_dt.astimezone(_JST).date()
+                    pub_date_str = pub_date_obj.strftime("%Y-%m-%d")
+                except Exception:
+                    pass  # パース失敗 → pub_date_obj は None のまま
+
+            # 日付フィルタ（厳格モード：日付不明の記事もスキップ）
+            if date_filter:
+                if pub_date_obj is None or pub_date_obj < yesterday:
+                    continue  # 日付不明・一昨日以前はスキップ
+
             if title:
-                results.append({"title": title, "url": article_url, "source_url": source_url, "snippet": ""})
+                results.append({
+                    "title":      title,
+                    "url":        article_url,
+                    "source_url": source_url,
+                    "snippet":    "",
+                    "pub_date":   pub_date_str,
+                })
     except Exception as e:
         print(f"[WARN] Google News RSS失敗 ({query[:30]}): {e}")
     return results
@@ -652,37 +711,62 @@ def ddg_search(query: str, max_results: int = 5) -> list[dict]:
     return results
 
 
-def collect_all_news(date_str: str) -> dict:
+def collect_all_news(date_str: str) -> tuple:
+    """ニュースを収集する。
+    Returns:
+        news      : {cat_id: [article_dict]}
+        news_meta : {cat_id: {"has_recent": bool}}
+                    has_recent=False のカテゴリは当日・前日の記事が0件で
+                    過去記事（is_old=True）で補完されている。
+    """
     year, month, _ = date_str.split("-")
     yearmonth = f"{year}年{month}月"
     year_str  = f"{year}年"
 
-    news = {}
+    news      = {}
+    news_meta = {}
+
     for cat in CATEGORIES:
         cat_id = cat["id"]
+        is_ir  = (cat_id == "ir")   # IRは日付フィルタ不要
         news[cat_id] = []
+
+        # ── Phase 1: 当日・前日のニュースを収集（Google News 厳格フィルタ）──
+        # DDGは日付情報を返さないため Phase 1 では使用しない（古い記事混入を防ぐ）
         for query_tmpl in cat["queries"]:
             query = query_tmpl.format(yearmonth=yearmonth, year=year_str)
             print(f"  🔍 [{cat_id}] {query[:50]}...")
-            results = google_news_rss(query, max_results=6)
-            if not results:
-                print(f"    → RSS 0件、DuckDuckGoへ切替...")
-                results = ddg_search(query, max_results=6)
+            results = google_news_rss(query, max_results=6, date_filter=not is_ir)
             news[cat_id].extend(results)
             time.sleep(1)
 
-        # 取得不足時のフォールバック
-        if len(news[cat_id]) < 4:
+        # 件数不足時の広域クエリ再試行（Phase 1 内・Google News のみ）
+        if len(news[cat_id]) < 4 and not is_ir:
             fallback_q = f"{cat['title']} EC {year_str}"
-            print(f"  [FALLBACK] {cat_id}: 広域クエリ再試行...")
-            extra = google_news_rss(fallback_q, max_results=6)
-            if not extra:
-                fallback = re.sub(r"\{[^}]+\}", "", cat["queries"][0]).strip()
-                extra = ddg_search(fallback, max_results=6)
+            print(f"  [FALLBACK-P1] {cat_id}: 広域クエリ再試行...")
+            extra = google_news_rss(fallback_q, max_results=6, date_filter=True)
             news[cat_id].extend(extra)
             time.sleep(1)
 
-    return news
+        # ── Phase 2: 当日・前日が0件なら過去記事で補完 ──────────
+        if not news[cat_id] and not is_ir:
+            print(f"  [OLD-FALLBACK] {cat_id}: 当日・前日なし → 過去記事で補完")
+            for query_tmpl in cat["queries"]:
+                query = query_tmpl.format(yearmonth=yearmonth, year=year_str)
+                old_results = google_news_rss(query, max_results=4, date_filter=False)
+                for r in old_results:
+                    r["is_old"] = True
+                if not old_results:
+                    old_results = ddg_search(query, max_results=4)
+                    for r in old_results:
+                        r["is_old"] = True
+                news[cat_id].extend(old_results)
+                time.sleep(1)
+
+        has_recent = is_ir or any(not a.get("is_old", False) for a in news[cat_id])
+        news_meta[cat_id] = {"has_recent": has_recent}
+
+    return news, news_meta
 
 
 
@@ -804,6 +888,32 @@ def _esc(s: str) -> str:
     return str(s).replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
 
 
+def _build_url_meta(news: dict) -> dict:
+    """収集した生記事から URL → {pub_date, is_old} のルックアップを構築。
+    GeminiがURLを保持したまま出力するので、それを元にメタデータを復元する。
+    """
+    url_meta = {}
+    for articles in news.values():
+        for a in articles:
+            url = a.get("url", "")
+            if url:
+                url_meta[url] = {
+                    "pub_date": a.get("pub_date"),
+                    "is_old":   a.get("is_old", False),
+                }
+    return url_meta
+
+
+def _enrich_items(items: list, url_meta: dict) -> list:
+    """Gemini出力の items に pub_date / is_old を付加する（URLで照合）。"""
+    for item in items:
+        meta = url_meta.get(item.get("url", ""))
+        if meta:
+            item.setdefault("pub_date", meta.get("pub_date"))
+            item.setdefault("is_old",   meta.get("is_old", False))
+    return items
+
+
 def render_news_items(items: list) -> str:
     if not items:
         return '<p style="color:#94A3B8;font-size:13px;padding:8px 0">本日のニュースを取得できませんでした。</p>'
@@ -819,10 +929,25 @@ def render_news_items(items: list) -> str:
             domain = display_url.split("/")[0] if display_url else "出典"
         title_html = (f'<a href="{_esc(href)}" target="_blank" rel="noopener">{_esc(item.get("title",""))}</a>'
                       if href else _esc(item.get("title", "")))
-        html += f'''<li class="news-item">
+
+        # 過去記事バッジ
+        date_badge = ""
+        if item.get("is_old"):
+            pub = item.get("pub_date", "")
+            if pub:
+                try:
+                    _, m, d = pub.split("-")
+                    date_badge = f'<span class="old-badge">📅 {int(m)}/{int(d)} の記事</span>'
+                except Exception:
+                    date_badge = '<span class="old-badge">📅 過去の記事</span>'
+            else:
+                date_badge = '<span class="old-badge">📅 過去の記事</span>'
+
+        old_cls = " news-item--old" if item.get("is_old") else ""
+        html += f'''<li class="news-item{old_cls}">
           <div class="news-num">{i:02d}</div>
           <div class="news-content">
-            <div class="news-title">{title_html}</div>
+            <div class="news-title">{title_html}{date_badge}</div>
             <div class="news-snippet">{_esc(item.get("snippet",""))}</div>
             <div class="news-meta"><span class="news-source">{_esc(domain)}</span></div>
           </div></li>'''
@@ -877,13 +1002,25 @@ def render_ir(cat: dict, data: dict, actions: list = None) -> str:
 </section>'''
 
 
-def render_section(cat: dict, items: list, actions: list = None) -> str:
+def render_section(cat: dict, items: list, actions: list = None, has_recent: bool = True) -> str:
     cat_id, n = cat["id"], len(items)
-    news_html = render_news_items(items)
+
+    # 過去記事のみの場合に表示する警告バナー
+    old_banner = ""
+    if not has_recent and items:
+        old_banner = (
+            '<div class="old-news-banner">'
+            '⚠️ 当日・前日のニュースが見つかりませんでした。過去の関連記事を表示しています。'
+            '</div>'
+        )
+
+    news_html    = render_news_items(items)
     actions_html = render_actions(actions or [])
+
     if cat["type"] == "breaking":
         return f'''<section id="{cat_id}" class="section-card" data-cat="{cat_id}">
   <div class="breaking-banner"><span class="breaking-dot"></span>BREAKING — 重要ニュース</div>
+  {old_banner}
   <div class="section-header">
     <div class="cat-icon">{cat["icon"]}</div>
     <div class="section-title-wrap"><div class="section-title">{cat["title"]}</div><div class="section-sub">本日の注目トピック</div></div>
@@ -897,6 +1034,7 @@ def render_section(cat: dict, items: list, actions: list = None) -> str:
     <div class="section-title-wrap"><div class="section-title">{cat["title"]}</div><div class="section-sub">最新 {n}件</div></div>
     <span class="section-badge">{n}</span>
   </div>
+  {old_banner}
   <details open>
     <summary><span class="summary-label">ニュース一覧を見る</span><span class="toggle-icon">▼</span></summary>
     <div class="details-body">{news_html}{actions_html}</div>
@@ -988,9 +1126,12 @@ def build_html_shell(date_str: str, body_content: str) -> str:
 </html>"""
 
 
-def generate_html(date_str: str, news: dict) -> str:
+def generate_html(date_str: str, news: dict, news_meta: dict) -> str:
     year, month, day = date_str.split("-")
     date_jp = f"{year}年{month}月{day}日"
+
+    # URL → メタデータ のルックアップ（Gemini出力との照合用）
+    url_meta = _build_url_meta(news)
 
     # Batch1: 前半6カテゴリ → JSON
     batch1_ids = ["breaking", "ir", "platform", "ads", "logistics", "consumer"]
@@ -1026,13 +1167,15 @@ def generate_html(date_str: str, news: dict) -> str:
     # HTML組み立て
     sections = [kpi_bar]
     for cat in CATEGORIES:
+        has_recent = news_meta.get(cat["id"], {}).get("has_recent", True)
         if cat["id"] == "ir":
-            ir_raw = all_data.get("ir", {})
+            ir_raw     = all_data.get("ir", {})
             ir_actions = ir_raw.get("actions", []) if isinstance(ir_raw, dict) else []
             sections.append(render_ir(cat, ir_raw if isinstance(ir_raw, dict) else {}, ir_actions))
         else:
             items, actions = extract(cat["id"])
-            sections.append(render_section(cat, items, actions))
+            _enrich_items(items, url_meta)   # URLで照合してpub_date/is_oldを復元
+            sections.append(render_section(cat, items, actions, has_recent=has_recent))
 
     return build_html_shell(date_str, "\n\n".join(sections))
 
@@ -1163,12 +1306,15 @@ def main():
         return
 
     print("\n[2/5] ニュース収集（12カテゴリ）...")
-    news = collect_all_news(date_str)
+    news, news_meta = collect_all_news(date_str)
     total = sum(len(v) for v in news.values())
+    old_cats = [c for c, m in news_meta.items() if not m["has_recent"]]
     print(f"  → {total}件取得")
+    if old_cats:
+        print(f"  ⚠️  当日・前日記事なし（過去記事で補完）: {', '.join(old_cats)}")
 
     print("\n[3/5] HTML生成（Gemini・JSON方式）...")
-    html = generate_html(date_str, news)
+    html = generate_html(date_str, news, news_meta)
     print(f"  → {len(html):,} bytes")
 
     print("\n[4/5] GitHub push...")
