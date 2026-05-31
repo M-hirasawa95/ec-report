@@ -1267,7 +1267,16 @@ def notify_chatwork(date_str: str, commit_sha: str):
     try:
         with urllib.request.urlopen(req, timeout=15) as resp:
             result = json.loads(resp.read().decode())
-        return result.get("message_id")
+        message_id = result.get("message_id")
+        if message_id:
+            print(f"  ✅ Chatwork通知送信完了（message_id: {message_id}、room: {CHATWORK_ROOM_ID}）")
+        else:
+            print(f"  [WARN] Chatwork API応答に message_id なし: {result}")
+        return message_id
+    except urllib.error.HTTPError as e:
+        body = e.read().decode("utf-8", errors="replace")
+        print(f"  [WARN] Chatwork通知失敗 HTTP {e.code}: {body}")
+        return None
     except Exception as e:
         print(f"  [WARN] Chatwork通知失敗（レポートは正常完了）: {e}")
         return None
