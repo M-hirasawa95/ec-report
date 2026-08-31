@@ -18,7 +18,7 @@
 const WORKFLOW_SHEET_NAME = '新ワークフロー';
 const HEADER_ROW = 2;          // 1行目はルール文、2行目が列見出し
 const RULE_TEXT_CELL = 'A1';   // ワークフロールール／受注ルールが書かれているセル
-const GEMINI_MODEL = 'gemini-2.5-flash-lite';
+const GEMINI_MODEL = 'gemini-3.6-flash';
 
 // 「新ワークフロー」の列番号（1始まり。A=1, B=2, ... AZ=52）
 const COL = {
