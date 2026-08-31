@@ -1,11 +1,13 @@
 /**
- * ワークフロー承認シート → マイチャット(Chatwork)リアルタイム通知
+ * 案件管理表（新ワークフロー） → マイチャット(Chatwork)リアルタイム通知
  *
- * 「ワークフロー申請ログ」シートが更新されたタイミング（
- *   (A) 新規申請行の追加
- *   (B) 最終承認(3次承認)が完了したとき
- * ）で、Gemini APIに「考察」と「承認にあたっての検討事項」を生成させ、
+ * 「新ワークフロー」シートが以下のタイミングで更新されたら、
+ * Gemini APIに「考察」と「承認にあたっての検討事項」を生成させ、
  * Chatworkの自分のマイチャットへ自動投稿する。
+ *
+ *   (A) 新規申請行の追加（会社名・申請内容が入力された時点）
+ *   (B) 2次承認が完了し、最終承認待ちの状態になった時点
+ *       （＝最終承認者がこれから承認判断をする直前のタイミング）
  *
  * セットアップ手順は README.md を参照。
  * シークレット（APIキー・トークン）はコードに書かず、
@@ -13,35 +15,38 @@
  */
 
 // ── 設定（シート名・列番号は実際のスプレッドシートに合わせて調整すること）──
-const WORKFLOW_SHEET_NAME = 'ワークフロー申請ログ';
-const APPROVAL_MATRIX_SHEET_NAME = '承認権限マトリクス';
+const WORKFLOW_SHEET_NAME = '新ワークフロー';
+const HEADER_ROW = 2;          // 1行目はルール文、2行目が列見出し
+const RULE_TEXT_CELL = 'A1';   // ワークフロールール／受注ルールが書かれているセル
 const GEMINI_MODEL = 'gemini-2.5-flash-lite';
 
-// 「ワークフロー申請ログ」の列番号（1始まり）
+// 「新ワークフロー」の列番号（1始まり。A=1, B=2, ... AZ=52）
 const COL = {
-  NO: 1,
-  APPLY_DATE: 2,
-  APPLICANT: 3,
-  COMPANY: 4,
-  APPROVAL_TYPE: 5,
-  CONTENT: 6,
-  MEMO: 7,
-  ORDER_MONTH: 8,
-  DUE_DATE: 9,
-  APPR1_NAME: 10,
-  APPR1_CHECK: 11,
-  APPR1_TS: 12,
-  APPR2_NAME: 13,
-  APPR2_CHECK: 14,
-  APPR2_TS: 15,
-  APPR3_NAME: 16,
-  APPR3_CHECK: 17,
-  APPR3_TS: 18,
+  COMPANY: 1,             // A  会社名
+  STAFF: 2,               // B  弊社担当者
+  PLAN: 9,                // I  商材プラン1
+  STAGE: 12,              // L  ステージ
+  FIRST_MEETING_DATE: 16, // P  一次商談日
+  FRONT_PAGE: 24,         // X  フロントページ
+  MINUTES: 25,            // Y  議事録起票
+  PARTNER_REG: 27,        // AA 取引先登録申請書
+  ANTISOCIAL_CHECK: 29,   // AC 反社チェック
+  NDA: 31,                // AE NDA
+  PROPOSAL_DATE: 40,      // AN 本提案_日付
+  CONTRACT_COLLECT: 43,   // AQ 契約書回収
+  CONTENT: 45,            // AS 申請内容
+  SALES_APPROVAL: 46,     // AT セールス承認
+  APPR1_NAME: 47,         // AU 1次承認者
+  APPR1_CHECK: 48,        // AV 1次承認
+  APPR2_NAME: 49,         // AW 2次承認者
+  APPR2_CHECK: 50,        // AX 2次承認
+  FINAL_NAME: 51,         // AY 最終承認者
+  FINAL_CHECK: 52,        // AZ 最終承認
 };
-const LAST_COL = COL.APPR3_TS;
+const LAST_COL = COL.FINAL_CHECK;
 
 // 新規申請の完了判定に使う列（このいずれかが編集されたときに判定する）
-const NEW_APPLICATION_TRIGGER_COLS = [COL.COMPANY, COL.APPROVAL_TYPE, COL.CONTENT];
+const NEW_APPLICATION_TRIGGER_COLS = [COL.COMPANY, COL.CONTENT];
 
 /**
  * セットアップ用：インストール型 onEdit トリガーを作成する。
@@ -75,8 +80,8 @@ function onEditInstallable(e) {
     const editedFirstCol = e.range.getColumn();
     const editedLastCol = e.range.getLastColumn();
 
-    // ヘッダー行(1行目)は無視。貼り付け等で複数行にまたがる編集にも対応する。
-    for (let row = Math.max(editedFirstRow, 2); row <= editedLastRow; row++) {
+    // ルール文(1行目)・見出し(2行目)は無視。貼り付け等で複数行にまたがる編集にも対応する。
+    for (let row = Math.max(editedFirstRow, HEADER_ROW + 1); row <= editedLastRow; row++) {
       processRow_(sheet, row, editedFirstCol, editedLastCol);
     }
   } catch (err) {
@@ -92,73 +97,63 @@ function processRow_(sheet, row, editedFirstCol, editedLastCol) {
   const editedCols = [];
   for (let c = editedFirstCol; c <= editedLastCol; c++) editedCols.push(c);
 
-  // (A) 新規申請行の追加：会社名・承認内容・申請内容が揃った時点で1回だけ通知
+  // (A) 新規申請行の追加：会社名・申請内容が揃った時点で1回だけ通知
   const newKey = 'notified_new_row' + row;
   const isCoreFieldEdited = editedCols.some(function (c) {
     return NEW_APPLICATION_TRIGGER_COLS.indexOf(c) !== -1;
   });
-  if (
-    isCoreFieldEdited &&
-    record.company &&
-    record.approvalType &&
-    record.content &&
-    !props.getProperty(newKey)
-  ) {
+  if (isCoreFieldEdited && record.company && record.content && !props.getProperty(newKey)) {
     sendWorkflowNotification_(sheet, row, record, 'new');
     props.setProperty(newKey, 'sent:' + new Date().toISOString());
   }
 
-  // (B) 最終承認(3次承認)完了：3次承認チェックがTRUEになった時点で1回だけ通知
-  const finalKey = 'notified_final_row' + row;
-  const isFinalCheckEdited = editedCols.indexOf(COL.APPR3_CHECK) !== -1;
-  if (isFinalCheckEdited && record.appr3Check === true && !props.getProperty(finalKey)) {
-    sendWorkflowNotification_(sheet, row, record, 'final');
-    props.setProperty(finalKey, 'sent:' + new Date().toISOString());
+  // (B) 最終承認待ちになった時点：2次承認がTRUEになったタイミングで1回だけ通知
+  const finalPendingKey = 'notified_final_pending_row' + row;
+  const isAppr2CheckEdited = editedCols.indexOf(COL.APPR2_CHECK) !== -1;
+  if (isAppr2CheckEdited && record.appr2Check === true && !props.getProperty(finalPendingKey)) {
+    sendWorkflowNotification_(sheet, row, record, 'final_pending');
+    props.setProperty(finalPendingKey, 'sent:' + new Date().toISOString());
   }
 }
 
 function rowToRecord_(data) {
   return {
-    no: data[COL.NO - 1],
-    applyDate: data[COL.APPLY_DATE - 1],
-    applicant: data[COL.APPLICANT - 1],
     company: data[COL.COMPANY - 1],
-    approvalType: data[COL.APPROVAL_TYPE - 1],
+    staff: data[COL.STAFF - 1],
+    plan: data[COL.PLAN - 1],
+    stage: data[COL.STAGE - 1],
+    firstMeetingDate: data[COL.FIRST_MEETING_DATE - 1],
+    frontPage: data[COL.FRONT_PAGE - 1],
+    minutes: data[COL.MINUTES - 1],
+    partnerReg: data[COL.PARTNER_REG - 1],
+    antisocialCheck: data[COL.ANTISOCIAL_CHECK - 1],
+    nda: data[COL.NDA - 1],
+    proposalDate: data[COL.PROPOSAL_DATE - 1],
+    contractCollect: data[COL.CONTRACT_COLLECT - 1],
     content: data[COL.CONTENT - 1],
-    memo: data[COL.MEMO - 1],
-    orderMonth: data[COL.ORDER_MONTH - 1],
-    dueDate: data[COL.DUE_DATE - 1],
+    salesApproval: data[COL.SALES_APPROVAL - 1] === true,
     appr1Name: data[COL.APPR1_NAME - 1],
     appr1Check: data[COL.APPR1_CHECK - 1] === true,
-    appr1Ts: data[COL.APPR1_TS - 1],
     appr2Name: data[COL.APPR2_NAME - 1],
     appr2Check: data[COL.APPR2_CHECK - 1] === true,
-    appr2Ts: data[COL.APPR2_TS - 1],
-    appr3Name: data[COL.APPR3_NAME - 1],
-    appr3Check: data[COL.APPR3_CHECK - 1] === true,
-    appr3Ts: data[COL.APPR3_TS - 1],
+    finalName: data[COL.FINAL_NAME - 1],
+    finalCheck: data[COL.FINAL_CHECK - 1] === true,
   };
 }
 
 /**
- * 承認権限マトリクスのシート内容をテキスト化して返す（Geminiへの参考情報）。
- * シートが見つからない場合は空文字を返す（通知自体は続行する）。
+ * シート1行目に書かれたワークフロールール／受注ルールのテキストを取得する（Geminiへの参考情報）。
  */
-function getApprovalRulesText_() {
-  const ss = SpreadsheetApp.getActive();
-  const matrixSheet = ss.getSheetByName(APPROVAL_MATRIX_SHEET_NAME);
-  if (!matrixSheet) return '';
-  const values = matrixSheet.getDataRange().getValues();
-  return values
-    .map(function (r) {
-      return r.filter(function (v) { return v !== ''; }).join(' | ');
-    })
-    .filter(function (line) { return line; })
-    .join('\n');
+function getWorkflowRuleText_(sheet) {
+  try {
+    return String(sheet.getRange(RULE_TEXT_CELL).getValue() || '').trim();
+  } catch (err) {
+    return '';
+  }
 }
 
 function sendWorkflowNotification_(sheet, row, record, stage) {
-  const rulesText = getApprovalRulesText_();
+  const rulesText = getWorkflowRuleText_(sheet);
   const analysis = generateAnalysisWithGemini_(record, stage, rulesText);
   const message = buildChatworkMessage_(record, stage, analysis, sheet, row);
   postToMyChat_(message);
@@ -170,32 +165,38 @@ function sendWorkflowNotification_(sheet, row, record, stage) {
  */
 function generateAnalysisWithGemini_(record, stage, rulesText) {
   const apiKey = PropertiesService.getScriptProperties().getProperty('GEMINI_API_KEY');
-  const stageLabel = stage === 'new' ? '新規申請' : '最終承認(3次承認)完了';
+  const stageLabel = stage === 'new' ? '新規申請' : '2次承認完了・最終承認待ち';
 
   const prompt =
     'あなたは株式会社サイバーレコードの営業管理部門を支援するアシスタントです。\n' +
-    '以下の社内ワークフロー申請1件について、担当役員が読む想定で「考察」と「承認にあたっての検討事項」を' +
+    '以下の社内ワークフロー案件1件について、承認者が読む想定で「考察」と「承認にあたっての検討事項」を' +
     '簡潔な日本語で作成してください。\n\n' +
     '【現在のステータス】' + stageLabel + '\n\n' +
-    '【申請内容】\n' +
+    '【案件情報】\n' +
     '会社名: ' + (record.company || '(未記入)') + '\n' +
-    '申請者: ' + (record.applicant || '(未記入)') + '\n' +
-    '承認内容: ' + (record.approvalType || '(未記入)') + '\n' +
-    '申請詳細: ' + (record.content || '(未記入)') + '\n' +
-    '受注予定月: ' + (record.orderMonth || '(未記入)') + '\n' +
-    '希望納期: ' + (record.dueDate || '(未記入)') + '\n' +
-    '1次承認: ' + (record.appr1Name || '-') + ' / ' + (record.appr1Check ? '承認済み' : '未承認') + '\n' +
-    '2次承認: ' + (record.appr2Name || '-') + ' / ' + (record.appr2Check ? '承認済み' : '未承認') + '\n' +
-    '3次承認: ' + (record.appr3Name || '-') + ' / ' + (record.appr3Check ? '承認済み' : '未承認') + '\n\n' +
-    (rulesText
-      ? '【社内の承認権限マトリクス（参考）】\n' + rulesText + '\n\n'
-      : '') +
+    '弊社担当者: ' + (record.staff || '(未記入)') + '\n' +
+    '商材プラン: ' + (record.plan || '(未記入)') + '\n' +
+    'ステージ: ' + (record.stage || '(未記入)') + '\n' +
+    '一次商談日: ' + (record.firstMeetingDate || '(未記入)') + '\n' +
+    '申請内容: ' + (record.content || '(未記入)') + '\n\n' +
+    '【コンプライアンス関連の進捗】\n' +
+    '取引先登録申請書: ' + (record.partnerReg || '未対応') + '\n' +
+    '反社チェック: ' + (record.antisocialCheck || '未対応') + '\n' +
+    'NDA: ' + (record.nda || '未対応') + '\n' +
+    '契約書回収: ' + (record.contractCollect || '未対応') + '\n\n' +
+    '【承認状況】\n' +
+    'セールス承認: ' + (record.salesApproval ? '済' : '未') + '\n' +
+    '1次承認: ' + (record.appr1Name || '-') + ' / ' + (record.appr1Check ? '済' : '未') + '\n' +
+    '2次承認: ' + (record.appr2Name || '-') + ' / ' + (record.appr2Check ? '済' : '未') + '\n' +
+    '最終承認: ' + (record.finalName || '-') + ' / ' + (record.finalCheck ? '済' : '未') + '\n\n' +
+    (rulesText ? '【社内ルール（参考）】\n' + rulesText + '\n\n' : '') +
     '【出力ルール】\n' +
     '- 「【考察】」と「【承認にあたっての検討事項】」の2見出しで出力する\n' +
-    '- 考察は3〜4行程度：値引き率や条件が承認権限マトリクスの基準内か、商談の背景・リスクは何か\n' +
-    '- 検討事項は箇条書き2〜4件：承認者が判断前に確認すべき点（例：権限範囲内か、次の承認者は誰か、期限との整合性など）\n' +
+    '- 考察は3〜4行程度：商談・申請内容の背景やリスク、社内ルール上の期限との整合性を中心に書く\n' +
+    '- 検討事項は箇条書き2〜4件：承認者が判断前に確認すべき点\n' +
+    '  （例：反社チェック／NDA／契約書回収などコンプライアンス項目が未完了でないか、申請内容と条件に矛盾がないか、期限に間に合うか）\n' +
     '- Chatworkにそのまま貼れるプレーンテキストのみ返す（Markdown記号は使わない）\n' +
-    '- 憶測で数値を作らない。情報が不足する場合は「情報不足のため要確認」と明記する';
+    '- 憶測で数値や事実を作らない。情報が不足する場合は「情報不足のため要確認」と明記する';
 
   if (!apiKey) {
     Logger.log('[WARN] GEMINI_API_KEY 未設定のためフォールバックメッセージを使用します。');
@@ -238,26 +239,30 @@ function generateAnalysisWithGemini_(record, stage, rulesText) {
 }
 
 function fallbackAnalysis_(record, stage) {
-  const stageLabel = stage === 'new' ? '新規申請が起票されました。' : '3次承認まで完了しました。';
+  const stageLabel = stage === 'new' ? '新規申請が起票されました。' : '2次承認が完了し、最終承認待ちです。';
   return (
     '【考察】\n' +
     stageLabel + '（Gemini API未設定または呼び出し失敗のため自動考察は生成されていません）\n\n' +
     '【承認にあたっての検討事項】\n' +
-    '・承認権限マトリクスの範囲内かを個別に確認してください\n' +
-    '・次の承認者・期限との整合性を確認してください'
+    '・反社チェック／NDA／契約書回収などコンプライアンス項目が完了しているか確認してください\n' +
+    '・申請内容と社内ルール（承認権限・期限）との整合性を確認してください'
   );
 }
 
 function buildChatworkMessage_(record, stage, analysis, sheet, row) {
-  const stageTitle = stage === 'new' ? '📝 新規ワークフロー申請' : '✅ 最終承認 完了';
+  const stageTitle = stage === 'new' ? '📝 新規ワークフロー申請' : '🔔 最終承認待ち';
   const ss = SpreadsheetApp.getActive();
   const sheetUrl = ss.getUrl() + '#gid=' + sheet.getSheetId() + '&range=A' + row;
+  const approverLine = stage === 'final_pending' && record.finalName
+    ? '最終承認者: ' + record.finalName + '\n'
+    : '';
 
   return (
     '[info][title]' + stageTitle + '（' + (record.company || '会社名未記入') + '）[/title]' +
-    '申請者: ' + (record.applicant || '-') + '\n' +
-    '承認内容: ' + (record.approvalType || '-') + '\n' +
-    '申請詳細: ' + truncate_(record.content || '', 200) + '\n\n' +
+    approverLine +
+    '弊社担当者: ' + (record.staff || '-') + '\n' +
+    '商材プラン: ' + (record.plan || '-') + '\n' +
+    '申請内容: ' + truncate_(record.content || '', 200) + '\n\n' +
     analysis + '\n\n' +
     '▼ 該当行を開く\n' + sheetUrl +
     '[/info]'
@@ -304,7 +309,8 @@ function postToMyChat_(message) {
 
 /**
  * 動作確認用：指定した行番号・ステージで通知を手動実行する。
- * スクリプトエディタから testNotifyRow(36, 'final') のように直接実行して使う。
+ * スクリプトエディタから testNotifyRow(42, 'final_pending') のように直接実行して使う。
+ * stage は 'new' または 'final_pending'。
  */
 function testNotifyRow(row, stage) {
   const sheet = SpreadsheetApp.getActive().getSheetByName(WORKFLOW_SHEET_NAME);
