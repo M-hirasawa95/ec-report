@@ -162,10 +162,20 @@ function sendWorkflowNotification_(sheet, row, record, stage) {
 
 /**
  * URLを開いて中身をテキスト化する。取得できない場合（ログイン必須ページ等）はok:falseを返す。
- * ログイン画面が200 OKで返ってくるケースも簡易的に検知して弾く。
+ * NotionのURLは、Notion公式APIが使える場合はそちらを優先する
+ * （Notionは画面をJavaScriptで描画するため、単純なHTML取得では中身が読めないため）。
  */
 function fetchUrlText_(url) {
   if (!url || typeof url !== 'string' || !/^https?:\/\//i.test(url.trim())) return null;
+  const trimmed = url.trim();
+
+  if (isNotionUrl_(trimmed)) {
+    const notionToken = PropertiesService.getScriptProperties().getProperty('NOTION_TOKEN');
+    if (!notionToken) {
+      return { ok: false, note: 'Notionページですが NOTION_TOKEN が未設定のため取得していません' };
+    }
+    return fetchNotionPageText_(trimmed, notionToken);
+  }
 
   try {
     const resp = UrlFetchApp.fetch(url.trim(), {
@@ -199,6 +209,71 @@ function fetchUrlText_(url) {
   } catch (err) {
     return { ok: false, note: '取得エラー: ' + err };
   }
+}
+
+function isNotionUrl_(url) {
+  return /notion\.(so|site|com)/i.test(url);
+}
+
+/**
+ * NotionのURLからページID（32桁のUUID）を抜き出す。
+ * 例: https://app.notion.com/p/cyhd/HOME-33a41150c2ab800a8f7dc45805d74345 → 33a41150-c2ab-800a-8f7d-c45805d74345
+ */
+function extractNotionPageId_(url) {
+  const m = url.match(/[0-9a-f]{32}/i);
+  if (!m) return null;
+  return m[0].replace(/(.{8})(.{4})(.{4})(.{4})(.{12})/, '$1-$2-$3-$4-$5');
+}
+
+/**
+ * Notion公式APIでページの本文テキストを取得する。
+ * 対象ページ（または親ページ）が、あらかじめNotionのインテグレーションに共有されている必要がある。
+ */
+function fetchNotionPageText_(url, token) {
+  const pageId = extractNotionPageId_(url);
+  if (!pageId) {
+    return { ok: false, note: 'URLからNotionページIDを特定できませんでした' };
+  }
+  try {
+    const texts = [];
+    collectNotionBlockText_(pageId, token, texts, 0);
+    const joined = texts.join('\n').replace(/[ \t]+/g, ' ').trim();
+    if (!joined) {
+      return { ok: false, note: 'Notionページの内容が空、またはインテグレーションに共有されていません' };
+    }
+    const truncated = joined.length > 3000 ? joined.slice(0, 3000) + '…' : joined;
+    return { ok: true, text: truncated };
+  } catch (err) {
+    return { ok: false, note: 'Notion API呼び出しエラー: ' + err };
+  }
+}
+
+function collectNotionBlockText_(blockId, token, texts, depth) {
+  if (depth > 2 || texts.length > 200) return; // 深さ・件数の上限（無限ループ・過大取得防止）
+  const url = 'https://api.notion.com/v1/blocks/' + blockId + '/children?page_size=100';
+  const resp = UrlFetchApp.fetch(url, {
+    method: 'get',
+    headers: {
+      Authorization: 'Bearer ' + token,
+      'Notion-Version': '2022-06-28',
+    },
+    muteHttpExceptions: true,
+  });
+  const code = resp.getResponseCode();
+  if (code < 200 || code >= 300) {
+    throw new Error('HTTP ' + code + ': ' + resp.getContentText());
+  }
+  const data = JSON.parse(resp.getContentText());
+  const results = data.results || [];
+  results.forEach(function (block) {
+    const richText = block[block.type] && block[block.type].rich_text;
+    if (richText && richText.length) {
+      texts.push(richText.map(function (t) { return t.plain_text; }).join(''));
+    }
+    if (block.has_children) {
+      collectNotionBlockText_(block.id, token, texts, depth + 1);
+    }
+  });
 }
 
 /**
