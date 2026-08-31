@@ -154,16 +154,85 @@ function getWorkflowRuleText_(sheet) {
 
 function sendWorkflowNotification_(sheet, row, record, stage) {
   const rulesText = getWorkflowRuleText_(sheet);
-  const analysis = generateAnalysisWithGemini_(record, stage, rulesText);
+  const linkedTexts = fetchLinkedContents_(record);
+  const analysis = generateAnalysisWithGemini_(record, stage, rulesText, linkedTexts);
   const message = buildChatworkMessage_(record, stage, analysis, sheet, row);
   postToMyChat_(message);
+}
+
+/**
+ * URLを開いて中身をテキスト化する。取得できない場合（ログイン必須ページ等）はok:falseを返す。
+ * ログイン画面が200 OKで返ってくるケースも簡易的に検知して弾く。
+ */
+function fetchUrlText_(url) {
+  if (!url || typeof url !== 'string' || !/^https?:\/\//i.test(url.trim())) return null;
+
+  try {
+    const resp = UrlFetchApp.fetch(url.trim(), {
+      muteHttpExceptions: true,
+      followRedirects: true,
+    });
+    const code = resp.getResponseCode();
+    if (code < 200 || code >= 300) {
+      return { ok: false, note: 'HTTP ' + code + '（ログインが必要なページの可能性があります）' };
+    }
+
+    let raw = resp.getContentText();
+    if (raw.length > 200000) raw = raw.slice(0, 200000);
+
+    const stripped = raw
+      .replace(/<script[\s\S]*?<\/script>/gi, ' ')
+      .replace(/<style[\s\S]*?<\/style>/gi, ' ')
+      .replace(/<[^>]+>/g, ' ')
+      .replace(/&nbsp;/gi, ' ')
+      .replace(/\s+/g, ' ')
+      .trim();
+
+    // ログイン画面が200 OKで返るケース（Notion等）を簡易検知
+    const loginWallPattern = /(sign in to continue|log in to notion|please log in|please sign in|ログインが必要|ログインしてください)/i;
+    if (stripped.length < 200 || loginWallPattern.test(stripped)) {
+      return { ok: false, note: 'ログインが必要なページのため内容を取得できませんでした' };
+    }
+
+    const truncated = stripped.length > 3000 ? stripped.slice(0, 3000) + '…' : stripped;
+    return { ok: true, text: truncated };
+  } catch (err) {
+    return { ok: false, note: '取得エラー: ' + err };
+  }
+}
+
+/**
+ * 「フロントページ」「議事録起票」列にURLが入っていれば中身を取得する。
+ */
+function fetchLinkedContents_(record) {
+  return {
+    frontPage: fetchUrlText_(record.frontPage),
+    minutes: fetchUrlText_(record.minutes),
+  };
+}
+
+function buildLinkedContentSection_(linkedTexts) {
+  const parts = [];
+  if (linkedTexts.frontPage) {
+    parts.push(
+      '【フロントページの内容（自動取得）】\n' +
+      (linkedTexts.frontPage.ok ? linkedTexts.frontPage.text : '取得できませんでした（' + linkedTexts.frontPage.note + '）')
+    );
+  }
+  if (linkedTexts.minutes) {
+    parts.push(
+      '【議事録リンクの内容（自動取得）】\n' +
+      (linkedTexts.minutes.ok ? linkedTexts.minutes.text : '取得できませんでした（' + linkedTexts.minutes.note + '）')
+    );
+  }
+  return parts.length ? parts.join('\n\n') + '\n\n' : '';
 }
 
 /**
  * Gemini APIで「考察」と「承認にあたっての検討事項」を生成する。
  * 失敗時はルールベースの簡易メッセージにフォールバックする。
  */
-function generateAnalysisWithGemini_(record, stage, rulesText) {
+function generateAnalysisWithGemini_(record, stage, rulesText, linkedTexts) {
   const apiKey = PropertiesService.getScriptProperties().getProperty('GEMINI_API_KEY');
   const stageLabel = stage === 'new' ? '新規申請' : '2次承認完了・最終承認待ち';
 
@@ -190,9 +259,12 @@ function generateAnalysisWithGemini_(record, stage, rulesText) {
     '2次承認: ' + (record.appr2Name || '-') + ' / ' + (record.appr2Check ? '済' : '未') + '\n' +
     '最終承認: ' + (record.finalName || '-') + ' / ' + (record.finalCheck ? '済' : '未') + '\n\n' +
     (rulesText ? '【社内ルール（参考）】\n' + rulesText + '\n\n' : '') +
+    buildLinkedContentSection_(linkedTexts || {}) +
     '【出力ルール】\n' +
     '- 「【考察】」と「【承認にあたっての検討事項】」の2見出しで出力する\n' +
     '- 考察は3〜4行程度：商談・申請内容の背景やリスク、社内ルール上の期限との整合性を中心に書く\n' +
+    '- 「フロントページ」「議事録リンク」の内容が取得できている場合は、それも踏まえて考察すること\n' +
+    '- リンク内容が「取得できませんでした」となっている場合は、その旨を無視して憶測で補わないこと\n' +
     '- 検討事項は箇条書き2〜4件：承認者が判断前に確認すべき点\n' +
     '  （例：反社チェック／NDA／契約書回収などコンプライアンス項目が未完了でないか、申請内容と条件に矛盾がないか、期限に間に合うか）\n' +
     '- Chatworkにそのまま貼れるプレーンテキストのみ返す（Markdown記号は使わない）\n' +
