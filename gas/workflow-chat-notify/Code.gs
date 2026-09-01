@@ -38,10 +38,12 @@ const COL = {
   SALES_APPROVAL: 46,     // AT セールス承認
   APPR1_NAME: 47,         // AU 1次承認者
   APPR1_CHECK: 48,        // AV 1次承認
-  APPR2_NAME: 49,         // AW 2次承認者
-  APPR2_CHECK: 50,        // AX 2次承認
-  FINAL_NAME: 51,         // AY 最終承認者
-  FINAL_CHECK: 52,        // AZ 最終承認
+  APPR1_REASON: 49,       // AW 承認理由（1次）
+  APPR2_NAME: 50,         // AX 2次承認者
+  APPR2_CHECK: 51,        // AY 2次承認
+  APPR2_REASON: 52,       // AZ 承認理由（2次）
+  FINAL_NAME: 53,         // BA 最終承認者
+  FINAL_CHECK: 54,        // BB 最終承認
 };
 const LAST_COL = COL.FINAL_CHECK;
 
@@ -134,8 +136,10 @@ function rowToRecord_(data) {
     salesApproval: data[COL.SALES_APPROVAL - 1] === true,
     appr1Name: data[COL.APPR1_NAME - 1],
     appr1Check: data[COL.APPR1_CHECK - 1] === true,
+    appr1Reason: data[COL.APPR1_REASON - 1],
     appr2Name: data[COL.APPR2_NAME - 1],
     appr2Check: data[COL.APPR2_CHECK - 1] === true,
+    appr2Reason: data[COL.APPR2_REASON - 1],
     finalName: data[COL.FINAL_NAME - 1],
     finalCheck: data[COL.FINAL_CHECK - 1] === true,
   };
@@ -331,8 +335,10 @@ function generateAnalysisWithGemini_(record, stage, rulesText, linkedTexts) {
     '契約書回収: ' + (record.contractCollect || '未対応') + '\n\n' +
     '【承認状況】\n' +
     'セールス承認: ' + (record.salesApproval ? '済' : '未') + '\n' +
-    '1次承認: ' + (record.appr1Name || '-') + ' / ' + (record.appr1Check ? '済' : '未') + '\n' +
-    '2次承認: ' + (record.appr2Name || '-') + ' / ' + (record.appr2Check ? '済' : '未') + '\n' +
+    '1次承認: ' + (record.appr1Name || '-') + ' / ' + (record.appr1Check ? '済' : '未') +
+      (record.appr1Reason ? '（理由: ' + record.appr1Reason + '）' : '') + '\n' +
+    '2次承認: ' + (record.appr2Name || '-') + ' / ' + (record.appr2Check ? '済' : '未') +
+      (record.appr2Reason ? '（理由: ' + record.appr2Reason + '）' : '') + '\n' +
     '最終承認: ' + (record.finalName || '-') + ' / ' + (record.finalCheck ? '済' : '未') + '\n\n' +
     (rulesText ? '【社内ルール（参考）】\n' + rulesText + '\n\n' : '') +
     buildLinkedContentSection_(linkedTexts || {}) +
