@@ -355,7 +355,7 @@ function generateAnalysisWithGemini_(record, stage, rulesText, linkedTexts) {
     GEMINI_MODEL + ':generateContent?key=' + apiKey;
   const payload = {
     contents: [{ parts: [{ text: prompt }] }],
-    generationConfig: { maxOutputTokens: 1024, temperature: 0.4 },
+    generationConfig: { maxOutputTokens: 4096, temperature: 0.4 },
   };
 
   try {
