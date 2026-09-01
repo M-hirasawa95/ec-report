@@ -545,6 +545,21 @@ function postTaskToMyChat_(taskBody) {
  * スクリプトエディタから testNotifyRow(42, 'final_pending') のように直接実行して使う。
  * stage は 'new' または 'final_pending'。
  */
+/**
+ * 動作確認用：通知を送らず、指定した行の列マッピング結果だけをログに出す。
+ * スクリプトエディタから testReadRow(5) のように直接実行して使う。
+ */
+function testReadRow(row) {
+  const sheet = SpreadsheetApp.getActive().getSheetByName(WORKFLOW_SHEET_NAME);
+  if (!sheet) {
+    Logger.log('[ERROR] シート「' + WORKFLOW_SHEET_NAME + '」が見つかりません。');
+    return;
+  }
+  const data = sheet.getRange(row, 1, 1, LAST_COL).getValues()[0];
+  const record = rowToRecord_(data);
+  Logger.log(JSON.stringify(record, null, 2));
+}
+
 function testNotifyRow(row, stage) {
   const sheet = SpreadsheetApp.getActive().getSheetByName(WORKFLOW_SHEET_NAME);
   const data = sheet.getRange(row, 1, 1, LAST_COL).getValues()[0];
