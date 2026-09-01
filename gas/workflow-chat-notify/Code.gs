@@ -156,8 +156,9 @@ function sendWorkflowNotification_(sheet, row, record, stage) {
   const rulesText = getWorkflowRuleText_(sheet);
   const linkedTexts = fetchLinkedContents_(record);
   const analysis = generateAnalysisWithGemini_(record, stage, rulesText, linkedTexts);
-  const message = buildChatworkMessage_(record, stage, analysis, sheet, row);
-  postToMyChat_(message);
+  const body = buildNotificationBody_(record, stage, analysis, sheet, row);
+  postToMyChat_(buildChatworkMessage_(body));
+  postTaskToMyChat_(buildTaskBody_(body));
 }
 
 /**
@@ -396,7 +397,10 @@ function fallbackAnalysis_(record, stage) {
   );
 }
 
-function buildChatworkMessage_(record, stage, analysis, sheet, row) {
+/**
+ * 通知本文（タイトルと本文）を組み立てる。メッセージ用・タスク用で共通利用する。
+ */
+function buildNotificationBody_(record, stage, analysis, sheet, row) {
   const stageTitle = stage === 'new' ? '📝 新規ワークフロー申請' : '🔔 最終承認待ち';
   const ss = SpreadsheetApp.getActive();
   const sheetUrl = ss.getUrl() + '#gid=' + sheet.getSheetId() + '&range=A' + row;
@@ -404,16 +408,24 @@ function buildChatworkMessage_(record, stage, analysis, sheet, row) {
     ? '最終承認者: ' + record.finalName + '\n'
     : '';
 
-  return (
-    '[info][title]' + stageTitle + '（' + (record.company || '会社名未記入') + '）[/title]' +
-    approverLine +
-    '弊社担当者: ' + (record.staff || '-') + '\n' +
-    '商材プラン: ' + (record.plan || '-') + '\n' +
-    '申請内容: ' + truncate_(record.content || '', 200) + '\n\n' +
-    analysis + '\n\n' +
-    '▼ 該当行を開く\n' + sheetUrl +
-    '[/info]'
-  );
+  return {
+    title: stageTitle + '（' + (record.company || '会社名未記入') + '）',
+    lines:
+      approverLine +
+      '弊社担当者: ' + (record.staff || '-') + '\n' +
+      '商材プラン: ' + (record.plan || '-') + '\n' +
+      '申請内容: ' + truncate_(record.content || '', 200) + '\n\n' +
+      analysis + '\n\n' +
+      '▼ 該当行を開く\n' + sheetUrl,
+  };
+}
+
+function buildChatworkMessage_(body) {
+  return '[info][title]' + body.title + '[/title]' + body.lines + '[/info]';
+}
+
+function buildTaskBody_(body) {
+  return body.title + '\n' + body.lines;
 }
 
 function truncate_(text, maxLen) {
@@ -451,6 +463,74 @@ function postToMyChat_(message) {
     }
   } catch (err) {
     Logger.log('[WARN] マイチャット通知失敗: ' + err);
+  }
+}
+
+/**
+ * Chatworkの自分のアカウントIDを取得する（/me、初回のみ呼び出しスクリプトプロパティにキャッシュ）。
+ */
+function getMyChatworkAccountId_(token) {
+  const props = PropertiesService.getScriptProperties();
+  const cached = props.getProperty('CHATWORK_ACCOUNT_ID');
+  if (cached) return cached;
+
+  try {
+    const resp = UrlFetchApp.fetch('https://api.chatwork.com/v2/me', {
+      headers: { 'X-ChatWorkToken': token },
+      muteHttpExceptions: true,
+    });
+    if (resp.getResponseCode() < 200 || resp.getResponseCode() >= 300) {
+      Logger.log('[WARN] Chatworkアカウント取得失敗 HTTP ' + resp.getResponseCode() + ': ' + resp.getContentText());
+      return null;
+    }
+    const data = JSON.parse(resp.getContentText());
+    if (!data.account_id) return null;
+    const accountId = String(data.account_id);
+    props.setProperty('CHATWORK_ACCOUNT_ID', accountId);
+    return accountId;
+  } catch (err) {
+    Logger.log('[WARN] Chatworkアカウント取得エラー: ' + err);
+    return null;
+  }
+}
+
+/**
+ * マイチャットに自分宛てのタスクとして登録する（メッセージ通知と併用）。
+ * タスク一覧・バッジに残るため、メッセージだけより見落としにくい。
+ * 必要なスクリプトプロパティ: CHATWORK_TOKEN, MYCHAT_ROOM_ID
+ */
+function postTaskToMyChat_(taskBody) {
+  const props = PropertiesService.getScriptProperties();
+  const token = props.getProperty('CHATWORK_TOKEN');
+  const roomId = props.getProperty('MYCHAT_ROOM_ID');
+
+  if (!token || !roomId) {
+    Logger.log('[SKIP] CHATWORK_TOKEN または MYCHAT_ROOM_ID が未設定のためタスク登録をスキップしました。');
+    return;
+  }
+
+  const accountId = getMyChatworkAccountId_(token);
+  if (!accountId) {
+    Logger.log('[SKIP] Chatworkアカウント特定に失敗したためタスク登録をスキップしました。');
+    return;
+  }
+
+  const url = 'https://api.chatwork.com/v2/rooms/' + roomId + '/tasks';
+  try {
+    const resp = UrlFetchApp.fetch(url, {
+      method: 'post',
+      headers: { 'X-ChatWorkToken': token },
+      payload: { body: taskBody, to_ids: accountId },
+      muteHttpExceptions: true,
+    });
+    const code = resp.getResponseCode();
+    if (code < 200 || code >= 300) {
+      Logger.log('[WARN] マイチャットタスク登録失敗 HTTP ' + code + ': ' + resp.getContentText());
+    } else {
+      Logger.log('[OK] マイチャットタスク登録完了');
+    }
+  } catch (err) {
+    Logger.log('[WARN] マイチャットタスク登録失敗: ' + err);
   }
 }
 
