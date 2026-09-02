@@ -14,41 +14,67 @@
  * 「プロジェクトの設定 > スクリプト プロパティ」に保存すること。
  */
 
-// ── 設定（シート名・列番号は実際のスプレッドシートに合わせて調整すること）──
+// ── 設定 ──────────────────────────────────────────────
 const WORKFLOW_SHEET_NAME = '新ワークフロー';
 const HEADER_ROW = 2;          // 1行目はルール文、2行目が列見出し
 const RULE_TEXT_CELL = 'A1';   // ワークフロールール／受注ルールが書かれているセル
 const GEMINI_MODEL = 'gemini-3.6-flash';
 
-// 「新ワークフロー」の列番号（1始まり。A=1, B=2, ... AZ=52）
-const COL = {
-  COMPANY: 1,             // A  会社名
-  STAFF: 2,               // B  弊社担当者
-  PLAN: 9,                // I  商材プラン1
-  STAGE: 12,              // L  ステージ
-  FIRST_MEETING_DATE: 16, // P  一次商談日
-  FRONT_PAGE: 24,         // X  フロントページ
-  MINUTES: 25,            // Y  議事録起票
-  PARTNER_REG: 27,        // AA 取引先登録申請書
-  ANTISOCIAL_CHECK: 29,   // AC 反社チェック
-  NDA: 31,                // AE NDA
-  PROPOSAL_DATE: 40,      // AN 本提案_日付
-  CONTRACT_COLLECT: 43,   // AQ 契約書回収
-  CONTENT: 45,            // AS 申請内容
-  SALES_APPROVAL: 46,     // AT セールス承認
-  APPR1_NAME: 47,         // AU 1次承認者
-  APPR1_CHECK: 48,        // AV 1次承認
-  APPR1_REASON: 49,       // AW 承認理由（1次）
-  APPR2_NAME: 50,         // AX 2次承認者
-  APPR2_CHECK: 51,        // AY 2次承認
-  APPR2_REASON: 52,       // AZ 承認理由（2次）
-  FINAL_NAME: 53,         // BA 最終承認者
-  FINAL_CHECK: 54,        // BB 最終承認
-};
-const LAST_COL = COL.FINAL_CHECK;
+// 記入例・テンプレートとして残っている行の会社名（誤って編集されても通知しない）
+const PLACEHOLDER_COMPANY_NAMES = ['株式会社サンプル商事'];
 
-// 新規申請の完了判定に使う列（このいずれかが編集されたときに判定する）
-const NEW_APPLICATION_TRIGGER_COLS = [COL.COMPANY, COL.CONTENT];
+/**
+ * 列は固定番号ではなく、見出し行（HEADER_ROW）のテキストから毎回自動で解決する。
+ * このシートは列の追加・並び替えが頻繁に起きるため、位置決め打ちにすると
+ * すぐに壊れる（実際に何度も壊れた）。見出しの文言さえ変わらなければ動く方式にしている。
+ * 見出し文言自体が変わった場合はここを直す。
+ */
+function resolveColumns_(sheet) {
+  const lastCol = sheet.getLastColumn();
+  const headers = sheet.getRange(HEADER_ROW, 1, 1, lastCol).getValues()[0]
+    .map(function (h) { return String(h).trim(); });
+
+  const indexOf = function (name) {
+    const idx = headers.indexOf(name);
+    return idx === -1 ? null : idx + 1; // 1始まりの列番号
+  };
+  // 「承認理由」列は同じ見出しが複数回登場するため、各承認チェック列の
+  // 直後にあるものをその承認理由として拾う（無ければnull）。
+  const reasonAfter = function (checkColIndex) {
+    if (!checkColIndex) return null;
+    return headers[checkColIndex] === '承認理由' ? checkColIndex + 1 : null;
+  };
+
+  const appr1Check = indexOf('1次 承認');
+  const appr2Check = indexOf('2次 承認');
+  const finalCheck = indexOf('最終 承認');
+
+  return {
+    lastCol: lastCol,
+    company: indexOf('会社名'),
+    staff: indexOf('弊社担当者'),
+    plan: indexOf('商材プラン1'),
+    stage: indexOf('ステージ'),
+    firstMeetingDate: indexOf('一次商談日'),
+    frontPage: indexOf('フロントページ'),
+    minutes: indexOf('議事録起票'),
+    partnerReg: indexOf('取引先登録申請書'),
+    antisocialCheck: indexOf('反社チェック'),
+    nda: indexOf('NDA'),
+    proposalDate: indexOf('本提案_日付'),
+    contractCollect: indexOf('契約書回収'),
+    content: indexOf('申請内容'),
+    salesApproval: indexOf('セールス 承認'),
+    appr1Name: indexOf('1次 承認者'),
+    appr1Check: appr1Check,
+    appr1Reason: reasonAfter(appr1Check),
+    appr2Name: indexOf('2次 承認者'),
+    appr2Check: appr2Check,
+    appr2Reason: reasonAfter(appr2Check),
+    finalName: indexOf('最終 承認者'),
+    finalCheck: finalCheck,
+  };
+}
 
 /**
  * セットアップ用：インストール型 onEdit トリガーを作成する。
@@ -77,6 +103,7 @@ function onEditInstallable(e) {
     const sheet = e.range.getSheet();
     if (sheet.getName() !== WORKFLOW_SHEET_NAME) return;
 
+    const cols = resolveColumns_(sheet);
     const editedFirstRow = e.range.getRow();
     const editedLastRow = e.range.getLastRow();
     const editedFirstCol = e.range.getColumn();
@@ -84,25 +111,31 @@ function onEditInstallable(e) {
 
     // ルール文(1行目)・見出し(2行目)は無視。貼り付け等で複数行にまたがる編集にも対応する。
     for (let row = Math.max(editedFirstRow, HEADER_ROW + 1); row <= editedLastRow; row++) {
-      processRow_(sheet, row, editedFirstCol, editedLastCol);
+      processRow_(sheet, row, editedFirstCol, editedLastCol, cols);
     }
   } catch (err) {
     Logger.log('onEditInstallable エラー: ' + err);
   }
 }
 
-function processRow_(sheet, row, editedFirstCol, editedLastCol) {
+function processRow_(sheet, row, editedFirstCol, editedLastCol, cols) {
   const props = PropertiesService.getScriptProperties();
-  const data = sheet.getRange(row, 1, 1, LAST_COL).getValues()[0];
-  const record = rowToRecord_(data);
+  const data = sheet.getRange(row, 1, 1, cols.lastCol).getValues()[0];
+  const record = rowToRecord_(data, cols);
+
+  if (PLACEHOLDER_COMPANY_NAMES.indexOf(record.company) !== -1) {
+    Logger.log('[SKIP] 記入例/テンプレート行のため通知をスキップ: ' + record.company);
+    return;
+  }
 
   const editedCols = [];
   for (let c = editedFirstCol; c <= editedLastCol; c++) editedCols.push(c);
 
   // (A) 新規申請行の追加：会社名・申請内容が揃った時点で1回だけ通知
+  const newTriggerCols = [cols.company, cols.content].filter(function (c) { return !!c; });
   const newKey = 'notified_new_row' + row;
   const isCoreFieldEdited = editedCols.some(function (c) {
-    return NEW_APPLICATION_TRIGGER_COLS.indexOf(c) !== -1;
+    return newTriggerCols.indexOf(c) !== -1;
   });
   if (isCoreFieldEdited && record.company && record.content && !props.getProperty(newKey)) {
     sendWorkflowNotification_(sheet, row, record, 'new');
@@ -111,37 +144,40 @@ function processRow_(sheet, row, editedFirstCol, editedLastCol) {
 
   // (B) 最終承認待ちになった時点：2次承認がTRUEになったタイミングで1回だけ通知
   const finalPendingKey = 'notified_final_pending_row' + row;
-  const isAppr2CheckEdited = editedCols.indexOf(COL.APPR2_CHECK) !== -1;
+  const isAppr2CheckEdited = !!cols.appr2Check && editedCols.indexOf(cols.appr2Check) !== -1;
   if (isAppr2CheckEdited && record.appr2Check === true && !props.getProperty(finalPendingKey)) {
     sendWorkflowNotification_(sheet, row, record, 'final_pending');
     props.setProperty(finalPendingKey, 'sent:' + new Date().toISOString());
   }
 }
 
-function rowToRecord_(data) {
+function rowToRecord_(data, cols) {
+  const get = function (idx) { return idx ? data[idx - 1] : ''; };
+  const getBool = function (idx) { return idx ? data[idx - 1] === true : false; };
+
   return {
-    company: data[COL.COMPANY - 1],
-    staff: data[COL.STAFF - 1],
-    plan: data[COL.PLAN - 1],
-    stage: data[COL.STAGE - 1],
-    firstMeetingDate: data[COL.FIRST_MEETING_DATE - 1],
-    frontPage: data[COL.FRONT_PAGE - 1],
-    minutes: data[COL.MINUTES - 1],
-    partnerReg: data[COL.PARTNER_REG - 1],
-    antisocialCheck: data[COL.ANTISOCIAL_CHECK - 1],
-    nda: data[COL.NDA - 1],
-    proposalDate: data[COL.PROPOSAL_DATE - 1],
-    contractCollect: data[COL.CONTRACT_COLLECT - 1],
-    content: data[COL.CONTENT - 1],
-    salesApproval: data[COL.SALES_APPROVAL - 1] === true,
-    appr1Name: data[COL.APPR1_NAME - 1],
-    appr1Check: data[COL.APPR1_CHECK - 1] === true,
-    appr1Reason: data[COL.APPR1_REASON - 1],
-    appr2Name: data[COL.APPR2_NAME - 1],
-    appr2Check: data[COL.APPR2_CHECK - 1] === true,
-    appr2Reason: data[COL.APPR2_REASON - 1],
-    finalName: data[COL.FINAL_NAME - 1],
-    finalCheck: data[COL.FINAL_CHECK - 1] === true,
+    company: get(cols.company),
+    staff: get(cols.staff),
+    plan: get(cols.plan),
+    stage: get(cols.stage),
+    firstMeetingDate: get(cols.firstMeetingDate),
+    frontPage: get(cols.frontPage),
+    minutes: get(cols.minutes),
+    partnerReg: get(cols.partnerReg),
+    antisocialCheck: get(cols.antisocialCheck),
+    nda: get(cols.nda),
+    proposalDate: get(cols.proposalDate),
+    contractCollect: get(cols.contractCollect),
+    content: get(cols.content),
+    salesApproval: getBool(cols.salesApproval),
+    appr1Name: get(cols.appr1Name),
+    appr1Check: getBool(cols.appr1Check),
+    appr1Reason: get(cols.appr1Reason),
+    appr2Name: get(cols.appr2Name),
+    appr2Check: getBool(cols.appr2Check),
+    appr2Reason: get(cols.appr2Reason),
+    finalName: get(cols.finalName),
+    finalCheck: getBool(cols.finalCheck),
   };
 }
 
@@ -555,14 +591,17 @@ function testReadRow(row) {
     Logger.log('[ERROR] シート「' + WORKFLOW_SHEET_NAME + '」が見つかりません。');
     return;
   }
-  const data = sheet.getRange(row, 1, 1, LAST_COL).getValues()[0];
-  const record = rowToRecord_(data);
+  const cols = resolveColumns_(sheet);
+  Logger.log('[DEBUG] 解決した列: ' + JSON.stringify(cols));
+  const data = sheet.getRange(row, 1, 1, cols.lastCol).getValues()[0];
+  const record = rowToRecord_(data, cols);
   Logger.log(JSON.stringify(record, null, 2));
 }
 
 function testNotifyRow(row, stage) {
   const sheet = SpreadsheetApp.getActive().getSheetByName(WORKFLOW_SHEET_NAME);
-  const data = sheet.getRange(row, 1, 1, LAST_COL).getValues()[0];
-  const record = rowToRecord_(data);
+  const cols = resolveColumns_(sheet);
+  const data = sheet.getRange(row, 1, 1, cols.lastCol).getValues()[0];
+  const record = rowToRecord_(data, cols);
   sendWorkflowNotification_(sheet, row, record, stage || 'new');
 }
